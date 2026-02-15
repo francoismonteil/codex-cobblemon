@@ -1,5 +1,5 @@
 /data/
-/downloads/
+/downloads/*
 /backups/_staging/
 /backups/_restore/
 /backups/*.zip
@@ -27,3 +27,6 @@ __pycache__/
 # Keep docs inside backups, ignore everything else in that volume
 /backups/*
 !/backups/README.md
+
+# Allow a small hint file for users; keep actual assets gitignored.
+!/downloads/README.md

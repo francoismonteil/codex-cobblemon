@@ -106,6 +106,17 @@ if [[ -d "${WORLD_DIR}" ]]; then
 fi
 
 echo "== Start server (generate new world) =="
+
+# Install datapacks before the first server start so worldgen can apply during initial exploration.
+if [[ -d "${REPO_ROOT}/datapacks/acm_windmills" ]]; then
+  echo "== Install datapack: acm_windmills =="
+  mkdir -p "${WORLD_DIR}/datapacks"
+  rm -rf "${WORLD_DIR}/datapacks/acm_windmills" >/dev/null 2>&1 || true
+  cp -a "${REPO_ROOT}/datapacks/acm_windmills" "${WORLD_DIR}/datapacks/acm_windmills"
+else
+  echo "WARN: datapack not found: ${REPO_ROOT}/datapacks/acm_windmills (skipping)"
+fi
+
 ./infra/start.sh
 wait_ready
 
