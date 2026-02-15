@@ -250,7 +250,7 @@
       "weight": 6
     },
     {
-      "weight": 25,
+      "weight": 120,
       "element": {
         "element_type": "minecraft:legacy_single_pool_element",
         "location": "acm:village/pokecenter",
