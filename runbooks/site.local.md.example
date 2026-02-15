@@ -1,0 +1,22 @@
+# Local Site Context (example)
+
+This file documents your real server details (IP, SSH key path, domains, etc).
+
+- Copy this file to `runbooks/site.local.md`
+- Fill it with your actual values
+- `runbooks/site.local.md` is ignored by Git (see `.gitignore`)
+
+```
+MC_SERVER_HOST=192.0.2.10
+MC_SSH_USER=linux
+MC_PROJECT_DIR=/home/linux/codex-cobblemon
+MC_SERVICE_NAME=cobblemon
+MC_PORT=25565
+
+DUCKDNS_DOMAIN=example.duckdns.org
+
+SSH_KEY_MAIN=C:\\Users\\<You>\\.ssh\\mc_admin_<alias>
+SSH_KEY_EMERGENCY=C:\\Users\\<You>\\.ssh\\mc_admin_emergency_<alias>
+
+DEFAULT_PLAYER_NAME=YourPlayerName
+```

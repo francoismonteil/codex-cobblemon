@@ -1,0 +1,8 @@
+services:
+  cobblemon:
+    environment:
+      # Use only during chunk pre-generation to keep CPU usage moderate.
+      # Example:
+      #   JVM_OPTS_PREGEN="-XX:ActiveProcessorCount=2" docker compose -f docker-compose.yml -f docker-compose.pregen.yml up -d
+      JVM_OPTS: "${JVM_OPTS_PREGEN:--XX:ActiveProcessorCount=2}"
+

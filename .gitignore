@@ -1,0 +1,29 @@
+/data/
+/downloads/
+/backups/_staging/
+/backups/_restore/
+/backups/*.zip
+/backups/*.tgz
+/backups/*.tar.gz
+/logs/
+.env
+
+# IDE / editor
+/.idea/
+/*.iml
+/.vscode/
+
+# OS junk
+Thumbs.db
+.DS_Store
+
+# Python
+__pycache__/
+*.pyc
+
+# Local-only runbook context (keep real IPs/paths here, not in git)
+/runbooks/*.local.md
+
+# Keep docs inside backups, ignore everything else in that volume
+/backups/*
+!/backups/README.md

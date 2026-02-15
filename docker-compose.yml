@@ -1,0 +1,20 @@
+services:
+  cobblemon:
+    image: itzg/minecraft-server:java21
+    container_name: cobblemon
+    ports:
+      - "25565:25565"
+    environment:
+      TZ: ${TZ:-Europe/Paris}
+      EULA: ${EULA:-TRUE}
+      TYPE: ${TYPE:-MODRINTH}
+      MODRINTH_MODPACK: ${MODRINTH_MODPACK:-cobblemon-fabric}
+      MODRINTH_VERSION: ${MODRINTH_VERSION:-Lydu1ZNo}
+      MEMORY: ${MEMORY:-4608M}
+      USE_AIKAR_FLAGS: ${USE_AIKAR_FLAGS:-true}
+      ENABLE_RCON: ${ENABLE_RCON:-false}
+      CREATE_CONSOLE_IN_PIPE: ${CREATE_CONSOLE_IN_PIPE:-true}
+    volumes:
+      - ./data:/data
+      - ./backups:/backups
+    restart: unless-stopped
