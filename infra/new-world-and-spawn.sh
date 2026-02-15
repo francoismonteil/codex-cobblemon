@@ -117,6 +117,15 @@ else
   echo "WARN: datapack not found: ${REPO_ROOT}/datapacks/acm_windmills (skipping)"
 fi
 
+if [[ -d "${REPO_ROOT}/datapacks/acm_village_pokecenter" ]]; then
+  echo "== Install datapack: acm_village_pokecenter =="
+  mkdir -p "${WORLD_DIR}/datapacks"
+  rm -rf "${WORLD_DIR}/datapacks/acm_village_pokecenter" >/dev/null 2>&1 || true
+  cp -a "${REPO_ROOT}/datapacks/acm_village_pokecenter" "${WORLD_DIR}/datapacks/acm_village_pokecenter"
+else
+  echo "WARN: datapack not found: ${REPO_ROOT}/datapacks/acm_village_pokecenter (skipping)"
+fi
+
 ./infra/start.sh
 wait_ready
 

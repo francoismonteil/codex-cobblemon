@@ -411,11 +411,30 @@ def map_block(block_id: int, data: int) -> str:
         d = data & 7
         facing = {0: "down", 2: "north", 3: "south", 4: "west", 5: "east"}.get(d, "down")
         return f"minecraft:hopper[facing={facing},enabled={enabled}]"
+    if block_id == 155:
+        # Quartz block (meta: 0=block, 1=chiseled, 2=pillar). We only map common variants.
+        t = data & 3
+        if t == 1:
+            return "minecraft:chiseled_quartz_block"
+        if t == 2:
+            return "minecraft:quartz_pillar"
+        return "minecraft:quartz_block"
+    if block_id == 156:
+        # Quartz stairs (same meta as other stairs).
+        return f"minecraft:quartz_stairs[facing={_stairs_facing_from_meta(data)},half={_stairs_half_from_meta(data)}]"
+    if block_id == 160:
+        # Stained glass panes (color in lower 4 bits).
+        color = _COLOR[data & 15]
+        return f"minecraft:{color}_stained_glass_pane"
     if block_id == 170:
         return _hay_block(data)
     if block_id == 171:
         color = _COLOR[data & 15]
         return f"minecraft:{color}_carpet"
+    if block_id == 251:
+        # Concrete (1.12+). Color in lower 4 bits.
+        color = _COLOR[data & 15]
+        return f"minecraft:{color}_concrete"
     if block_id == 197:
         return _door_blocks_from_meta(data, "dark_oak")
 
@@ -566,11 +585,14 @@ def _palette_entry_payload(block_state: str) -> bytes:
     return _compound_payload(kids)
 
 
-def _blocks_entry_payload(state_idx: int, x: int, y: int, z: int) -> bytes:
+def _blocks_entry_payload(state_idx: int, x: int, y: int, z: int, nbt: Optional[Dict[str, str]] = None) -> bytes:
     kids = [
         _nbt_int("state", state_idx),
         _nbt_list_int("pos", [x, y, z]),
     ]
+    if nbt:
+        # Per-block BlockEntity NBT. Structure templates store this under a child compound named "nbt".
+        kids.append(_nbt_compound("nbt", (_nbt_string(k, str(v)) for k, v in nbt.items())))
     return _compound_payload(kids)
 
 
@@ -579,14 +601,28 @@ def _write_structure_nbt_gz(
     *,
     size_xyz: Tuple[int, int, int],
     palette: List[str],
-    blocks: List[Tuple[int, int, int, int]],
+    # Each block is (x, y, z, state_idx) or (x, y, z, state_idx, nbt_dict).
+    blocks: List[Tuple],
     data_version: int,
 ) -> None:
     # Root compound payload.
     sx, sy, sz = size_xyz
 
     palette_payloads = (_palette_entry_payload(p) for p in palette)
-    blocks_payloads = (_blocks_entry_payload(state, x, y, z) for (x, y, z, state) in blocks)
+    def _blocks_payloads() -> Iterable[bytes]:
+        for b in blocks:
+            if len(b) == 4:
+                x, y, z, state = b
+                yield _blocks_entry_payload(int(state), int(x), int(y), int(z), None)
+            elif len(b) == 5:
+                x, y, z, state, nbt = b
+                if nbt is not None and not isinstance(nbt, dict):
+                    raise TypeError("blocks nbt must be a dict[str,str] or None")
+                yield _blocks_entry_payload(int(state), int(x), int(y), int(z), nbt)
+            else:
+                raise TypeError("blocks entries must be len 4 or 5 tuples")
+
+    blocks_payloads = _blocks_payloads()
 
     root_children = [
         _nbt_int("DataVersion", data_version),
@@ -698,7 +734,7 @@ def _convert(*, schematic_path: Path, output_path: Path, apply_we_offset: bool, 
     # Palette + blocks array.
     pal_idx: Dict[str, int] = {}
     palette: List[str] = []
-    blocks: List[Tuple[int, int, int, int]] = []
+    blocks: List[Tuple] = []
     for x, y, z, bs in shifted:
         if bs == "minecraft:air":
             continue
@@ -708,6 +744,38 @@ def _convert(*, schematic_path: Path, output_path: Path, apply_we_offset: bool, 
             pal_idx[bs] = idx
             palette.append(bs)
         blocks.append((x, y, z, idx))
+
+    # Optional: add a village-style entrance jigsaw connector so this template can be used in village jigsaw pools.
+    add_village_jigsaw = getattr(_convert, "_add_village_jigsaw", False)
+    if add_village_jigsaw:
+        # Defaults: south edge, centered, ground level.
+        jx, jy, jz = getattr(_convert, "_village_jigsaw_pos", None) or (size_xyz[0] // 2, 0, size_xyz[2] - 1)
+        jface = getattr(_convert, "_village_jigsaw_facing", "south")
+        if jface not in ("north", "south", "east", "west"):
+            raise SystemExit(f"ERROR: invalid --village-jigsaw-facing: {jface}")
+
+        orient = f"{jface}_up"
+        jigsaw_state = f"minecraft:jigsaw[orientation={orient}]"
+        jigsaw_idx = pal_idx.get(jigsaw_state)
+        if jigsaw_idx is None:
+            jigsaw_idx = len(palette)
+            pal_idx[jigsaw_state] = jigsaw_idx
+            palette.append(jigsaw_state)
+
+        # Stairs facing back toward the building (opposite of the outward-facing connector).
+        stairs_facing = {"north": "south", "south": "north", "east": "west", "west": "east"}[jface]
+        final_state = f"minecraft:quartz_stairs[facing={stairs_facing},half=bottom,shape=straight,waterlogged=false]"
+        jigsaw_nbt = {
+            "name": "minecraft:building_entrance",
+            "target": "minecraft:building_entrance",
+            "pool": "minecraft:empty",
+            "final_state": final_state,
+            "joint": "aligned",
+        }
+
+        # Remove any existing block at the target pos, then add the jigsaw.
+        blocks = [b for b in blocks if not (int(b[0]) == int(jx) and int(b[1]) == int(jy) and int(b[2]) == int(jz))]
+        blocks.append((int(jx), int(jy), int(jz), int(jigsaw_idx), jigsaw_nbt))
 
     _write_structure_nbt_gz(output_path, size_xyz=size_xyz, palette=palette, blocks=blocks, data_version=data_version)
 
@@ -739,6 +807,23 @@ def main(argv: List[str]) -> int:
     ap.add_argument("--output", required=True, help="Output .nbt path (will be gzipped NBT)")
     ap.add_argument("--no-we-offset", action="store_true", help="Ignore WEOffsetX/Y/Z tags if present")
     ap.add_argument(
+        "--add-village-jigsaw",
+        action="store_true",
+        help="Add a vanilla village 'building_entrance' jigsaw connector (for use in village house pools).",
+    )
+    ap.add_argument(
+        "--village-jigsaw-pos",
+        nargs=3,
+        metavar=("X", "Y", "Z"),
+        help="Jigsaw block position inside the template (default: centered at south edge, ground level).",
+    )
+    ap.add_argument(
+        "--village-jigsaw-facing",
+        choices=("north", "south", "east", "west"),
+        default="south",
+        help="Outward facing direction for the entrance jigsaw (default: south).",
+    )
+    ap.add_argument(
         "--strip-ground",
         action="store_true",
         help="Drop common terrain pad blocks (dirt/grass/sand/gravel) and recompute bounds so the build blends into terrain",
@@ -768,6 +853,19 @@ def main(argv: List[str]) -> int:
 
     # Carry option into converter without widening the signature too much.
     setattr(_convert, "_strip_ground", bool(args.strip_ground))
+    setattr(_convert, "_add_village_jigsaw", bool(args.add_village_jigsaw))
+    if args.village_jigsaw_pos:
+        try:
+            setattr(
+                _convert,
+                "_village_jigsaw_pos",
+                (int(args.village_jigsaw_pos[0]), int(args.village_jigsaw_pos[1]), int(args.village_jigsaw_pos[2])),
+            )
+        except Exception:
+            raise SystemExit("ERROR: --village-jigsaw-pos expects 3 integers")
+    else:
+        setattr(_convert, "_village_jigsaw_pos", None)
+    setattr(_convert, "_village_jigsaw_facing", str(args.village_jigsaw_facing))
     _convert(
         schematic_path=schematic_path,
         output_path=out,
