@@ -6,5 +6,4 @@
 # Where <x> <y> <z> is the same origin you used for:
 #   place template acm:village/pokecenter <x> <y> <z>
 
-fill ~0 ~0 ~0 ~22 ~10 ~16 minecraft:air replace
-
+fill ~0 ~0 ~0 ~20 ~10 ~15 minecraft:air replace
