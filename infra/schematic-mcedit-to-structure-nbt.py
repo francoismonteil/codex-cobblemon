@@ -644,14 +644,16 @@ def _convert(*, schematic_path: Path, output_path: Path, apply_we_offset: bool, 
         "minecraft:gravel",
     }
 
+    # Bounds are computed from the *full* schematic extents (after WEOffset), not from the stripped output.
+    # This is important: stripping the ground pad should not change the origin or raise/lower the structure,
+    # otherwise /place structure may look offset or floating.
+    bounds_src = mapped
+
     if strip_ground:
         mapped_keep = [(x, y, z, bs) for (x, y, z, bs) in mapped if bs.split("[", 1)[0] not in ground_names]
         if not mapped_keep:
             raise SystemExit("ERROR: after --strip-ground, schematic contains no remaining blocks")
-        bounds_src = mapped_keep
-        mapped = mapped_keep  # also drop ground blocks from output
-    else:
-        bounds_src = mapped
+        mapped = mapped_keep  # drop ground blocks from output, keep original bounds for alignment
 
     min_x = min(x for x, _y, _z, _bs in bounds_src)
     min_y = min(y for _x, y, _z, _bs in bounds_src)
