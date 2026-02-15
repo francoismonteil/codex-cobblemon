@@ -6,10 +6,9 @@
       "element": {
         "element_type": "minecraft:legacy_single_pool_element",
         "location": "acm:village/pokecenter",
-        "processors": "minecraft:empty",
+        "processors": "acm:strip_floating_ground",
         "projection": "rigid"
       }
     }
   ]
 }
-

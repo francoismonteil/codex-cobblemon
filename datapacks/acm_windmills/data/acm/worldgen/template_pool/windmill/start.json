@@ -7,7 +7,7 @@
       "element": {
         "element_type": "minecraft:single_pool_element",
         "location": "acm:windmill",
-        "processors": "minecraft:empty",
+        "processors": "acm:strip_floating_ground",
         "projection": "rigid"
       }
     }
