@@ -631,12 +631,34 @@ def _convert(*, schematic_path: Path, output_path: Path, apply_we_offset: bool, 
     if not mapped:
         raise SystemExit("ERROR: schematic contains no non-air blocks after mapping")
 
-    min_x = min(x for x, _y, _z, _bs in mapped)
-    min_y = min(y for _x, y, _z, _bs in mapped)
-    min_z = min(z for _x, _y, z, _bs in mapped)
-    max_x = max(x for x, _y, _z, _bs in mapped)
-    max_y = max(y for _x, y, _z, _bs in mapped)
-    max_z = max(z for _x, _y, z, _bs in mapped)
+    # Some schematics include a dirt/terrain pad. If we strip it, keep the build footprint but
+    # compute bounds based on the remaining blocks so the build sits on the terrain.
+    strip_ground = getattr(_convert, "_strip_ground", False)
+    ground_names = {
+        "minecraft:dirt",
+        "minecraft:grass_block",
+        "minecraft:coarse_dirt",
+        "minecraft:podzol",
+        "minecraft:sand",
+        "minecraft:red_sand",
+        "minecraft:gravel",
+    }
+
+    if strip_ground:
+        mapped_keep = [(x, y, z, bs) for (x, y, z, bs) in mapped if bs.split("[", 1)[0] not in ground_names]
+        if not mapped_keep:
+            raise SystemExit("ERROR: after --strip-ground, schematic contains no remaining blocks")
+        bounds_src = mapped_keep
+        mapped = mapped_keep  # also drop ground blocks from output
+    else:
+        bounds_src = mapped
+
+    min_x = min(x for x, _y, _z, _bs in bounds_src)
+    min_y = min(y for _x, y, _z, _bs in bounds_src)
+    min_z = min(z for _x, _y, z, _bs in bounds_src)
+    max_x = max(x for x, _y, _z, _bs in bounds_src)
+    max_y = max(y for _x, y, _z, _bs in bounds_src)
+    max_z = max(z for _x, _y, z, _bs in bounds_src)
 
     # Recenter so mins are at 0,0,0.
     shifted: List[Tuple[int, int, int, str]] = [(x - min_x, y - min_y, z - min_z, bs) for (x, y, z, bs) in mapped]
@@ -687,6 +709,11 @@ def main(argv: List[str]) -> int:
     ap.add_argument("--output", required=True, help="Output .nbt path (will be gzipped NBT)")
     ap.add_argument("--no-we-offset", action="store_true", help="Ignore WEOffsetX/Y/Z tags if present")
     ap.add_argument(
+        "--strip-ground",
+        action="store_true",
+        help="Drop common terrain pad blocks (dirt/grass/sand/gravel) and recompute bounds so the build blends into terrain",
+    )
+    ap.add_argument(
         "--data-version",
         type=int,
         default=3955,  # Minecraft 1.21.1
@@ -709,6 +736,8 @@ def main(argv: List[str]) -> int:
         print(f"Missing schematic: {schematic_path}", file=sys.stderr)
         return 2
 
+    # Carry option into converter without widening the signature too much.
+    setattr(_convert, "_strip_ground", bool(args.strip_ground))
     _convert(
         schematic_path=schematic_path,
         output_path=out,

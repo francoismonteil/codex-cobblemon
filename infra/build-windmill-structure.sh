@@ -13,11 +13,12 @@ cd "${REPO_ROOT}"
 schematic="downloads/Windmill - (mcbuild_org).schematic"
 out="datapacks/acm_windmills/data/acm/structure/windmill.nbt"
 out_alias="datapacks/acm_windmills/data/acm/structure/windmill_template.nbt"
+strip_ground="true"
 
 usage() {
   cat <<EOF >&2
 Usage:
-  $0 [--schematic <path>] [--output <path>]
+  $0 [--schematic <path>] [--output <path>] [--keep-ground]
 EOF
 }
 
@@ -25,6 +26,7 @@ while [[ $# -gt 0 ]]; do
   case "$1" in
     --schematic) schematic="${2:?}"; shift 2;;
     --output) out="${2:?}"; shift 2;;
+    --keep-ground) strip_ground="false"; shift;;
     -h|--help) usage; exit 0;;
     *) echo "Unknown arg: $1" >&2; usage; exit 2;;
   esac
@@ -36,6 +38,10 @@ if [[ ! -f "${schematic}" ]]; then
   exit 2
 fi
 
-python3 ./infra/schematic-mcedit-to-structure-nbt.py --schematic "${schematic}" --output "${out}"
+args=(--schematic "${schematic}" --output "${out}")
+if [[ "${strip_ground}" == "true" ]]; then
+  args+=(--strip-ground)
+fi
+python3 ./infra/schematic-mcedit-to-structure-nbt.py "${args[@]}"
 cp -f "${out}" "${out_alias}"
 echo "OK: wrote ${out}"
