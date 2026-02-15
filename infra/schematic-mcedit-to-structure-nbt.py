@@ -632,16 +632,41 @@ def _convert(*, schematic_path: Path, output_path: Path, apply_we_offset: bool, 
         raise SystemExit("ERROR: schematic contains no non-air blocks after mapping")
 
     # Some schematics include a dirt/terrain pad. If we strip it, keep the build footprint but
-    # compute bounds based on the remaining blocks so the build sits on the terrain.
+    # avoid leaving floating ground decorations (crops/grass).
     strip_ground = getattr(_convert, "_strip_ground", False)
+    # Keep this intentionally conservative: do NOT include stone/cobble/etc here because many builds use them
+    # legitimately as part of the structure itself.
     ground_names = {
+        # Soil / ground
         "minecraft:dirt",
         "minecraft:grass_block",
         "minecraft:coarse_dirt",
         "minecraft:podzol",
+        "minecraft:rooted_dirt",
+        "minecraft:farmland",
+        "minecraft:gravel",
         "minecraft:sand",
         "minecraft:red_sand",
-        "minecraft:gravel",
+        "minecraft:mycelium",
+        "minecraft:moss_block",
+        "minecraft:clay",
+        "minecraft:snow_block",
+        # Common ground decoration that would otherwise float if the ground is stripped
+        "minecraft:short_grass",
+        "minecraft:tall_grass",
+        "minecraft:wheat",
+        "minecraft:carrots",
+        "minecraft:potatoes",
+        "minecraft:beetroots",
+        "minecraft:dandelion",
+        "minecraft:oxeye_daisy",
+        "minecraft:poppy",
+        "minecraft:cornflower",
+        "minecraft:azure_bluet",
+        "minecraft:allium",
+        "minecraft:blue_orchid",
+        "minecraft:lily_of_the_valley",
+        "minecraft:sunflower",
     }
 
     # Bounds are computed from the *full* schematic extents (after WEOffset), not from the stripped output.
@@ -656,7 +681,10 @@ def _convert(*, schematic_path: Path, output_path: Path, apply_we_offset: bool, 
         mapped = mapped_keep  # drop ground blocks from output, keep original bounds for alignment
 
     min_x = min(x for x, _y, _z, _bs in bounds_src)
-    min_y = min(y for _x, y, _z, _bs in bounds_src)
+    # When stripping ground, align the output so the lowest remaining block becomes y=0.
+    # Many schematics are exported with a multi-block-thick dirt pad; stripping it would otherwise make the
+    # structure float above the intended placement Y.
+    min_y = min(y for _x, y, _z, _bs in (mapped if strip_ground else bounds_src))
     min_z = min(z for _x, _y, z, _bs in bounds_src)
     max_x = max(x for x, _y, _z, _bs in bounds_src)
     max_y = max(y for _x, y, _z, _bs in bounds_src)
