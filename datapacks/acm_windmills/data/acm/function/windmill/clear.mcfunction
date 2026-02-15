@@ -17,18 +17,22 @@ forceload add ~-34 ~-34 ~34 ~34
 
 # Quadrant (+X,+Z)
 fill ~0 ~0 ~0 ~34 ~20 ~34 minecraft:air replace
-fill ~0 ~21 ~0 ~34 ~60 ~34 minecraft:air replace
+fill ~0 ~21 ~0 ~34 ~40 ~34 minecraft:air replace
+fill ~0 ~41 ~0 ~34 ~60 ~34 minecraft:air replace
 
 # Quadrant (-X,+Z)
 fill ~-34 ~0 ~0 ~0 ~20 ~34 minecraft:air replace
-fill ~-34 ~21 ~0 ~0 ~60 ~34 minecraft:air replace
+fill ~-34 ~21 ~0 ~0 ~40 ~34 minecraft:air replace
+fill ~-34 ~41 ~0 ~0 ~60 ~34 minecraft:air replace
 
 # Quadrant (+X,-Z)
 fill ~0 ~0 ~-34 ~34 ~20 ~0 minecraft:air replace
-fill ~0 ~21 ~-34 ~34 ~60 ~0 minecraft:air replace
+fill ~0 ~21 ~-34 ~34 ~40 ~0 minecraft:air replace
+fill ~0 ~41 ~-34 ~34 ~60 ~0 minecraft:air replace
 
 # Quadrant (-X,-Z)
 fill ~-34 ~0 ~-34 ~0 ~20 ~0 minecraft:air replace
-fill ~-34 ~21 ~-34 ~0 ~60 ~0 minecraft:air replace
+fill ~-34 ~21 ~-34 ~0 ~40 ~0 minecraft:air replace
+fill ~-34 ~41 ~-34 ~0 ~60 ~0 minecraft:air replace
 
 forceload remove ~-34 ~-34 ~34 ~34
