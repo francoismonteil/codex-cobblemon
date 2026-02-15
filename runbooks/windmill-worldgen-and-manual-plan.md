@@ -102,6 +102,8 @@ Commandes utiles en console:
    - `place structure acm:windmill <x> <y> <z>`
 2. Placement template:
    - `place template acm:windmill_template <x> <y> <z>`
+3. Suppression (one-liner, si place template):
+   - `execute positioned <x> <y> <z> run function acm:windmill/clear`
 
 ## 5) Placement manuel via script infra (apres coup)
 
