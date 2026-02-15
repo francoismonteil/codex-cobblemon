@@ -36,21 +36,13 @@ mkdir -p "${world}/datapacks"
 
 ts="$(date +%Y%m%d-%H%M%S)"
 if [[ -d "${dst}" ]]; then
-  mv "${dst}" "${dst}.prev-${ts}"
+  # Do not keep backups inside world/datapacks, otherwise Minecraft may auto-enable them and change overrides/order.
+  mkdir -p "${REPO_ROOT}/backups/datapacks"
+  mv "${dst}" "${REPO_ROOT}/backups/datapacks/acm_village_pokecenter.prev-${ts}"
 fi
 
 cp -a "${src}" "${dst}"
 echo "Installed: ${dst}"
-
-# If we keep backups, make sure they are not left enabled (they can override the active pack due to ordering).
-for prev in "${world}/datapacks/acm_village_pokecenter.prev-"*; do
-  [[ -d "${prev}" ]] || continue
-  prev_id="file/$(basename "${prev}")"
-  ./infra/mc.sh "datapack disable \"${prev_id}\"" >/dev/null 2>&1 || true
-done
-
-# Ensure the active pack is enabled (and loaded last so its overrides win).
-./infra/mc.sh "datapack enable \"file/acm_village_pokecenter\" last" >/dev/null 2>&1 || true
 
 # Best-effort reload and verification.
 ./infra/mc.sh reload >/dev/null 2>&1 || true
