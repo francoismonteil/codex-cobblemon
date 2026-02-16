@@ -6,7 +6,7 @@
       "element": {
         "element_type": "minecraft:legacy_single_pool_element",
         "location": "acm:village/pokecenter_tc_taiga",
-        "processors": "acm:strip_floating_ground",
+        "processors": "acm:pokecenter_worldgen",
         "projection": "rigid"
       }
     }
