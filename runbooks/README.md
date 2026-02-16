@@ -13,6 +13,7 @@
 - `runbooks/restart-policy.md`: restart quotidien (safe) + alertes.
 - `runbooks/spawn-city.md`: plan + procedures pour un spawn "ville Pokemon" moderne.
 - `runbooks/openworld-village.md`: open world (spawn village naturel + border + pregen + protection spawn).
+- `runbooks/pokemon-worldgen.md`: datapack unique Pokemon worldgen (pokecenter + pokemart + pipeline structgen).
 - `runbooks/worlds.md`: gerer plusieurs maps (bibliotheque + switch).
 - `runbooks/johto-fr.md`: traduction FR (partielle) de la map Johto.
 - `runbooks/restore.md`: procedure de restauration.

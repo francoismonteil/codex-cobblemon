@@ -1,0 +1,33 @@
+{
+  "name": "acm:village/pokemon/plains/houses",
+  "fallback": "minecraft:empty",
+  "elements": [
+    {
+      "weight": 3,
+      "element": {
+        "element_type": "minecraft:legacy_single_pool_element",
+        "location": "acm:village/pokemart_a_plains",
+        "processors": "acm:strip_floating_ground",
+        "projection": "rigid"
+      }
+    },
+    {
+      "weight": 3,
+      "element": {
+        "element_type": "minecraft:legacy_single_pool_element",
+        "location": "acm:village/pokemart_b_plains",
+        "processors": "acm:strip_floating_ground",
+        "projection": "rigid"
+      }
+    },
+    {
+      "weight": 3,
+      "element": {
+        "element_type": "minecraft:legacy_single_pool_element",
+        "location": "acm:village/pokemart_c_plains",
+        "processors": "acm:strip_floating_ground",
+        "projection": "rigid"
+      }
+    }
+  ]
+}

@@ -1,0 +1,113 @@
+{
+  "allowed_blocks": {
+    "minecraft:air": {
+      "allowed_properties": {}
+    },
+    "minecraft:jigsaw": {
+      "allowed_properties": {
+        "orientation": [
+          "down_east",
+          "down_north",
+          "down_south",
+          "down_west",
+          "east_up",
+          "north_up",
+          "south_up",
+          "up_east",
+          "up_north",
+          "up_south",
+          "up_west",
+          "west_up"
+        ]
+      }
+    },
+    "minecraft:stone": {
+      "allowed_properties": {}
+    },
+    "minecraft:stone_bricks": {
+      "allowed_properties": {}
+    },
+    "minecraft:smooth_stone": {
+      "allowed_properties": {}
+    },
+    "minecraft:smooth_sandstone": {
+      "allowed_properties": {}
+    },
+    "minecraft:sandstone": {
+      "allowed_properties": {}
+    },
+    "minecraft:cobblestone": {
+      "allowed_properties": {}
+    },
+    "minecraft:spruce_planks": {
+      "allowed_properties": {}
+    },
+    "minecraft:dark_oak_planks": {
+      "allowed_properties": {}
+    },
+    "minecraft:acacia_planks": {
+      "allowed_properties": {}
+    },
+    "minecraft:white_concrete": {
+      "allowed_properties": {}
+    },
+    "minecraft:light_blue_concrete": {
+      "allowed_properties": {}
+    },
+    "minecraft:red_concrete": {
+      "allowed_properties": {}
+    },
+    "minecraft:blue_concrete": {
+      "allowed_properties": {}
+    },
+    "minecraft:yellow_terracotta": {
+      "allowed_properties": {}
+    },
+    "minecraft:orange_terracotta": {
+      "allowed_properties": {}
+    },
+    "minecraft:brown_terracotta": {
+      "allowed_properties": {}
+    },
+    "minecraft:glass": {
+      "allowed_properties": {}
+    },
+    "minecraft:glowstone": {
+      "allowed_properties": {}
+    },
+    "minecraft:barrel": {
+      "allowed_properties": {
+        "facing": [
+          "down",
+          "up",
+          "north",
+          "south",
+          "west",
+          "east"
+        ],
+        "open": [
+          "true",
+          "false"
+        ]
+      }
+    },
+    "minecraft:lantern": {
+      "allowed_properties": {
+        "hanging": [
+          "true",
+          "false"
+        ],
+        "waterlogged": [
+          "true",
+          "false"
+        ]
+      }
+    },
+    "cobblemon:pc": {
+      "allowed_properties": {}
+    },
+    "cobblemon:healing_machine": {
+      "allowed_properties": {}
+    }
+  }
+}

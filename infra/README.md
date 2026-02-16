@@ -123,6 +123,7 @@ Monde (open world):
 - `./infra/spawn-village-welcome-cache.sh`: place/stocke un petit baril de bienvenue pres du kit (pain, torches, lits, pokeballs).
 - `./infra/spawn-pokecenter-prefab.sh`: construit un petit prefab "Centre Pokemon" (basic ou decorated) dans un rectangle (4 coins).
 - `./infra/spawn-village-upgrade.sh`: upgrade leger d'une maison de village (healer+PC + accents + blocs utiles).
+- `./infra/install-pokemon-worldgen-datapack.sh`: installe/met a jour le datapack `acm_pokemon_worldgen` dans le monde actif.
 - `./infra/chunky-monitor.sh`: supervision Chunky (log + webhook Discord si configure).
 - `./infra/chunky-monitor-enable-cron.sh`: active la supervision en arriere-plan via cron.
 - `./infra/chunky-monitor-disable-cron.sh`: desactive la supervision en arriere-plan via cron.
