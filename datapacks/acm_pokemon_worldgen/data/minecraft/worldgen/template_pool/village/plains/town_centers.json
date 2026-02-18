@@ -102,29 +102,35 @@
       }
     },
     {
-      "weight": 3,
+      "weight": 8,
       "element": {
         "element_type": "minecraft:legacy_single_pool_element",
         "location": "acm:village/pokemart_a_plains",
-        "processors": "minecraft:mossify_20_percent",
+        "processors": {
+          "processors": []
+        },
         "projection": "rigid"
       }
     },
     {
-      "weight": 3,
+      "weight": 8,
       "element": {
         "element_type": "minecraft:legacy_single_pool_element",
         "location": "acm:village/pokemart_b_plains",
-        "processors": "minecraft:mossify_20_percent",
+        "processors": {
+          "processors": []
+        },
         "projection": "rigid"
       }
     },
     {
-      "weight": 6,
+      "weight": 16,
       "element": {
         "element_type": "minecraft:legacy_single_pool_element",
         "location": "acm:village/pokemart_c_plains",
-        "processors": "minecraft:mossify_20_percent",
+        "processors": {
+          "processors": []
+        },
         "projection": "rigid"
       }
     }

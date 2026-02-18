@@ -102,7 +102,7 @@
       }
     },
     {
-      "weight": 3,
+      "weight": 8,
       "element": {
         "element_type": "minecraft:legacy_single_pool_element",
         "location": "acm:village/pokemart_a_plains",
@@ -111,7 +111,7 @@
       }
     },
     {
-      "weight": 3,
+      "weight": 8,
       "element": {
         "element_type": "minecraft:legacy_single_pool_element",
         "location": "acm:village/pokemart_b_plains",
@@ -120,7 +120,7 @@
       }
     },
     {
-      "weight": 6,
+      "weight": 16,
       "element": {
         "element_type": "minecraft:legacy_single_pool_element",
         "location": "acm:village/pokemart_c_plains",
