@@ -343,6 +343,39 @@
         "element_type": "minecraft:empty_pool_element"
       },
       "weight": 10
+    },
+    {
+      "weight": 1,
+      "element": {
+        "element_type": "minecraft:legacy_single_pool_element",
+        "location": "acm:village/pokemart_a_plains",
+        "processors": {
+          "processors": []
+        },
+        "projection": "rigid"
+      }
+    },
+    {
+      "weight": 1,
+      "element": {
+        "element_type": "minecraft:legacy_single_pool_element",
+        "location": "acm:village/pokemart_b_plains",
+        "processors": {
+          "processors": []
+        },
+        "projection": "rigid"
+      }
+    },
+    {
+      "weight": 2,
+      "element": {
+        "element_type": "minecraft:legacy_single_pool_element",
+        "location": "acm:village/pokemart_c_plains",
+        "processors": {
+          "processors": []
+        },
+        "projection": "rigid"
+      }
     }
   ],
   "fallback": "minecraft:village/plains/terminators"
