@@ -5,7 +5,6 @@ Pipeline reproductible pour générer des structures `.nbt` (format Structure Bl
 ## Entrées
 
 - Plans:
-  - `tools/structgen/plans/pokecenter/*.json`
   - `tools/structgen/plans/pokemart/*.json`
 - Templates NBT:
   - `tools/structgen/templates/block_entities/*.nbt`
@@ -56,8 +55,14 @@ Options utiles:
 
 Le compilateur rejette:
 
+- schéma plan non strict (clé manquante ou inconnue)
+- `schema_version != 1`
+- `type` hors `pokecenter|pokemart`
+- `palette_refs` qui ne contient pas exactement `plains/desert/savanna/snowy/taiga`
 - blocs hors allowlist
 - propriétés/valeurs de state non allowlistées
 - positions hors bornes de `size`
-- jigsaw incomplets/invalides
+- jigsaws incomplets/invalides (au moins 1 jigsaw requis)
 - templates `.nbt` manquants
+
+Le compilateur émet un warning (sans bloquer) si un `params` fourni n'est pas utilisé par le template NBT ciblé.

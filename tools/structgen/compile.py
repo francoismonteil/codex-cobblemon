@@ -44,6 +44,9 @@ VALID_JIGSAW_ORIENTATIONS = {
 }
 HORIZONTAL = ("north", "east", "south", "west")
 STATE_RE = re.compile(r"^(?P<name>[a-z0-9_./-]+:[a-z0-9_./-]+)(?:\[(?P<props>.*)\])?$")
+PARAM_TOKEN_RE = re.compile(r"\{\{([a-zA-Z0-9_]+)\}\}")
+PLAN_TYPES = {"pokecenter", "pokemart"}
+BIOME_SET = set(SUPPORTED_BIOMES)
 
 
 class StructgenError(Exception):
@@ -271,7 +274,13 @@ def parse_block_state(state: str) -> tuple[str, dict[str, str]]:
             if "=" not in segment:
                 raise StructgenError(f"invalid property segment '{segment}' in state '{state}'")
             k, v = segment.split("=", 1)
-            props[k.strip()] = v.strip()
+            key = k.strip()
+            value = v.strip()
+            if not key or not value:
+                raise StructgenError(f"invalid property segment '{segment}' in state '{state}'")
+            if key in props:
+                raise StructgenError(f"duplicate property '{key}' in state '{state}'")
+            props[key] = value
     return name, props
 
 
@@ -440,25 +449,218 @@ def apply_params(value: Any, params: dict[str, Any]) -> Any:
     return copy.deepcopy(value)
 
 
-def validate_plan_shape(plan_path: Path, plan: dict[str, Any]) -> None:
-    required = (
-        "schema_version",
-        "id",
-        "type",
-        "size",
-        "origin",
-        "blocks",
-        "jigsaws",
-        "block_entities",
-        "entities",
-        "palette_refs",
-        "tags",
-    )
-    missing = [k for k in required if k not in plan]
+def collect_param_tokens(value: Any) -> set[str]:
+    tokens: set[str] = set()
+    if isinstance(value, str):
+        for match in PARAM_TOKEN_RE.finditer(value):
+            tokens.add(match.group(1))
+        return tokens
+    if isinstance(value, dict):
+        for v in value.values():
+            tokens.update(collect_param_tokens(v))
+        return tokens
+    if isinstance(value, NbtList):
+        for item in value.items:
+            tokens.update(collect_param_tokens(item))
+        return tokens
+    if isinstance(value, list):
+        for item in value:
+            tokens.update(collect_param_tokens(item))
+        return tokens
+    return tokens
+
+
+def _check_keys(context: str, obj: dict[str, Any], required: set[str], optional: set[str] | None = None) -> None:
+    optional = optional or set()
+    allowed = required | optional
+    unknown = sorted(set(obj.keys()) - allowed)
+    missing = sorted(required - set(obj.keys()))
     if missing:
-        raise StructgenError(f"{plan_path}: missing keys: {', '.join(missing)}")
-    if not isinstance(plan["size"], list) or len(plan["size"]) != 3:
-        raise StructgenError(f"{plan_path}: size must be a 3-int list")
+        raise StructgenError(f"{context}: missing keys: {', '.join(missing)}")
+    if unknown:
+        raise StructgenError(f"{context}: unknown keys: {', '.join(unknown)}")
+
+
+def _as_int_triplet(value: Any, context: str, *, positive: bool = False) -> tuple[int, int, int]:
+    if not isinstance(value, list) or len(value) != 3:
+        raise StructgenError(f"{context}: expected a 3-item list")
+    out: list[int] = []
+    for i, item in enumerate(value):
+        if isinstance(item, bool) or not isinstance(item, int):
+            raise StructgenError(f"{context}[{i}]: expected integer")
+        if positive and item <= 0:
+            raise StructgenError(f"{context}[{i}]: expected integer > 0")
+        out.append(int(item))
+    return (out[0], out[1], out[2])
+
+
+def _as_num_triplet(value: Any, context: str) -> tuple[float, float, float]:
+    if not isinstance(value, list) or len(value) != 3:
+        raise StructgenError(f"{context}: expected a 3-item list")
+    out: list[float] = []
+    for i, item in enumerate(value):
+        if isinstance(item, bool) or not isinstance(item, (int, float)):
+            raise StructgenError(f"{context}[{i}]: expected number")
+        out.append(float(item))
+    return (out[0], out[1], out[2])
+
+
+def validate_plan_shape(plan_path: Path, plan: dict[str, Any]) -> None:
+    if not isinstance(plan, dict):
+        raise StructgenError(f"{plan_path}: plan root must be an object")
+    _check_keys(
+        str(plan_path),
+        plan,
+        required={
+            "schema_version",
+            "id",
+            "type",
+            "size",
+            "origin",
+            "blocks",
+            "jigsaws",
+            "block_entities",
+            "entities",
+            "palette_refs",
+            "tags",
+        },
+    )
+
+    schema_version = plan["schema_version"]
+    if isinstance(schema_version, bool) or not isinstance(schema_version, int):
+        raise StructgenError(f"{plan_path}: schema_version must be integer")
+    if schema_version != 1:
+        raise StructgenError(f"{plan_path}: schema_version must be 1")
+
+    plan_id = plan["id"]
+    if not isinstance(plan_id, str) or not plan_id.strip():
+        raise StructgenError(f"{plan_path}: id must be non-empty string")
+
+    plan_type = plan["type"]
+    if not isinstance(plan_type, str) or plan_type not in PLAN_TYPES:
+        raise StructgenError(f"{plan_path}: type must be one of {sorted(PLAN_TYPES)}")
+
+    size = _as_int_triplet(plan["size"], f"{plan_path}: size", positive=True)
+    _ = _as_int_triplet(plan["origin"], f"{plan_path}: origin", positive=False)
+
+    tags = plan["tags"]
+    if not isinstance(tags, list):
+        raise StructgenError(f"{plan_path}: tags must be a list")
+    for i, t in enumerate(tags):
+        if not isinstance(t, str):
+            raise StructgenError(f"{plan_path}: tags[{i}] must be string")
+
+    palette_refs = plan["palette_refs"]
+    if not isinstance(palette_refs, dict) or not palette_refs:
+        raise StructgenError(f"{plan_path}: palette_refs must be a non-empty object")
+    palette_keys = set(palette_refs.keys())
+    if palette_keys != BIOME_SET:
+        missing = sorted(BIOME_SET - palette_keys)
+        extra = sorted(palette_keys - BIOME_SET)
+        parts: list[str] = []
+        if missing:
+            parts.append(f"missing biomes: {', '.join(missing)}")
+        if extra:
+            parts.append(f"unknown biomes: {', '.join(extra)}")
+        raise StructgenError(f"{plan_path}: palette_refs must contain exactly {', '.join(SUPPORTED_BIOMES)} ({'; '.join(parts)})")
+
+    for biome in SUPPORTED_BIOMES:
+        palette = palette_refs[biome]
+        if not isinstance(palette, dict):
+            raise StructgenError(f"{plan_path}: palette_refs.{biome} must be an object")
+        for mk, state in palette.items():
+            if not isinstance(mk, str) or not mk:
+                raise StructgenError(f"{plan_path}: palette_refs.{biome} has invalid material key")
+            if not isinstance(state, str):
+                raise StructgenError(f"{plan_path}: palette_refs.{biome}.{mk} must be string")
+            n, p = parse_block_state(state)
+            _ = canonical_state(n, p)
+
+    blocks = plan["blocks"]
+    if not isinstance(blocks, list) or not blocks:
+        raise StructgenError(f"{plan_path}: blocks must be a non-empty list")
+    for i, block in enumerate(blocks):
+        context = f"{plan_path}: blocks[{i}]"
+        if not isinstance(block, dict):
+            raise StructgenError(f"{context}: block entry must be object")
+        _check_keys(context, block, required={"pos", "state"}, optional={"material_key"})
+        _as_int_triplet(block["pos"], f"{context}.pos", positive=False)
+        if not isinstance(block["state"], str):
+            raise StructgenError(f"{context}.state must be string")
+        n, p = parse_block_state(block["state"])
+        _ = canonical_state(n, p)
+        if "material_key" in block:
+            mk = block["material_key"]
+            if not isinstance(mk, str) or not mk:
+                raise StructgenError(f"{context}.material_key must be non-empty string")
+            for biome in SUPPORTED_BIOMES:
+                if mk not in palette_refs[biome]:
+                    raise StructgenError(f"{context}: material_key '{mk}' missing in palette_refs.{biome}")
+        # source-space bounds check
+        assert_in_bounds((int(block["pos"][0]), int(block["pos"][1]), int(block["pos"][2])), size, context)
+
+    jigsaws = plan["jigsaws"]
+    if not isinstance(jigsaws, list):
+        raise StructgenError(f"{plan_path}: jigsaws must be a list")
+    if len(jigsaws) < 1:
+        raise StructgenError(f"{plan_path}: jigsaws must contain at least one entry")
+    for i, jigsaw in enumerate(jigsaws):
+        context = f"{plan_path}: jigsaws[{i}]"
+        if not isinstance(jigsaw, dict):
+            raise StructgenError(f"{context}: jigsaw entry must be object")
+        _check_keys(
+            context,
+            jigsaw,
+            required={"pos", "name", "target", "pool", "final_state", "joint", "orientation"},
+        )
+        _as_int_triplet(jigsaw["pos"], f"{context}.pos", positive=False)
+        assert_in_bounds((int(jigsaw["pos"][0]), int(jigsaw["pos"][1]), int(jigsaw["pos"][2])), size, context)
+        for f in ("name", "target", "pool", "final_state", "joint", "orientation"):
+            if not isinstance(jigsaw[f], str) or not jigsaw[f].strip():
+                raise StructgenError(f"{context}.{f} must be non-empty string")
+        if jigsaw["joint"] not in ("rollable", "aligned"):
+            raise StructgenError(f"{context}.joint must be 'rollable' or 'aligned'")
+        if jigsaw["orientation"] not in VALID_JIGSAW_ORIENTATIONS:
+            raise StructgenError(f"{context}.orientation is invalid")
+        n, p = parse_block_state(jigsaw["final_state"])
+        _ = canonical_state(n, p)
+
+    block_entities = plan["block_entities"]
+    if not isinstance(block_entities, list):
+        raise StructgenError(f"{plan_path}: block_entities must be a list")
+    for i, block_entity in enumerate(block_entities):
+        context = f"{plan_path}: block_entities[{i}]"
+        if not isinstance(block_entity, dict):
+            raise StructgenError(f"{context}: block_entity entry must be object")
+        _check_keys(context, block_entity, required={"pos", "template", "params"})
+        _as_int_triplet(block_entity["pos"], f"{context}.pos", positive=False)
+        assert_in_bounds((int(block_entity["pos"][0]), int(block_entity["pos"][1]), int(block_entity["pos"][2])), size, context)
+        template = block_entity["template"]
+        if not isinstance(template, str) or not template.strip():
+            raise StructgenError(f"{context}.template must be non-empty string")
+        if not isinstance(block_entity["params"], dict):
+            raise StructgenError(f"{context}.params must be an object")
+
+    entities = plan["entities"]
+    if not isinstance(entities, list):
+        raise StructgenError(f"{plan_path}: entities must be a list")
+    for i, entity in enumerate(entities):
+        context = f"{plan_path}: entities[{i}]"
+        if not isinstance(entity, dict):
+            raise StructgenError(f"{context}: entity entry must be object")
+        _check_keys(context, entity, required={"pos", "block_pos", "template", "params"})
+        _as_num_triplet(entity["pos"], f"{context}.pos")
+        _as_int_triplet(entity["block_pos"], f"{context}.block_pos", positive=False)
+        assert_in_bounds(
+            (int(entity["block_pos"][0]), int(entity["block_pos"][1]), int(entity["block_pos"][2])),
+            size,
+            context,
+        )
+        template = entity["template"]
+        if not isinstance(template, str) or not template.strip():
+            raise StructgenError(f"{context}.template must be non-empty string")
+        if not isinstance(entity["params"], dict):
+            raise StructgenError(f"{context}.params must be an object")
 
 
 def _transformed_params(params: dict[str, Any], rot: int, mirror: str) -> dict[str, Any]:
@@ -480,6 +682,7 @@ def _build_structure(
     rot: int,
     mirror: str,
     include_entities: bool,
+    warnings: list[str],
 ) -> tuple[tuple[int, int, int], list[tuple[int, int, int, str, dict[str, Any] | None]], list[dict[str, Any]]]:
     base_size = (int(plan["size"][0]), int(plan["size"][1]), int(plan["size"][2]))
     out_size = rotate_size(base_size, rot)
@@ -550,7 +753,14 @@ def _build_structure(
         if not template_path.exists():
             raise StructgenError(f"missing block entity template: {template_path}")
         params = _transformed_params(dict(be.get("params", {})), rot, mirror)
-        nbt = apply_params(load_template_compound(template_path), params)
+        template_compound = load_template_compound(template_path)
+        supported_tokens = collect_param_tokens(template_compound)
+        for key in sorted(params.keys()):
+            if key not in supported_tokens:
+                warnings.append(
+                    f"[warn] {plan['id']} ({biome}): block entity template '{template_path.name}' does not use param '{key}'"
+                )
+        nbt = apply_params(template_compound, params)
         state, existing_nbt = placed[pos]
         merged = dict(existing_nbt or {})
         merged.update(nbt)
@@ -579,7 +789,14 @@ def _build_structure(
             if not template_path.exists():
                 raise StructgenError(f"missing entity template: {template_path}")
             params = _transformed_params(dict(ent.get("params", {})), rot, mirror)
-            enbt = apply_params(load_template_compound(template_path), params)
+            template_compound = load_template_compound(template_path)
+            supported_tokens = collect_param_tokens(template_compound)
+            for key in sorted(params.keys()):
+                if key not in supported_tokens:
+                    warnings.append(
+                        f"[warn] {plan['id']} ({biome}): entity template '{template_path.name}' does not use param '{key}'"
+                    )
+            enbt = apply_params(template_compound, params)
             if not isinstance(enbt, dict):
                 raise StructgenError("entity template must resolve to a compound")
             enbt["Pos"] = NbtList(TAG_DOUBLE, [float(ep[0]) + 0.5, ey, float(ep[2]) + 0.5])
@@ -662,6 +879,7 @@ def compile_all(
         variant = re.sub(r"[^a-z0-9_/-]", "_", variant.lower())
         if not variant:
             raise StructgenError(f"{plan_path}: empty variant after normalization")
+        warnings: list[str] = []
         for biome in biomes:
             size, blocks, entities = _build_structure(
                 plan=plan,
@@ -672,12 +890,15 @@ def compile_all(
                 rot=rot,
                 mirror=mirror,
                 include_entities=include_entities,
+                warnings=warnings,
             )
             out_path = out_root / "village" / f"{plan_type}_{variant}_{biome}.nbt"
             root = _structure_root(size=size, blocks=blocks, entities=entities)
             write_nbt(out_path, root)
             compiled += 1
             print(f"[ok] {plan_path.as_posix()} -> {out_path.as_posix()}")
+        for warning in warnings:
+            print(warning, file=sys.stderr)
     return compiled
 
 

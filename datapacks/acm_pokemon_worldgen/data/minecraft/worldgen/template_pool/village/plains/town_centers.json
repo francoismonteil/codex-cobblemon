@@ -78,8 +78,8 @@
       "weight": 8,
       "element": {
         "element_type": "minecraft:legacy_single_pool_element",
-        "location": "acm:village/pokecenter_a_plains",
-        "processors": "acm:strip_floating_ground",
+        "location": "minecraft:village/plains/town_centers/plains_meeting_point_1",
+        "processors": "minecraft:mossify_20_percent",
         "projection": "rigid"
       }
     },
@@ -87,8 +87,8 @@
       "weight": 8,
       "element": {
         "element_type": "minecraft:legacy_single_pool_element",
-        "location": "acm:village/pokecenter_b_plains",
-        "processors": "acm:strip_floating_ground",
+        "location": "minecraft:village/plains/town_centers/plains_meeting_point_1",
+        "processors": "minecraft:mossify_20_percent",
         "projection": "rigid"
       }
     },
@@ -96,8 +96,8 @@
       "weight": 8,
       "element": {
         "element_type": "minecraft:legacy_single_pool_element",
-        "location": "acm:village/pokecenter_c_plains",
-        "processors": "acm:strip_floating_ground",
+        "location": "minecraft:village/plains/town_centers/plains_meeting_point_1",
+        "processors": "minecraft:mossify_20_percent",
         "projection": "rigid"
       }
     }

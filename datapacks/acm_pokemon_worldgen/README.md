@@ -2,9 +2,11 @@
 
 Datapack worldgen Cobblemon (Minecraft 1.21.1):
 
-- ajoute des Pokécenters dans les `town_centers` villages
 - ajoute des Pokémarts dans les `houses` villages
 - supporte `plains`, `desert`, `savanna`, `snowy`, `taiga` + variantes
+
+Note:
+- Les Pokécenters ne sont plus injectés par ce datapack (gérés nativement par Cobblemon).
 
 ## Source of truth
 
@@ -42,5 +44,5 @@ Option:
 
 1. Générer/explorer de nouveaux chunks.
 2. Trouver un village `plains` puis autres biomes.
-3. Vérifier apparition Pokécenter + Pokémart.
+3. Vérifier apparition (ou placement de test) du Pokémart.
 4. Vérifier absence d'erreurs datapack/worldgen dans les logs serveur.
