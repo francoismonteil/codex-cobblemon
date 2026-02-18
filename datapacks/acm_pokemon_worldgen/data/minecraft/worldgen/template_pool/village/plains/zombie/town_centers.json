@@ -100,6 +100,33 @@
         "processors": "minecraft:zombie_plains",
         "projection": "rigid"
       }
+    },
+    {
+      "weight": 3,
+      "element": {
+        "element_type": "minecraft:legacy_single_pool_element",
+        "location": "acm:village/pokemart_a_plains",
+        "processors": "minecraft:zombie_plains",
+        "projection": "rigid"
+      }
+    },
+    {
+      "weight": 3,
+      "element": {
+        "element_type": "minecraft:legacy_single_pool_element",
+        "location": "acm:village/pokemart_b_plains",
+        "processors": "minecraft:zombie_plains",
+        "projection": "rigid"
+      }
+    },
+    {
+      "weight": 6,
+      "element": {
+        "element_type": "minecraft:legacy_single_pool_element",
+        "location": "acm:village/pokemart_c_plains",
+        "processors": "minecraft:zombie_plains",
+        "projection": "rigid"
+      }
     }
   ],
   "fallback": "minecraft:empty"
