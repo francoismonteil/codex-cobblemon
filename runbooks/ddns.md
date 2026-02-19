@@ -16,7 +16,7 @@ Sur la machine `<MC_SSH_USER>@<MC_SERVER_HOST>`, dans `<MC_PROJECT_DIR>`:
 2. Executer un test:
    - `./infra/ddns-duckdns.sh`
 3. Ajouter un cron (toutes les 5 minutes):
-   - `*/5 * * * * cd /home/linux/codex-cobblemon && /home/linux/codex-cobblemon/infra/ddns-duckdns.sh >> /home/linux/codex-cobblemon/logs/ddns-duckdns-cron.log 2>&1 # minecraft-ddns-duckdns`
+   - `*/5 * * * * cd <MC_PROJECT_DIR> && <MC_PROJECT_DIR>/infra/ddns-duckdns.sh >> <MC_PROJECT_DIR>/logs/ddns-duckdns-cron.log 2>&1 # minecraft-ddns-duckdns`
 
 ## 3) Adresse a donner aux amis
 - `monserveur-duckdns.duckdns.org:25565`

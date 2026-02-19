@@ -1,10 +1,11 @@
 # Village Pokecenter: Worldgen (Legacy)
 
 > Ce runbook est legacy.
-> Flux recommande: `runbooks/pokemon-worldgen.md` avec datapack unique `acm_pokemon_worldgen`.
+> Flux de reference en production: `runbooks/pokemon-worldgen.md` avec datapack unique `acm_pokemon_worldgen`.
+> `./infra/install-pokemon-worldgen-datapack.sh` n'installe pas `acm_village_pokecenter`, uniquement `acm_pokemon_worldgen`.
 
 Objectif:
-- Faire apparaitre un Pokecenter dans les villages via datapack worldgen (jigsaw).
+- Documenter l'ancienne approche Pokecenter via datapack dedie (historique uniquement).
 
 Limites / realite:
 - Cela ne modifie que les **nouveaux villages** (nouveaux chunks).
@@ -23,9 +24,9 @@ Le template inclut un jigsaw `minecraft:building_entrance` pour etre compatible 
 
 ## Installation (serveur)
 
-Utiliser preferentiellement:
-- `./infra/install-pokemon-worldgen-datapack.sh`
-- details: `runbooks/pokemon-worldgen.md`
+Flux recommande (actuel):
+1. Suivre `runbooks/pokemon-worldgen.md`.
+2. Installer avec `./infra/install-pokemon-worldgen-datapack.sh` (ou `--restart`).
 
 Legacy uniquement:
 1. Copier dans le monde + reload:

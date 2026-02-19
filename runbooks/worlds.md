@@ -11,14 +11,14 @@ Tu telecharges les zips (CurseForge/ailleurs), puis tu les importes dans la bibl
 
 Sur le serveur:
 ```bash
-cd /home/linux/codex-cobblemon
+cd <MC_PROJECT_DIR>
 mkdir -p downloads
 ```
 
 Upload depuis Windows:
 ```powershell
-scp -i <SSH_KEY_MAIN> "C:\chemin\map1.zip" <MC_SSH_USER>@<MC_SERVER_HOST>:/home/linux/codex-cobblemon/downloads/
-scp -i <SSH_KEY_MAIN> "C:\chemin\map2.zip" <MC_SSH_USER>@<MC_SERVER_HOST>:/home/linux/codex-cobblemon/downloads/
+scp -i <SSH_KEY_MAIN> "C:\chemin\map1.zip" <MC_SSH_USER>@<MC_SERVER_HOST>:<MC_PROJECT_DIR>/downloads/
+scp -i <SSH_KEY_MAIN> "C:\chemin\map2.zip" <MC_SSH_USER>@<MC_SERVER_HOST>:<MC_PROJECT_DIR>/downloads/
 ```
 
 Import (sans toucher le monde actif):

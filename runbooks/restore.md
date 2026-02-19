@@ -3,7 +3,7 @@
 ## Procedure standard (Linux/SSH)
 1) Arreter le serveur:
 ```bash
-cd /home/linux/codex-cobblemon
+cd <MC_PROJECT_DIR>
 ./infra/stop.sh
 ```
 2) Faire un backup avant restauration:

@@ -58,7 +58,7 @@ Il ne doit pas contenir de secrets (ex: webhook, mots de passe, tokens).
 - `data/server.properties`:
   - `server-port=25565`
   - `online-mode=true`
-  - `max-players=6`
+  - `max-players=4`
   - `view-distance=8`
   - `simulation-distance=7`
 

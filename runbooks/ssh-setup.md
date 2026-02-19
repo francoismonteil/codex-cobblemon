@@ -42,9 +42,9 @@ sudo ufw status
 
 ## 4) Deploiement repo
 ```bash
-sudo mkdir -p /opt/codex-cobblemon
-sudo chown -R $USER:$USER /opt/codex-cobblemon
-cd /opt/codex-cobblemon
+sudo mkdir -p <MC_PROJECT_DIR>
+sudo chown -R $USER:$USER <MC_PROJECT_DIR>
+cd <MC_PROJECT_DIR>
 git clone <YOUR_REPO_URL> .
 cp .env.example .env
 chmod +x infra/*.sh

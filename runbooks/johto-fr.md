@@ -43,7 +43,7 @@ Objectif: traduire en priorite ce que les joueurs voient le plus, sans casser le
 ## Generer / mettre a jour la traduction
 Sur le serveur:
 ```bash
-cd /home/linux/codex-cobblemon
+cd <MC_PROJECT_DIR>
 ./infra/johto-fr-generate.sh
 ```
 

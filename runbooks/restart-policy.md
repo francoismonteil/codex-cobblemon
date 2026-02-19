@@ -12,7 +12,7 @@ Eviter un restart brutal quand des joueurs sont connectes, tout en gardant un re
 
 ## Cron (recommande)
 Exemple (restart quotidien, mais safe):
-- `0 5 * * * cd /home/linux/codex-cobblemon && /home/linux/codex-cobblemon/infra/safe-restart.sh --force >> /home/linux/codex-cobblemon/logs/minecraft-daily-restart.log 2>&1 # minecraft-daily-restart`
+- `0 5 * * * cd <MC_PROJECT_DIR> && <MC_PROJECT_DIR>/infra/safe-restart.sh --force >> <MC_PROJECT_DIR>/logs/minecraft-daily-restart.log 2>&1 # minecraft-daily-restart`
 
 Si tu preferes skip quand des joueurs sont connectes:
 - remplacer `--force` par rien.

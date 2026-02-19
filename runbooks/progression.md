@@ -13,7 +13,7 @@ Badges disponibles (style Kanto, renommables ensuite):
 ## Initialisation
 Sur le serveur:
 ```bash
-cd /home/linux/codex-cobblemon
+cd <MC_PROJECT_DIR>
 ./infra/progression-init.sh
 ```
 

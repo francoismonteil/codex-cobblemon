@@ -25,15 +25,9 @@ grep -E '^MODRINTH_(MODPACK|VERSION)=' .env
 ```
 
 ## Procedure (nouveau monde)
-Toutes les commandes ci-dessous sont a lancer sur le serveur Linux dans `/home/linux/codex-cobblemon`.
+Toutes les commandes ci-dessous sont a lancer sur le serveur Linux dans `<MC_PROJECT_DIR>`.
 
-1. Demarrer en mode "pregen moderee" (limite CPU via JVM, cible 2 coeurs)
-
-```bash
-docker compose -f docker-compose.yml -f docker-compose.pregen.yml up -d
-```
-
-2. Initialiser le monde open world (spawn + border + protection + pregen)
+1. Initialiser le monde open world (spawn + border + protection + pregen)
 
 ```bash
 ./infra/openworld-village-init.sh
@@ -48,15 +42,16 @@ Ce script:
 - active la border (4000) centree spawn
 - cree la protection spawn via Flan (carre 301x301, soit ~150 blocs)
 - demarre Chunky (pregen dans la worldborder)
+- applique automatiquement le mode "pregen moderee" si `docker-compose.pregen.yml` est present
 
-3. Suivre la progression Chunky
+2. Suivre la progression Chunky
 
 ```bash
 ./infra/mc.sh "chunky progress"
 docker logs cobblemon --tail 200
 ```
 
-4. Supervision en arriere-plan (optionnel mais recommande)
+3. Supervision en arriere-plan (optionnel mais recommande)
 Si `MONITOR_WEBHOOK_URL` est configure (Discord), tu peux activer un suivi auto en cron (toutes les 5 min) qui poste des updates (par defaut: toutes les 20%) et la completion:
 
 ```bash
@@ -70,7 +65,7 @@ Pour arreter:
 ./infra/chunky-monitor-disable-cron.sh
 ```
 
-5. Fin de pre-generation (retour mode normal)
+4. Fin de pre-generation (retour mode normal)
 - Quand Chunky annonce la fin (ou quand `chunky progress` indique 100%), tu peux repasser en mode normal:
 
 ```bash

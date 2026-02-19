@@ -1,6 +1,6 @@
 # Notes d'exploitation (persistantes)
 
-Derniere mise a jour: 2026-02-13
+Derniere mise a jour: 2026-02-19
 
 ## Capacite serveur (snapshot)
 - Snapshot materiel/OS/reseau: `runbooks/server-capacity.md`
@@ -40,7 +40,7 @@ Derniere mise a jour: 2026-02-13
 - Memoire Java: `MEMORY=4608M`
 - Flags JVM: `USE_AIKAR_FLAGS=true`
 - Parametres `data/server.properties`:
-  - `max-players=6`
+  - `max-players=4`
   - `view-distance=8`
   - `simulation-distance=7`
   - `sync-chunk-writes=false`
@@ -89,7 +89,7 @@ Derniere mise a jour: 2026-02-13
   - `hybrid-sleep.target`
 
 ## Commandes d'admin courantes
-Depuis le serveur, dans `/home/linux/codex-cobblemon`:
+Depuis le serveur, dans `<MC_PROJECT_DIR>`:
 
 ```bash
 ./infra/start.sh
@@ -103,16 +103,16 @@ Depuis le serveur, dans `/home/linux/codex-cobblemon`:
 - Methode active: `cron` utilisateur `linux`
 - Horaire: tous les jours a `05:00` (heure locale serveur)
 - Entree crontab:
-  - `0 5 * * * cd /home/linux/codex-cobblemon && /usr/bin/docker compose restart cobblemon >> /home/linux/codex-cobblemon/logs/minecraft-daily-restart.log 2>&1 # minecraft-daily-restart`
+  - `0 5 * * * cd <MC_PROJECT_DIR> && <MC_PROJECT_DIR>/infra/safe-restart.sh >> <MC_PROJECT_DIR>/logs/minecraft-daily-restart.log 2>&1 # minecraft-daily-restart`
 - Log d'execution:
-  - `/home/linux/codex-cobblemon/logs/minecraft-daily-restart.log`
+  - `<MC_PROJECT_DIR>/logs/minecraft-daily-restart.log`
 
 ## Monitoring / Alerting leger
-- Script: `/home/linux/codex-cobblemon/infra/monitor.sh`
+- Script: `<MC_PROJECT_DIR>/infra/monitor.sh`
 - Cron: toutes les 5 minutes (utilisateur `linux`)
-  - `*/5 * * * * cd /home/linux/codex-cobblemon && /home/linux/codex-cobblemon/infra/monitor.sh >> /home/linux/codex-cobblemon/logs/minecraft-monitor-cron.log 2>&1 # minecraft-monitor`
+  - `*/5 * * * * cd <MC_PROJECT_DIR> && <MC_PROJECT_DIR>/infra/monitor.sh >> <MC_PROJECT_DIR>/logs/minecraft-monitor-cron.log 2>&1 # minecraft-monitor`
 - Fichier metriques:
-  - `/home/linux/codex-cobblemon/logs/minecraft-monitor.log`
+  - `<MC_PROJECT_DIR>/logs/minecraft-monitor.log`
 - Webhook optionnel via `.env`:
   - `MONITOR_WEBHOOK_URL=...`
 
@@ -127,7 +127,7 @@ Depuis le serveur, dans `/home/linux/codex-cobblemon`:
   - pc: `426 71 -1504`
 
 ## Backups
-- Dossier: `/home/linux/codex-cobblemon/backups`
+- Dossier: `<MC_PROJECT_DIR>/backups`
 - Dernier backup valide observe: `backup-20260211-150041.tar.gz`
 
 ## Actions recommandees (securite)

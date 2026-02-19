@@ -8,7 +8,7 @@ Executer des commandes d'admin (gamemode, whitelist, op, etc.) rapidement sans e
 - Le script `infra/mc.sh` doit etre present et executable.
 
 ## Commandes courantes
-Sur le serveur, dans `/home/linux/codex-cobblemon`:
+Sur le serveur, dans `<MC_PROJECT_DIR>`:
 
 ```bash
 ./infra/mc.sh list
