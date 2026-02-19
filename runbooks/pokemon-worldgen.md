@@ -2,7 +2,7 @@
 
 Objectif:
 - utiliser un seul datapack: `datapacks/acm_pokemon_worldgen`
-- generer automatiquement Pokecenters + Pokemarts dans les villages vanilla
+- generer automatiquement des Pokemarts dans les villages vanilla (biomes en cours)
 - reconstruire tous les `.nbt` depuis des plans versionnes
 
 ## Source des structures
@@ -42,11 +42,11 @@ Option avec restart direct:
 1. `reload` puis restart serveur (recommande pour worldgen registries).
 2. Explorer des nouveaux chunks.
 3. Verifier dans les villages:
-   - Pokecenter present dans `town_centers`
    - Pokemart present dans `houses`
 4. Verifier les logs serveur (pas d'erreur datapack/worldgen).
 
 ## Notes
 
+- Le Pokecenter est gere nativement par Cobblemon (pas par ce datapack).
 - Les anciens packs (`acm_village_pokecenter`, `acm_windmills`) restent dans le repo pour historique.
 - Le flux recommande en production est maintenant `acm_pokemon_worldgen`.

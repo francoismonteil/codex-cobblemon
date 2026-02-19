@@ -91,6 +91,15 @@ run_at() {
 echo "== Wait server ready =="
 wait_ready
 
+echo "== Install pokemon worldgen datapack =="
+if [[ -x "${REPO_ROOT}/infra/install-pokemon-worldgen-datapack.sh" ]]; then
+  # Ensure worldgen registries include acm_pokemon_worldgen before village pregen starts.
+  "${REPO_ROOT}/infra/install-pokemon-worldgen-datapack.sh" --restart
+  wait_ready
+else
+  echo "WARN: install-pokemon-worldgen-datapack.sh not found/executable; continuing without explicit datapack install."
+fi
+
 say "Finding a natural plains village for spawn..."
 spawn_xyz="$(locate_structure minecraft:village_plains || true)"
 if [[ -z "${spawn_xyz}" ]]; then

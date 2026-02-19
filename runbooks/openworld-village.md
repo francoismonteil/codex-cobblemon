@@ -10,6 +10,7 @@ Objectif: un monde Cobblemon "Pokemon open world" simple, fluide et durable pour
 - World border initiale: **4000** (rayon 2000), centree sur le spawn.
 - Pre-generation complete dans la border: **Chunky** (forme carre, basee sur worldborder).
 - Generation "stable": pas de mod worldgen ajoute pour ce setup (juste utilitaires).
+- Datapack worldgen applique automatiquement: `acm_pokemon_worldgen` (avant pregen).
 
 ## Prerequis
 - Acces SSH au serveur Linux.
@@ -42,6 +43,7 @@ Ce script:
 - fait un backup
 - archive `./data/world` vers `./data/world.prev-<timestamp>`
 - cree un nouveau monde
+- installe `acm_pokemon_worldgen` puis redemarre le serveur
 - choisit le spawn sur le **village des plaines le plus proche**
 - active la border (4000) centree spawn
 - cree la protection spawn via Flan (carre 301x301, soit ~150 blocs)
