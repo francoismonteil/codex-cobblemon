@@ -348,7 +348,7 @@
       "weight": 1,
       "element": {
         "element_type": "minecraft:legacy_single_pool_element",
-        "location": "acm:village/pokemart_a_plains",
+        "location": "acm:village/pokemart_plains_large",
         "processors": {
           "processors": []
         },
@@ -359,7 +359,7 @@
       "weight": 1,
       "element": {
         "element_type": "minecraft:legacy_single_pool_element",
-        "location": "acm:village/pokemart_b_plains",
+        "location": "acm:village/pokemart_plains_medium",
         "processors": {
           "processors": []
         },
@@ -370,7 +370,7 @@
       "weight": 2,
       "element": {
         "element_type": "minecraft:legacy_single_pool_element",
-        "location": "acm:village/pokemart_c_plains",
+        "location": "acm:village/pokemart_plains_small",
         "processors": {
           "processors": []
         },
