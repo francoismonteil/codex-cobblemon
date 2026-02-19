@@ -271,6 +271,33 @@
       "weight": 2
     },
     {
+      "weight": 1,
+      "element": {
+        "element_type": "minecraft:legacy_single_pool_element",
+        "location": "acm:village/pokemart_snowy_small",
+        "processors": "minecraft:zombie_snowy",
+        "projection": "rigid"
+      }
+    },
+    {
+      "weight": 1,
+      "element": {
+        "element_type": "minecraft:legacy_single_pool_element",
+        "location": "acm:village/pokemart_snowy_medium",
+        "processors": "minecraft:zombie_snowy",
+        "projection": "rigid"
+      }
+    },
+    {
+      "weight": 2,
+      "element": {
+        "element_type": "minecraft:legacy_single_pool_element",
+        "location": "acm:village/pokemart_snowy_large",
+        "processors": "minecraft:zombie_snowy",
+        "projection": "rigid"
+      }
+    },
+    {
       "element": {
         "element_type": "minecraft:empty_pool_element"
       },

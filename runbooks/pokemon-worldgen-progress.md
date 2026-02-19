@@ -16,14 +16,18 @@ Updated: 2026-02-19
   - pokemart_desert_medium
   - pokemart_desert_large
   - integrated in village generation (`houses` normal + zombie)
-- savanna: 2/3 in progress
+- savanna: 3/3 done
+  - pokemart_savanna_small
   - pokemart_savanna_medium
   - pokemart_savanna_large
-  - missing: pokemart_savanna_small
-  - generation integration pending until small is created
-- snowy: 0/3
+  - integrated in village generation (`houses` normal + zombie)
+- snowy: 3/3 done
+  - pokemart_snowy_small
+  - pokemart_snowy_medium
+  - pokemart_snowy_large
+  - integrated in village generation (`houses` normal + zombie)
 - taiga: 0/3
 
 ## Next Step
-1. Create `pokemart_savanna_small`.
-2. Inject savanna small/medium/large in `village/savanna/houses` (normal + zombie) with weights 1/1/2.
+1. Create taiga variants (`small`, `medium`, `large`).
+2. Inject taiga variants in `village/taiga/houses` (normal + zombie) with weights 1/1/2.
