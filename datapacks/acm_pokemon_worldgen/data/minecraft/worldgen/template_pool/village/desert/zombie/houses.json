@@ -253,6 +253,33 @@
       "weight": 2
     },
     {
+      "weight": 1,
+      "element": {
+        "element_type": "minecraft:legacy_single_pool_element",
+        "location": "acm:village/pokemart_desert_small",
+        "processors": "minecraft:zombie_desert",
+        "projection": "rigid"
+      }
+    },
+    {
+      "weight": 1,
+      "element": {
+        "element_type": "minecraft:legacy_single_pool_element",
+        "location": "acm:village/pokemart_desert_medium",
+        "processors": "minecraft:zombie_desert",
+        "projection": "rigid"
+      }
+    },
+    {
+      "weight": 2,
+      "element": {
+        "element_type": "minecraft:legacy_single_pool_element",
+        "location": "acm:village/pokemart_desert_large",
+        "processors": "minecraft:zombie_desert",
+        "projection": "rigid"
+      }
+    },
+    {
       "element": {
         "element_type": "minecraft:empty_pool_element"
       },
