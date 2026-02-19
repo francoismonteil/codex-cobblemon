@@ -1,12 +1,8 @@
-# Cobblemon Server – Agent-driven setup
+# Cobblemon Server
 
-This repository is managed using role-based AI agents.
-Each agent is defined in `.github/agents/`.
+Infrastructure and runbooks for a Cobblemon (Fabric) Minecraft server stack managed with Docker Compose.
 
-Rules:
-- One task = one agent
-- Agents must not overlap responsibilities
-- No infra or change without a locked modpack and backup plan
-
-Humans act as the coordinator.
-AI assistants must be instructed to act as a specific agent.
+Main references:
+- `runbooks/README.md`
+- `runbooks/assistant-context.md`
+- `infra/README.md`
