@@ -280,6 +280,33 @@
       "weight": 2
     },
     {
+      "weight": 1,
+      "element": {
+        "element_type": "minecraft:legacy_single_pool_element",
+        "location": "acm:village/pokemart_savanna_small",
+        "processors": "minecraft:zombie_savanna",
+        "projection": "rigid"
+      }
+    },
+    {
+      "weight": 1,
+      "element": {
+        "element_type": "minecraft:legacy_single_pool_element",
+        "location": "acm:village/pokemart_savanna_medium",
+        "processors": "minecraft:zombie_savanna",
+        "projection": "rigid"
+      }
+    },
+    {
+      "weight": 2,
+      "element": {
+        "element_type": "minecraft:legacy_single_pool_element",
+        "location": "acm:village/pokemart_savanna_large",
+        "processors": "minecraft:zombie_savanna",
+        "projection": "rigid"
+      }
+    },
+    {
       "element": {
         "element_type": "minecraft:empty_pool_element"
       },
