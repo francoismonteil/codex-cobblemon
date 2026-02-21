@@ -20,9 +20,11 @@ Convention:
 
 ## Open world (`entrypoint`)
 - `./infra/openworld-village-init.sh`
+- `./infra/openworld-village-init-until-pokemart.sh`
 - `./infra/openworld-border-extend.sh`
 - `./infra/server-profile-openworld-4p.sh`
 - `./infra/install-pokemon-worldgen-datapack.sh`
+- `./infra/detect-pokemart-near-spawn.py`
 - `./infra/prepare-additionalstructures-1211.sh`
 - `./infra/install-additionalstructures-datapack.sh`
 - `./infra/validate-worldgen-datapacks.sh`

@@ -41,6 +41,12 @@ Flux ACM + Additional Structures (recommande si tu veux AS sur ce monde):
 ./infra/openworld-village-init.sh --with-additionalstructures
 ```
 
+Flux "retry jusqu'a cluster Pokemart acceptable pres du spawn" (deterministe operationnel):
+
+```bash
+./infra/openworld-village-init-until-pokemart.sh --with-additionalstructures --max-attempts 6 --radius 256
+```
+
 Ce script:
 - fait un backup
 - archive `./data/world` vers `./data/world.prev-<timestamp>`
@@ -53,6 +59,7 @@ Ce script:
 - demarre Chunky (pregen dans la worldborder)
 - applique automatiquement le mode "pregen moderee" si `docker-compose.pregen.yml` est present
 - **ne place pas** de blocs Pokecenter (healer/PC) au demarrage
+- optionnel: via `openworld-village-init-until-pokemart.sh`, reessaie automatiquement la generation jusqu'a obtenir un nombre de clusters Pokemart acceptable proche du spawn (defaut: exactement 1; ou max attempts)
 
 2. Suivre la progression Chunky
 

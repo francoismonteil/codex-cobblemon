@@ -115,6 +115,7 @@ Monde (open world):
 - `./infra/server-profile-openworld-4p.sh`: applique un profil serveur (PvP off, whitelist on, 4 joueurs, distances).
 - `./infra/mods-install-openworld.sh`: installe les mods serveur utilitaires (Chunky + Flan) requis pour l'open world.
 - `./infra/openworld-village-init.sh`: nouveau monde open world (spawn village naturel + border 4000 + protection spawn + pregen), **sans poser automatiquement healer/PC**.
+- `./infra/openworld-village-init-until-pokemart.sh`: relance l'init open world jusqu'a obtenir un nombre de clusters Pokemart acceptable pres du spawn (defaut: exactement 1, via `--min-components 1 --max-components 1`).
 - `./infra/openworld-border-extend.sh`: extension de border + reprise pregen.
 - `./infra/prefab-score.sh`: calcule un score de qualite d'une structure (jouabilite + esthetique) en lisant les blocs + lumiere depuis le monde sur disque (bbox ou 4 coins).
 - `./infra/spawn-poke-kit.sh`: pose un healer + PC Cobblemon a des coordonnees (sans construire un batiment), **en manuel post-demarrage**.
@@ -124,6 +125,7 @@ Monde (open world):
 - `./infra/spawn-pokecenter-prefab.sh`: construit un petit prefab "Centre Pokemon" (basic ou decorated) dans un rectangle (4 coins).
 - `./infra/spawn-village-upgrade.sh`: upgrade leger d'une maison de village (healer+PC + accents + blocs utiles).
 - `./infra/install-pokemon-worldgen-datapack.sh`: installe/met a jour le datapack `acm_pokemon_worldgen` dans le monde actif.
+- `./infra/detect-pokemart-near-spawn.py`: detecte des marqueurs Pokemart dans les chunks proches du spawn et calcule le nombre de clusters connectes (lecture monde sur disque).
 - `./infra/prepare-additionalstructures-1211.sh`: normalise AS pour 1.21.1 et applique le gate compatibilite.
 - `./infra/install-additionalstructures-datapack.sh`: installe/met a jour le datapack `additionalstructures_1211` dans le monde actif (flux nouveau monde).
 - `./infra/validate-worldgen-datapacks.sh`: validation stricte ACM+AS (statique + logs startup).
