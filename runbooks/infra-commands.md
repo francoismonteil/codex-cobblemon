@@ -19,6 +19,9 @@ Convention:
 - `./infra/openworld-border-extend.sh`
 - `./infra/server-profile-openworld-4p.sh`
 - `./infra/install-pokemon-worldgen-datapack.sh`
+- `./infra/prepare-additionalstructures-1211.sh`
+- `./infra/install-additionalstructures-datapack.sh`
+- `./infra/validate-worldgen-datapacks.sh`
 - `./infra/chunky-monitor-enable-cron.sh`, `./infra/chunky-monitor-disable-cron.sh`
 
 ## Open world (`utility`)

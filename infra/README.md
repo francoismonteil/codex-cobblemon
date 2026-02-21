@@ -124,6 +124,9 @@ Monde (open world):
 - `./infra/spawn-pokecenter-prefab.sh`: construit un petit prefab "Centre Pokemon" (basic ou decorated) dans un rectangle (4 coins).
 - `./infra/spawn-village-upgrade.sh`: upgrade leger d'une maison de village (healer+PC + accents + blocs utiles).
 - `./infra/install-pokemon-worldgen-datapack.sh`: installe/met a jour le datapack `acm_pokemon_worldgen` dans le monde actif.
+- `./infra/prepare-additionalstructures-1211.sh`: normalise AS pour 1.21.1 et applique le gate compatibilite.
+- `./infra/install-additionalstructures-datapack.sh`: installe/met a jour le datapack `additionalstructures_1211` dans le monde actif (flux nouveau monde).
+- `./infra/validate-worldgen-datapacks.sh`: validation stricte ACM+AS (statique + logs startup).
 - `./infra/chunky-monitor.sh`: supervision Chunky (log + webhook Discord si configure).
 - `./infra/chunky-monitor-enable-cron.sh`: active la supervision en arriere-plan via cron.
 - `./infra/chunky-monitor-disable-cron.sh`: desactive la supervision en arriere-plan via cron.

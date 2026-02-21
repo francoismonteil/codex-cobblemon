@@ -1,0 +1,8 @@
+source_dir=/mnt/d/Dev/Projet prokerplanning/codex-cobblemon/downloads/additionalstructures_1211
+reference_jar=/mnt/d/Dev/Projet prokerplanning/codex-cobblemon/downloads/AdditionalStructures-1.21.x-(v.5.1.0-fabric).jar
+reference_jar_sha1=fbbe59476d5e2c8f5e0a51211bcfb554d97239d3
+generated_at=20260221-102833
+report_dir=/mnt/d/Dev/Projet prokerplanning/codex-cobblemon/reports/additionalstructures_1211/20260221-102833
+policy_extra=excluded_by_default
+policy_missing=blocking
+policy_changed=manual_review_required
