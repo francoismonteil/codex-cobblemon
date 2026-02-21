@@ -26,8 +26,12 @@ Updated: 2026-02-19
   - pokemart_snowy_medium
   - pokemart_snowy_large
   - integrated in village generation (`houses` normal + zombie)
-- taiga: 0/3
+- taiga: 3/3 done
+  - pokemart_taiga_small
+  - pokemart_taiga_medium
+  - pokemart_taiga_large
+  - integrated in village generation (`houses` normal + zombie)
 
 ## Next Step
-1. Create taiga variants (`small`, `medium`, `large`).
-2. Inject taiga variants in `village/taiga/houses` (normal + zombie) with weights 1/1/2.
+1. Validate in-game spawn frequency across all 5 biomes on new chunks.
+2. Fine-tune weights if needed after playtest feedback.
