@@ -115,8 +115,8 @@ print("Static checks: OK")
 PY
 
 if [[ "${skip_restart}" != "true" ]]; then
-  echo "Running safe restart for startup validation..."
-  ./infra/safe-restart.sh
+  echo "Running forced safe restart for startup validation..."
+  ./infra/safe-restart.sh --force
 fi
 
 sleep 3
@@ -140,4 +140,3 @@ echo "  /locate structure additionalstructures:tower_1"
 echo "  /locate structure minecraft:village_plains"
 echo "Then verify Pokemart presence in newly generated villages."
 echo "OK"
-

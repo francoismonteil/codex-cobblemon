@@ -29,8 +29,16 @@ Toutes les commandes ci-dessous sont a lancer sur le serveur Linux dans `<MC_PRO
 
 1. Initialiser le monde open world (spawn + border + protection + pregen)
 
+Flux standard (ACM uniquement):
+
 ```bash
 ./infra/openworld-village-init.sh
+```
+
+Flux ACM + Additional Structures (recommande si tu veux AS sur ce monde):
+
+```bash
+./infra/openworld-village-init.sh --with-additionalstructures
 ```
 
 Ce script:
@@ -38,6 +46,7 @@ Ce script:
 - archive `./data/world` vers `./data/world.prev-<timestamp>`
 - cree un nouveau monde
 - installe `acm_pokemon_worldgen` puis redemarre le serveur
+- avec `--with-additionalstructures`: installe `additionalstructures_1211`, force les restarts requis, puis valide ACM+AS avant pregen
 - choisit le spawn sur le **village des plaines le plus proche**
 - active la border (4000) centree spawn
 - cree la protection spawn via Flan (carre 301x301, soit ~150 blocs)

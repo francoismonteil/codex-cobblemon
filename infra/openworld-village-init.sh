@@ -13,6 +13,7 @@ set -euo pipefail
 #
 # Usage:
 #   ./infra/openworld-village-init.sh
+#   ./infra/openworld-village-init.sh --with-additionalstructures
 #
 # Notes:
 # - This script assumes the server runs via Docker Compose with container name "cobblemon".
@@ -28,6 +29,25 @@ cd "${REPO_ROOT}"
 mkdir -p "${LOG_DIR}"
 
 ts="$(date +%Y%m%d-%H%M%S)"
+with_additionalstructures="false"
+
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    --with-additionalstructures)
+      with_additionalstructures="true"
+      shift
+      ;;
+    -h|--help)
+      echo "Usage: $0 [--with-additionalstructures]" >&2
+      exit 0
+      ;;
+    *)
+      echo "Unknown arg: $1" >&2
+      echo "Usage: $0 [--with-additionalstructures]" >&2
+      exit 2
+      ;;
+  esac
+done
 
 say() {
   ./infra/mc.sh "say [MAINT] $*" >/dev/null 2>&1 || true
@@ -141,6 +161,25 @@ if [[ -x "${REPO_ROOT}/infra/install-pokemon-worldgen-datapack.sh" ]]; then
   wait_ready
 else
   echo "WARN: install-pokemon-worldgen-datapack.sh not found/executable; continuing without explicit datapack install."
+fi
+
+if [[ "${with_additionalstructures}" == "true" ]]; then
+  echo "== Install additionalstructures datapack =="
+  if [[ ! -x "${REPO_ROOT}/infra/install-additionalstructures-datapack.sh" ]]; then
+    echo "ERROR: missing executable infra/install-additionalstructures-datapack.sh" >&2
+    exit 1
+  fi
+  # World exists at this point and may already contain bootstrap region files from first startup.
+  "${REPO_ROOT}/infra/install-additionalstructures-datapack.sh" --new-world --allow-existing-world
+  wait_ready
+
+  echo "== Validate worldgen datapacks (ACM + Additional Structures) =="
+  if [[ ! -x "${REPO_ROOT}/infra/validate-worldgen-datapacks.sh" ]]; then
+    echo "ERROR: missing executable infra/validate-worldgen-datapacks.sh" >&2
+    exit 1
+  fi
+  "${REPO_ROOT}/infra/validate-worldgen-datapacks.sh"
+  wait_ready
 fi
 
 say "Finding a natural plains village for spawn..."

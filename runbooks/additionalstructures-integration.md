@@ -35,29 +35,34 @@ Effets:
 - produit le pack normalise:
   - `datapacks/additionalstructures_1211/`
 
-## 2) Installer ACM + AS dans le nouveau monde
+## 2) Initialiser le nouveau monde ACM + AS (recommande)
+
+```bash
+./infra/openworld-village-init.sh --with-additionalstructures
+```
+
+Ce flux integre:
+- creation du nouveau monde open world
+- installation ACM (`acm_pokemon_worldgen`)
+- installation AS (`additionalstructures_1211`)
+- restarts forces pour appliquer les registries worldgen
+- validation stricte ACM+AS avant pre-generation
+- demarrage de Chunky seulement apres validation
+
+## 3) Flux manuel (fallback / maintenance)
+
+Utiliser ce flux seulement si tu ne passes pas par `openworld-village-init.sh --with-additionalstructures`:
 
 ```bash
 ./infra/install-pokemon-worldgen-datapack.sh --restart
-./infra/install-additionalstructures-datapack.sh --new-world
-```
-
-Notes:
-- restart obligatoire pour les registries worldgen.
-- n'utilise pas ce flux pour retrofiter un monde en production deja explore.
-
-## 3) Validation stricte pre-prod
-
-```bash
+./infra/install-additionalstructures-datapack.sh --new-world --allow-existing-world
 ./infra/validate-worldgen-datapacks.sh
 ```
 
-Ce script:
-- valide statiquement AS (`pack_format`, JSON, refs worldgen)
-- redemarre (sauf `--skip-restart`)
-- scanne les logs recents pour erreurs datapack/worldgen
-- stocke un snapshot logs:
-  - `logs/validate-worldgen-datapacks.last.log`
+Notes:
+- `install-additionalstructures-datapack.sh` bloque par defaut si des regions overworld existent.
+- `--allow-existing-world` est reserve a un bootstrap controle (ex: tout debut de vie du monde, avant exploration reelle).
+- n'utilise pas ce flux pour retrofiter un monde en production deja explore.
 
 ## 4) Verification fonctionnelle in-game (nouveaux chunks)
 
@@ -76,8 +81,8 @@ Puis verifier:
 
 ## 5) Pregen + go-live
 
-1. lancer la pregen avec votre flux openworld (`Chunky`)
-2. verifier logs/perf pendant la pregen
+1. si tu as utilise `openworld-village-init.sh --with-additionalstructures`, la pregen est deja demarree
+2. suivre la progression Chunky et verifier logs/perf
 3. ouvrir le serveur joueurs seulement apres checklist verte
 
 ## Rollback
@@ -92,4 +97,3 @@ Puis verifier:
 - `./infra/mc.sh "datapack list enabled"`
 - `docker logs cobblemon --tail 400`
 - `./infra/datapacks-prune-prev.sh`
-
