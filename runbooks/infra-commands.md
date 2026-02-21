@@ -14,6 +14,10 @@ Convention:
 - `./infra/monitor.sh`, `./infra/webhook-test.sh`
 - `./infra/mc.sh`, `./infra/player.sh`, `./infra/onboard.sh`, `./infra/kickoff.sh`, `./infra/item.sh`
 
+## Core ops (`utility`)
+- `./infra/starter.sh` (kit de depart donne a un joueur)
+- `./infra/command-blocks.sh` (active/desactive les command blocks avec restart)
+
 ## Open world (`entrypoint`)
 - `./infra/openworld-village-init.sh`
 - `./infra/openworld-border-extend.sh`
@@ -27,6 +31,7 @@ Convention:
 ## Open world (`utility`)
 - `./infra/openworld-village-configure.sh` (configure un monde deja genere)
 - `./infra/mods-install-openworld.sh`
+- `./infra/chunky-monitor.sh` (supervision ponctuelle Chunky en direct)
 - `./infra/spawn-village-pokecenter-auto.sh`
 - `./infra/spawn-village-pokecenter-decorate.sh`
 - `./infra/spawn-village-welcome-cache.sh`
@@ -73,6 +78,10 @@ Convention:
 ## Legacy
 - `./infra/install-village-pokecenter-datapack.sh`
 - `./infra/install-windmill-datapack.sh`
+- `./infra/spawn-city.sh`
+- `./infra/spawn-gym.sh`
+- `./infra/spawn-shop.sh`
+- `./infra/spawn-signage.sh`
 - `./infra/spawn-windmill.sh`
 - `./infra/spawn-windmill-template.sh`
 - `./infra/spawn-windmills-plains.sh`
