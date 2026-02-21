@@ -7,6 +7,7 @@ set -euo pipefail
 # - PvP off
 # - Max 4 players
 # - Distances tuned for a small LAN server
+# - Natural terrain worldgen with structures enabled for village-based spawn
 # - No vanilla spawn-protection (we rely on Flan claim for ~150 blocks spawn protection)
 # - RCON off (we use console pipe via infra/mc.sh)
 #
@@ -42,6 +43,11 @@ set_prop "pvp" "false"
 set_prop "max-players" "4"
 set_prop "difficulty" "easy"
 
+# Ensure a natural world can generate villages/structures on fresh resets.
+set_prop "generate-structures" "true"
+set_prop "level-type" "minecraft\\:normal"
+set_prop "generator-settings" "{}"
+
 # Small server performance baseline (4 players)
 set_prop "view-distance" "8"
 set_prop "simulation-distance" "7"
@@ -59,4 +65,3 @@ set_prop "enforce-whitelist" "true"
 set_prop "white-list" "true"
 
 echo "OK applied open world profile to ${props}"
-

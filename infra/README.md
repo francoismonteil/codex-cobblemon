@@ -114,13 +114,13 @@ Monde (import map):
 Monde (open world):
 - `./infra/server-profile-openworld-4p.sh`: applique un profil serveur (PvP off, whitelist on, 4 joueurs, distances).
 - `./infra/mods-install-openworld.sh`: installe les mods serveur utilitaires (Chunky + Flan) requis pour l'open world.
-- `./infra/openworld-village-init.sh`: nouveau monde open world (spawn village naturel + border 4000 + protection spawn + pregen).
+- `./infra/openworld-village-init.sh`: nouveau monde open world (spawn village naturel + border 4000 + protection spawn + pregen), **sans poser automatiquement healer/PC**.
 - `./infra/openworld-border-extend.sh`: extension de border + reprise pregen.
 - `./infra/prefab-score.sh`: calcule un score de qualite d'une structure (jouabilite + esthetique) en lisant les blocs + lumiere depuis le monde sur disque (bbox ou 4 coins).
-- `./infra/spawn-poke-kit.sh`: pose un healer + PC Cobblemon a des coordonnees (sans construire un batiment).
-- `./infra/spawn-village-pokecenter-auto.sh`: pose automatiquement un healer + PC pres du centre du village (meilleur effort, sans coords manuelles).
-- `./infra/spawn-village-pokecenter-decorate.sh`: ajoute un habillage subtil autour du kit (carpets + utilitaires), sans overwrite.
-- `./infra/spawn-village-welcome-cache.sh`: place/stocke un petit baril de bienvenue pres du kit (pain, torches, lits, pokeballs).
+- `./infra/spawn-poke-kit.sh`: pose un healer + PC Cobblemon a des coordonnees (sans construire un batiment), **en manuel post-demarrage**.
+- `./infra/spawn-village-pokecenter-auto.sh`: pose automatiquement un healer + PC pres du centre du village (meilleur effort, sans coords manuelles), **en manuel post-demarrage**.
+- `./infra/spawn-village-pokecenter-decorate.sh`: ajoute un habillage subtil autour du kit (carpets + utilitaires), sans overwrite, **en manuel post-demarrage**.
+- `./infra/spawn-village-welcome-cache.sh`: place/stocke un petit baril de bienvenue pres du kit (pain, torches, lits, pokeballs), **en manuel post-demarrage**.
 - `./infra/spawn-pokecenter-prefab.sh`: construit un petit prefab "Centre Pokemon" (basic ou decorated) dans un rectangle (4 coins).
 - `./infra/spawn-village-upgrade.sh`: upgrade leger d'une maison de village (healer+PC + accents + blocs utiles).
 - `./infra/install-pokemon-worldgen-datapack.sh`: installe/met a jour le datapack `acm_pokemon_worldgen` dans le monde actif.

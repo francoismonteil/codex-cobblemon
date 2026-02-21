@@ -32,11 +32,11 @@ Convention:
 - `./infra/openworld-village-configure.sh` (configure un monde deja genere)
 - `./infra/mods-install-openworld.sh`
 - `./infra/chunky-monitor.sh` (supervision ponctuelle Chunky en direct)
-- `./infra/spawn-village-pokecenter-auto.sh`
-- `./infra/spawn-village-pokecenter-decorate.sh`
-- `./infra/spawn-village-welcome-cache.sh`
-- `./infra/spawn-village-upgrade.sh`
-- `./infra/spawn-poke-kit.sh`
+- `./infra/spawn-village-pokecenter-auto.sh` (manuel, hors demarrage)
+- `./infra/spawn-village-pokecenter-decorate.sh` (manuel, hors demarrage)
+- `./infra/spawn-village-welcome-cache.sh` (manuel, hors demarrage)
+- `./infra/spawn-village-upgrade.sh` (manuel, hors demarrage)
+- `./infra/spawn-poke-kit.sh` (manuel, hors demarrage)
 - `./infra/spawn-pokecenter-prefab.sh`
 - `./infra/spawn-village-house-upgrade-auto.sh`
 

@@ -6,6 +6,7 @@ set -euo pipefail
 # - centers world border on spawn, sets size 4000 (radius 2000)
 # - creates a Flan spawn claim (~150 blocks radius) with "no grief, allow interaction"
 # - starts Chunky pre-generation inside the world border
+# - does NOT place Pokecenter blocks (healer/PC) automatically
 #
 # Usage:
 #   ./infra/openworld-village-configure.sh
@@ -16,6 +17,9 @@ set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 REPO_ROOT="$(cd "${SCRIPT_DIR}/.." && pwd)"
+DATA_DIR="${REPO_ROOT}/data"
+WORLD_DIR="${DATA_DIR}/world"
+SERVER_PROPERTIES="${DATA_DIR}/server.properties"
 cd "${REPO_ROOT}"
 
 say() {
@@ -30,6 +34,30 @@ cmd() {
 cmd_try() {
   ./infra/mc.sh "$1" >/dev/null 2>&1 || true
   sleep 0.25
+}
+
+set_server_prop() {
+  local key="$1"
+  local value="$2"
+  if [[ ! -f "${SERVER_PROPERTIES}" ]]; then
+    echo "WARN: missing ${SERVER_PROPERTIES}; unable to set ${key}=${value}" >&2
+    return 0
+  fi
+  if grep -qE "^${key}=" "${SERVER_PROPERTIES}"; then
+    sed -i -E "s|^${key}=.*$|${key}=${value}|" "${SERVER_PROPERTIES}"
+  else
+    printf '%s=%s\n' "${key}" "${value}" >>"${SERVER_PROPERTIES}"
+  fi
+}
+
+restart_server_for_props() {
+  if [[ -x "${REPO_ROOT}/infra/safe-restart.sh" ]]; then
+    "${REPO_ROOT}/infra/safe-restart.sh" --force
+  else
+    ./infra/stop.sh || true
+    docker compose up -d
+  fi
+  wait_ready
 }
 
 wait_ready() {
@@ -88,26 +116,102 @@ run_at() {
   cmd "execute in minecraft:overworld positioned ${x} ${y} ${z} run $*"
 }
 
+install_acm_worldgen_datapack() {
+  local script="${REPO_ROOT}/infra/install-pokemon-worldgen-datapack.sh"
+  local src="${REPO_ROOT}/datapacks/acm_pokemon_worldgen"
+  local dst="${WORLD_DIR}/datapacks/acm_pokemon_worldgen"
+  local ts
+
+  if [[ -x "${script}" ]]; then
+    "${script}" --restart
+    wait_ready
+    return 0
+  fi
+
+  if [[ ! -d "${src}" ]]; then
+    echo "ERROR: missing ACM datapack source: ${src}" >&2
+    return 1
+  fi
+
+  ts="$(date +%Y%m%d-%H%M%S)"
+  echo "WARN: ${script} not found; using fallback copy + restart."
+  mkdir -p "${WORLD_DIR}/datapacks" "${REPO_ROOT}/backups/datapacks"
+  if [[ -d "${dst}" ]]; then
+    mv "${dst}" "${REPO_ROOT}/backups/datapacks/acm_pokemon_worldgen.prev-${ts}"
+  fi
+  cp -a "${src}" "${dst}"
+  restart_server_for_props
+}
+
+locate_village_spawn() {
+  local structure spawn_xyz
+  local structures=(
+    "minecraft:village_plains"
+    "minecraft:village_taiga"
+    "minecraft:village_savanna"
+    "minecraft:village_desert"
+    "minecraft:village_snowy"
+    "#minecraft:village"
+  )
+
+  for structure in "${structures[@]}"; do
+    spawn_xyz="$(locate_structure "${structure}" || true)"
+    if [[ -n "${spawn_xyz}" ]]; then
+      echo "${spawn_xyz}"
+      return 0
+    fi
+  done
+  return 1
+}
+
+apply_spawn_protection() {
+  local spawn_x="$1"
+  local spawn_y="$2"
+  local spawn_z="$3"
+  local t0
+
+  t0="$(now_utc)"
+
+  run_at "${spawn_x}" "${spawn_y}" "${spawn_z}" "flan add rect 301 301"
+  run_at "${spawn_x}" "${spawn_y}" "${spawn_z}" "flan name Spawn"
+  run_at "${spawn_x}" "${spawn_y}" "${spawn_z}" "flan permission global flan:break false"
+  run_at "${spawn_x}" "${spawn_y}" "${spawn_z}" "flan permission global flan:place false"
+  run_at "${spawn_x}" "${spawn_y}" "${spawn_z}" "flan permission global flan:explosions false"
+  run_at "${spawn_x}" "${spawn_y}" "${spawn_z}" "flan permission global flan:fire_spread false"
+  run_at "${spawn_x}" "${spawn_y}" "${spawn_z}" "flan permission global flan:raid false"
+  run_at "${spawn_x}" "${spawn_y}" "${spawn_z}" "flan permission global flan:door true"
+  run_at "${spawn_x}" "${spawn_y}" "${spawn_z}" "flan permission global flan:trapdoor true"
+  run_at "${spawn_x}" "${spawn_y}" "${spawn_z}" "flan permission global flan:fence_gate true"
+  run_at "${spawn_x}" "${spawn_y}" "${spawn_z}" "flan permission global flan:button_lever true"
+  run_at "${spawn_x}" "${spawn_y}" "${spawn_z}" "flan permission global flan:pressure_plate true"
+  run_at "${spawn_x}" "${spawn_y}" "${spawn_z}" "flan permission global flan:open_container true"
+  run_at "${spawn_x}" "${spawn_y}" "${spawn_z}" "flan permission global flan:interact_block true"
+  run_at "${spawn_x}" "${spawn_y}" "${spawn_z}" "flan permission global flan:trading true"
+  run_at "${spawn_x}" "${spawn_y}" "${spawn_z}" "flan permission global flan:bed true"
+  run_at "${spawn_x}" "${spawn_y}" "${spawn_z}" "flan permission global flan:pickup true"
+  run_at "${spawn_x}" "${spawn_y}" "${spawn_z}" "flan permission global flan:drop true"
+
+  sleep 1
+  if docker_logs_since "${t0}" | grep -Eiq \
+    'A player is required to run this command here|Unknown or incomplete command|An unexpected error occurred trying to execute that command'; then
+    echo "WARN: Flan claim commands could not be applied from console."
+    echo "WARN: Fallback to vanilla spawn-protection=150."
+    set_server_prop "spawn-protection" "150"
+    restart_server_for_props
+    say "Spawn fallback protection enabled (vanilla spawn-protection=150)."
+  else
+    set_server_prop "spawn-protection" "0"
+  fi
+}
+
 echo "== Wait server ready =="
 wait_ready
 
 echo "== Install pokemon worldgen datapack =="
-if [[ -x "${REPO_ROOT}/infra/install-pokemon-worldgen-datapack.sh" ]]; then
-  # Ensure worldgen registries include acm_pokemon_worldgen before village pregen starts.
-  "${REPO_ROOT}/infra/install-pokemon-worldgen-datapack.sh" --restart
-  wait_ready
-else
-  echo "WARN: install-pokemon-worldgen-datapack.sh not found/executable; continuing without explicit datapack install."
-fi
+install_acm_worldgen_datapack
 
 say "Finding a natural plains village for spawn..."
-spawn_xyz="$(locate_structure minecraft:village_plains || true)"
-if [[ -z "${spawn_xyz}" ]]; then
-  spawn_xyz="$(locate_structure minecraft:village_taiga || true)"
-fi
-if [[ -z "${spawn_xyz}" ]]; then
-  spawn_xyz="$(locate_structure minecraft:village_savanna || true)"
-fi
+spawn_xyz="$(locate_village_spawn || true)"
 if [[ -z "${spawn_xyz}" ]]; then
   echo "ERROR: couldn't locate a village for spawn." >&2
   exit 1
@@ -127,35 +231,17 @@ cmd_try "worldborder warning distance 32"
 cmd_try "worldborder warning time 15"
 
 echo "== Spawn protection claim (Flan, ~150 blocks) =="
-run_at "${SPAWN_X}" "${SPAWN_Y}" "${SPAWN_Z}" "flan add rect 301 301"
-run_at "${SPAWN_X}" "${SPAWN_Y}" "${SPAWN_Z}" "flan name Spawn"
-
-run_at "${SPAWN_X}" "${SPAWN_Y}" "${SPAWN_Z}" "flan permission global flan:break false"
-run_at "${SPAWN_X}" "${SPAWN_Y}" "${SPAWN_Z}" "flan permission global flan:place false"
-run_at "${SPAWN_X}" "${SPAWN_Y}" "${SPAWN_Z}" "flan permission global flan:explosions false"
-run_at "${SPAWN_X}" "${SPAWN_Y}" "${SPAWN_Z}" "flan permission global flan:fire_spread false"
-run_at "${SPAWN_X}" "${SPAWN_Y}" "${SPAWN_Z}" "flan permission global flan:raid false"
-
-run_at "${SPAWN_X}" "${SPAWN_Y}" "${SPAWN_Z}" "flan permission global flan:door true"
-run_at "${SPAWN_X}" "${SPAWN_Y}" "${SPAWN_Z}" "flan permission global flan:trapdoor true"
-run_at "${SPAWN_X}" "${SPAWN_Y}" "${SPAWN_Z}" "flan permission global flan:fence_gate true"
-run_at "${SPAWN_X}" "${SPAWN_Y}" "${SPAWN_Z}" "flan permission global flan:button_lever true"
-run_at "${SPAWN_X}" "${SPAWN_Y}" "${SPAWN_Z}" "flan permission global flan:pressure_plate true"
-run_at "${SPAWN_X}" "${SPAWN_Y}" "${SPAWN_Z}" "flan permission global flan:open_container true"
-run_at "${SPAWN_X}" "${SPAWN_Y}" "${SPAWN_Z}" "flan permission global flan:interact_block true"
-run_at "${SPAWN_X}" "${SPAWN_Y}" "${SPAWN_Z}" "flan permission global flan:trading true"
-run_at "${SPAWN_X}" "${SPAWN_Y}" "${SPAWN_Z}" "flan permission global flan:bed true"
-run_at "${SPAWN_X}" "${SPAWN_Y}" "${SPAWN_Z}" "flan permission global flan:pickup true"
-run_at "${SPAWN_X}" "${SPAWN_Y}" "${SPAWN_Z}" "flan permission global flan:drop true"
+apply_spawn_protection "${SPAWN_X}" "${SPAWN_Y}" "${SPAWN_Z}"
 
 echo "== Chunk pre-generation (Chunky) =="
 say "Starting chunk pre-generation inside the world border (Chunky)."
 cmd_try "chunky shape square"
 cmd "chunky worldborder"
-cmd_try "chunky quiet"
+cmd_try "chunky quiet 30"
 cmd "chunky start"
 
 say "Open world configured. Border active, spawn protected, pre-generation started."
 echo "OK open world configured:"
 echo "  spawn: ${SPAWN_X} ${SPAWN_Y} ${SPAWN_Z}"
 echo "  border: 4000 (radius 2000) centered on spawn"
+echo "  pokecenter blocks: skipped by design (manual scripts only)"

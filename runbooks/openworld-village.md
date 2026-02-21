@@ -52,6 +52,7 @@ Ce script:
 - cree la protection spawn via Flan (carre 301x301, soit ~150 blocs)
 - demarre Chunky (pregen dans la worldborder)
 - applique automatiquement le mode "pregen moderee" si `docker-compose.pregen.yml` est present
+- **ne place pas** de blocs Pokecenter (healer/PC) au demarrage
 
 2. Suivre la progression Chunky
 
@@ -81,10 +82,11 @@ Pour arreter:
 docker compose -f docker-compose.yml up -d
 ```
 
-## "Identite Pokemon" au spawn (subtile, sans construction)
+## "Identite Pokemon" au spawn (manuel, hors demarrage)
 L'idee est d'ajouter uniquement les blocs utiles Cobblemon **dans le village existant** (ex: dans une maison), sans construire un batiment complet.
+Ces commandes sont **optionnelles** et a lancer uniquement apres le demarrage/openworld init.
 
-### Option A (auto, recommande)
+### Option A (auto, manuel)
 Pose automatiquement un healer + PC **pres du centre du village** (meilleur effort), sans coords manuelles:
 
 ```bash
@@ -97,7 +99,7 @@ Puis ajoute un petit "habillage" (carpets + utilitaires) autour du kit:
 ./infra/spawn-village-pokecenter-decorate.sh
 ```
 
-Option (recommande pour accueillir les nouveaux): stocker un petit "welcome cache" (baril) pres du kit (pain, torches, lits, pokeballs):
+Option (si voulu): stocker un petit "welcome cache" (baril) pres du kit (pain, torches, lits, pokeballs):
 
 ```bash
 ./infra/spawn-village-welcome-cache.sh
