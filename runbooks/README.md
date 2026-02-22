@@ -12,6 +12,8 @@
 - `runbooks/mc-admin.md`: commandes admin Minecraft (sans RCON).
 - `runbooks/chatops.md`: admin depuis le chat Minecraft (ChatOps, sans plugin/mod).
 - `runbooks/client-setup.md`: installer le bon client/modpack (eviter les version mismatch).
+- `runbooks/friends-guide.md`: infos a partager aux amis (connexion, install, whitelist/op via scripts).
+- `runbooks/discord-bot.md`: bot Discord pour whitelist self-service (slash commands).
 - `runbooks/alerting.md`: alertes (webhook Discord) pour monitoring.
 - `runbooks/restart-policy.md`: restart quotidien safe + alertes.
 - `runbooks/secondary-disk.md`: preparer un 2e disque pour stocker les backups.

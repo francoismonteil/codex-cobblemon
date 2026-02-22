@@ -30,6 +30,19 @@ usage() {
   echo "  $0 list" >&2
 }
 
+find_python() {
+  if command -v python3 >/dev/null 2>&1; then
+    echo "python3"
+    return 0
+  fi
+  if command -v python >/dev/null 2>&1; then
+    echo "python"
+    return 0
+  fi
+  echo "Missing python3/python (required for 'list' to read data/whitelist.json)" >&2
+  return 1
+}
+
 if [[ $# -lt 1 ]]; then
   usage
   exit 2
@@ -79,7 +92,41 @@ case "${action}" in
     ;;
 
   list)
-    mc "whitelist list"
+    pybin="$(find_python)"
+    "${pybin}" - "${REPO_ROOT}/data/whitelist.json" <<'PY'
+import json
+import pathlib
+import sys
+
+path = pathlib.Path(sys.argv[1])
+
+if not path.exists():
+    print("(whitelist file missing)")
+    sys.exit(0)
+
+try:
+    data = json.loads(path.read_text(encoding="utf-8"))
+except Exception as exc:
+    print(f"Failed to read {path}: {exc}", file=sys.stderr)
+    sys.exit(1)
+
+if not isinstance(data, list):
+    print("(invalid whitelist format)")
+    sys.exit(0)
+
+names = []
+for entry in data:
+    if isinstance(entry, dict) and "name" in entry:
+        names.append(str(entry["name"]))
+
+names.sort(key=str.casefold)
+
+if not names:
+    print("(none)")
+else:
+    for name in names:
+        print(name)
+PY
     ;;
 
   *)
@@ -87,4 +134,3 @@ case "${action}" in
     exit 2
     ;;
 esac
-

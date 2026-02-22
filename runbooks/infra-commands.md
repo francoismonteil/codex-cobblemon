@@ -13,6 +13,9 @@ Convention:
 - `./infra/backup.sh`, `./infra/restore.sh`, `./infra/safe-restart.sh`
 - `./infra/monitor.sh`, `./infra/webhook-test.sh`
 - `./infra/mc.sh`, `./infra/player.sh`, `./infra/onboard.sh`, `./infra/kickoff.sh`, `./infra/item.sh`
+- `./infra/friend-info.sh`, `./infra/player-check.sh`, `./infra/ops-list.sh`
+- `./infra/friend-info-webhook.sh`
+- `./infra/discord-bot.sh`, `./infra/discord_whitelist_bot.py`
 
 ## Core ops (`utility`)
 - `./infra/starter.sh` (kit de depart donne a un joueur)

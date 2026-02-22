@@ -54,7 +54,7 @@ fi
 # Optional: give a small starter kit when onboarding.
 if [[ "${STARTER_ON_ONBOARD:-true}" == "true" ]]; then
   if [[ -x "./infra/starter.sh" ]]; then
-    ./infra/starter.sh "${name}" || true
+    ./infra/starter.sh --queue-if-offline "${name}" || true
   fi
 fi
 

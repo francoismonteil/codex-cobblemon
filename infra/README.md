@@ -52,6 +52,20 @@ Lancement (Linux):
 ./infra/chatops.sh
 ```
 
+## Bot Discord (whitelist self-service)
+
+Option: utiliser un bot Discord (slash commands) pour permettre a des amis/co-admins d'ajouter un pseudo a la whitelist sans SSH.
+
+Runbook: `runbooks/discord-bot.md`
+
+Installation / lancement (Linux):
+
+```bash
+./infra/discord-bot.sh check-env
+./infra/discord-bot.sh install
+./infra/discord-bot.sh run
+```
+
 ## Monitoring leger
 
 Le script `./infra/monitor.sh` verifie:

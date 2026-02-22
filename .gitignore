@@ -20,6 +20,7 @@ Thumbs.db
 # Python
 __pycache__/
 *.pyc
+/.venv-discord-bot/
 
 # Local-only runbook context (keep real IPs/paths here, not in git)
 /runbooks/*.local.md

@@ -30,6 +30,9 @@ Sur le serveur, dans `<MC_PROJECT_DIR>`:
 ./infra/player.sh add <Pseudo> --op
 ./infra/player.sh remove <Pseudo>
 ./infra/player.sh list
+./infra/player-check.sh <Pseudo>
+./infra/ops-list.sh
+./infra/friend-info-webhook.sh
 
 ./infra/onboard.sh <Pseudo>
 ./infra/onboard.sh <Pseudo> --op
