@@ -80,6 +80,47 @@ docker_logs_since() {
   docker logs cobblemon --since "${since}" --tail 8000 2>/dev/null || true
 }
 
+chunky_ensure_running() {
+  local t0 probe_t0 logs
+
+  cmd_try "chunky shape square"
+  cmd "chunky worldborder"
+  cmd_try "chunky quiet 30"
+
+  t0="$(now_utc)"
+  cmd_try "chunky start"
+  sleep 1
+  logs="$(docker_logs_since "${t0}")"
+
+  if echo "${logs}" | grep -Eq '\[Chunky\] Task (started|running) '; then
+    return 0
+  fi
+
+  if echo "${logs}" | grep -q '\[Chunky\] A task was already started'; then
+    cmd_try "chunky continue"
+    sleep 1
+    logs="$(docker_logs_since "${t0}")"
+    if echo "${logs}" | grep -Eq '\[Chunky\] Task (continuing|running) '; then
+      return 0
+    fi
+  fi
+
+  for _ in {1..6}; do
+    probe_t0="$(now_utc)"
+    cmd_try "chunky progress"
+    sleep 1
+    logs="$(docker_logs_since "${probe_t0}")"
+    if echo "${logs}" | grep -Eq '\[Chunky\] Task (started|continuing|running) '; then
+      return 0
+    fi
+    if echo "${logs}" | grep -q '\[Chunky\] No tasks running\.'; then
+      break
+    fi
+  done
+
+  return 1
+}
+
 locate_structure() {
   local structure="$1"
   local t0 out xyz
@@ -235,10 +276,11 @@ apply_spawn_protection "${SPAWN_X}" "${SPAWN_Y}" "${SPAWN_Z}"
 
 echo "== Chunk pre-generation (Chunky) =="
 say "Starting chunk pre-generation inside the world border (Chunky)."
-cmd_try "chunky shape square"
-cmd "chunky worldborder"
-cmd_try "chunky quiet 30"
-cmd "chunky start"
+if ! chunky_ensure_running; then
+  echo "ERROR: failed to start/continue Chunky pre-generation task." >&2
+  echo "Check manually with: ./infra/mc.sh \"chunky worldborder\" && ./infra/mc.sh \"chunky start\" / \"chunky continue\"" >&2
+  exit 1
+fi
 
 say "Open world configured. Border active, spawn protected, pre-generation started."
 echo "OK open world configured:"
