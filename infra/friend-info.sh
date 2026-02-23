@@ -13,6 +13,7 @@ set -euo pipefail
 #   FRIENDS_MC_VERSION=1.21.1
 #   FRIENDS_MODPACK_NAME="Cobblemon Official Modpack [Fabric]"
 #   FRIENDS_MODPACK_VERSION=1.7.3
+#   FRIENDS_INCLUDE_CLIENT_MODS=true|false   # default true
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 REPO_ROOT="$(cd "${SCRIPT_DIR}/.." && pwd)"
@@ -53,6 +54,7 @@ port="${FRIENDS_MC_PORT:-${MC_PORT:-25565}}"
 mc_version="${FRIENDS_MC_VERSION:-1.21.1}"
 modpack_name="${FRIENDS_MODPACK_NAME:-Cobblemon Official Modpack [Fabric]}"
 modpack_version="${FRIENDS_MODPACK_VERSION:-1.7.3}"
+include_client_mods="${FRIENDS_INCLUDE_CLIENT_MODS:-true}"
 
 if [[ -z "${address}" ]]; then
   host=""
@@ -80,6 +82,29 @@ if [[ "${format}" == "markdown" ]]; then
 - Modpack: \`${modpack_name} ${modpack_version}\`
 - Important: desactivez les auto-updates de mods (sinon "Version mismatch")
 - Guide detaille (repo): \`runbooks/client-setup.md\`
+EOF
+
+  if [[ "${include_client_mods,,}" != "false" ]]; then
+    cat <<EOF
+
+## Mods client a ajouter (recommandes)
+
+- Gameplay (si installes sur le serveur):
+  - \`Waystones\` \`21.1.27+fabric-1.21.1\`
+  - \`Traveler's Backpack\` \`1.21.1-10.1.33\`
+  - \`YIGD\` \`2.4.18\`
+- Tri auto coffres / inventaire (client-only):
+  - \`Inventory Profiles Next (IPN)\` \`fabric-1.21.1-2.2.3\`
+  - \`libIPN\` \`fabric-1.21.1-6.6.2\`
+  - \`Fabric Language Kotlin\` \`1.13.9+kotlin.2.3.10\`
+- Optionnel confort:
+  - \`FallingTree\` \`1.21.1-1.21.1.11\`
+- Vocal: Discord (pas de mod voice chat integre)
+- Liste detaillee: \`runbooks/client-pack-recommended.md\`
+EOF
+  fi
+
+  cat <<EOF
 
 ## En cas d'erreur "Version mismatch"
 
@@ -93,6 +118,21 @@ Version Minecraft : ${mc_version}
 Modpack : ${modpack_name} ${modpack_version}
 Important : desactivez les auto-updates des mods (sinon "Version mismatch")
 Guide detaille : runbooks/client-setup.md
+EOF
+
+  if [[ "${include_client_mods,,}" != "false" ]]; then
+    cat <<EOF
+
+Mods client recommandes a ajouter :
+- Gameplay (si installes sur le serveur) : Waystones 21.1.27, Traveler's Backpack 10.1.33, YIGD 2.4.18
+- Tri auto coffres/inventaire (client-only) : IPN 2.2.3 + libIPN 6.6.2 + Fabric Language Kotlin 1.13.9
+- Optionnel : FallingTree 1.21.1-1.21.1.11
+- Vocal : Discord (pas de mod voice chat integre)
+- Liste detaillee : runbooks/client-pack-recommended.md
+EOF
+  fi
+
+  cat <<EOF
 
 En cas de "Version mismatch" :
 - remettez exactement la version attendue
