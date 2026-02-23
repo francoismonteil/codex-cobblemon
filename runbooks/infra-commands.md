@@ -39,6 +39,7 @@ Convention:
 - `./infra/mods-install-waystones.sh`
 - `./infra/mods-install-better-qol.sh`
 - `./infra/mods-check-recommended.sh`
+- `./infra/waystones-backfill-villages.py` (scan villages generes + placement Waystones par batch avec journal `--resume`)
 - `./infra/chunky-monitor.sh` (supervision ponctuelle Chunky en direct)
 - `./infra/spawn-village-pokecenter-auto.sh` (manuel, hors demarrage)
 - `./infra/spawn-village-pokecenter-decorate.sh` (manuel, hors demarrage)
@@ -50,6 +51,9 @@ Convention:
 
 Runbook associe (mods recommandes):
 - `runbooks/server-mods-recommended-install.md`
+
+Runbook associe (Waystones sur map existante):
+- `runbooks/waystones-backfill-existing-villages.md`
 
 ## Worlds / maps (`entrypoint`)
 - `./infra/world-import-zip.sh`
