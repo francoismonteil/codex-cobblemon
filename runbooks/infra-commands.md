@@ -36,6 +36,9 @@ Convention:
 ## Open world (`utility`)
 - `./infra/openworld-village-configure.sh` (configure un monde deja genere)
 - `./infra/mods-install-openworld.sh`
+- `./infra/mods-install-waystones.sh`
+- `./infra/mods-install-better-qol.sh`
+- `./infra/mods-check-recommended.sh`
 - `./infra/chunky-monitor.sh` (supervision ponctuelle Chunky en direct)
 - `./infra/spawn-village-pokecenter-auto.sh` (manuel, hors demarrage)
 - `./infra/spawn-village-pokecenter-decorate.sh` (manuel, hors demarrage)
@@ -44,6 +47,9 @@ Convention:
 - `./infra/spawn-poke-kit.sh` (manuel, hors demarrage)
 - `./infra/spawn-pokecenter-prefab.sh`
 - `./infra/spawn-village-house-upgrade-auto.sh`
+
+Runbook associe (mods recommandes):
+- `runbooks/server-mods-recommended-install.md`
 
 ## Worlds / maps (`entrypoint`)
 - `./infra/world-import-zip.sh`

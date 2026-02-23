@@ -31,3 +31,6 @@ __pycache__/
 
 # Allow a small hint file for users; keep actual assets gitignored.
 !/downloads/README.md
+
+# Audit cache (generated locally by tools/mod_audit.py)
+/audit/.cache/

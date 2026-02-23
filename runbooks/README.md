@@ -18,6 +18,7 @@
 - `runbooks/restart-policy.md`: restart quotidien safe + alertes.
 - `runbooks/secondary-disk.md`: preparer un 2e disque pour stocker les backups.
 - `runbooks/openworld-village.md`: open world (spawn village naturel + border + pregen + protection spawn).
+- `runbooks/server-mods-recommended-install.md`: installation du pack de mods serveur recommande (QoL + verification + rollback court).
 - `runbooks/pokemon-worldgen.md`: datapack unique Pokemon worldgen (pokemart + pipeline structgen).
 - `runbooks/additionalstructures-integration.md`: integration AS + ACM avec gate compatibilite stricte 1.21.1.
 - `runbooks/worlds.md`: gerer plusieurs maps (bibliotheque + switch).

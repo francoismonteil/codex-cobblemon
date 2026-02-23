@@ -128,6 +128,9 @@ Monde (import map):
 Monde (open world):
 - `./infra/server-profile-openworld-4p.sh`: applique un profil serveur (PvP off, whitelist on, 4 joueurs, distances).
 - `./infra/mods-install-openworld.sh`: installe les mods serveur utilitaires (Chunky + Flan) requis pour l'open world.
+- `./infra/mods-install-waystones.sh`: installe `Waystones` + dependance `Balm` (mods gameplay, clients requis aussi), versions pinnees pour Fabric 1.21.1.
+- `./infra/mods-install-better-qol.sh`: installe le pack QoL serveur "Better Minecraft-like" retenu (`spark`, `Traveler's Backpack`, `FallingTree`, `YIGD` + dependance `Cardinal Components API`), versions pinnees pour Fabric 1.21.1.
+- `./infra/mods-check-recommended.sh`: verifie `./data/mods` contre le pack serveur recommande (fichiers manquants, hash mismatch, extras) et ecrit `audit/recommended-server-mods-check.json`.
 - `./infra/openworld-village-init.sh`: nouveau monde open world (spawn village naturel + border 4000 + protection spawn + pregen), **sans poser automatiquement healer/PC**.
 - `./infra/openworld-village-init-until-pokemart.sh`: relance l'init open world jusqu'a obtenir un nombre de clusters Pokemart acceptable pres du spawn (defaut: exactement 1, via `--min-components 1 --max-components 1`).
 - `./infra/openworld-border-extend.sh`: extension de border + reprise pregen.
