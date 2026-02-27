@@ -73,11 +73,18 @@ if [[ "${dry_run}" == "true" ]]; then
 fi
 
 if [[ "${webhook_url}" == *"discord.com/api/webhooks"* ]]; then
-  escaped="$(
-    printf '%s' "${content}" \
-      | sed -e 's/\\/\\\\/g' -e 's/"/\\"/g' -e ':a;N;$!ba;s/\r//g;s/\n/\\n/g'
+  if ! command -v python3 >/dev/null 2>&1; then
+    echo "python3 is required for Discord JSON payload encoding" >&2
+    exit 1
+  fi
+  payload="$(
+    CONTENT="${content}" python3 - <<'PY'
+import json
+import os
+
+print(json.dumps({"content": os.environ.get("CONTENT", "")}, ensure_ascii=False))
+PY
   )"
-  payload="$(printf '{"content":"%s"}' "${escaped}")"
   curl -fsS -m 10 -H "Content-Type: application/json" -d "${payload}" "${webhook_url}" >/dev/null
 else
   curl -fsS -m 10 -d "${content}" "${webhook_url}" >/dev/null

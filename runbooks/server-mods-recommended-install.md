@@ -9,6 +9,8 @@ Pack concerne (serveur):
 - `Traveler's Backpack` (+ `Cardinal Components API`)
 - `FallingTree`
 - `YIGD`
+- `Storage Drawers`
+- `Tom's Simple Storage Mod`
 
 Client (a communiquer aux joueurs, separement):
 - voir `runbooks/client-pack-recommended.md`
@@ -45,6 +47,7 @@ Ordre recommande (dependencies/ops):
 ./infra/mods-install-openworld.sh      # Chunky + Flan
 ./infra/mods-install-waystones.sh      # Waystones + Balm
 ./infra/mods-install-better-qol.sh     # spark + backpack + timber + YIGD
+./infra/mods-install-storage.sh        # Storage Drawers + Tom's Storage
 ```
 
 Notes:
@@ -94,6 +97,8 @@ Verifier:
 - tri auto de coffre OK (IPN cote client)
 - `Waystones` visible/utilisable (si posee)
 - mort de test / tombe YIGD (optionnel en staging)
+- craft + placement d'un `Drawer` OK
+- terminal Tom's Storage relie a des coffres/drawers OK
 
 ### Performance rapide
 - lancer un profil si besoin:
@@ -121,6 +126,7 @@ Verifier:
 - [ ] `mods-install-openworld.sh` execute
 - [ ] `mods-install-waystones.sh` execute
 - [ ] `mods-install-better-qol.sh` execute
+- [ ] `mods-install-storage.sh` execute
 - [ ] `mods-check-recommended.sh` -> `missing=0`, `hash_mismatch=0`
 - [ ] Serveur redemarre sans erreur
-- [ ] Smoke test client OK (IPN / backpack / YIGD / Waystones)
+- [ ] Smoke test client OK (IPN / backpack / YIGD / Waystones / Storage)

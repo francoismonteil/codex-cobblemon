@@ -15,6 +15,8 @@ Important:
 - `Waystones` -> `21.1.27+fabric-1.21.1`
 - `Traveler's Backpack` -> `1.21.1-10.1.33` (Fabric)
 - `You're in Grave Danger (YIGD)` -> `2.4.18` (Fabric)
+- `Storage Drawers` -> `1.21.1-13.11.4` (Fabric)
+- `Tom's Simple Storage Mod` -> `1.21-2.3.0-fabric`
 
 ### QoL "Better Minecraft" (tri auto coffres / inventaire)
 - `Inventory Profiles Next (IPN)` -> `fabric-1.21.1-2.2.3`

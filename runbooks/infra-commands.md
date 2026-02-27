@@ -38,6 +38,7 @@ Convention:
 - `./infra/mods-install-openworld.sh`
 - `./infra/mods-install-waystones.sh`
 - `./infra/mods-install-better-qol.sh`
+- `./infra/mods-install-storage.sh`
 - `./infra/mods-check-recommended.sh`
 - `./infra/waystones-backfill-villages.py` (scan villages generes + placement Waystones par batch avec journal `--resume`)
 - `./infra/chunky-monitor.sh` (supervision ponctuelle Chunky en direct)

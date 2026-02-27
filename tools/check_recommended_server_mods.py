@@ -5,6 +5,7 @@ Recommended pack is defined by the selected installer scripts:
 - infra/mods-install-openworld.sh
 - infra/mods-install-waystones.sh
 - infra/mods-install-better-qol.sh
+- infra/mods-install-storage.sh
 
 The script parses `ensure_mod` calls + pinned SHA256 values from these scripts,
 then checks `data/mods` for:
@@ -33,6 +34,7 @@ DEFAULT_SCRIPT_PATHS = [
     "infra/mods-install-openworld.sh",
     "infra/mods-install-waystones.sh",
     "infra/mods-install-better-qol.sh",
+    "infra/mods-install-storage.sh",
 ]
 
 

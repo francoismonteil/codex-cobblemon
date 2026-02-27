@@ -89,10 +89,15 @@ EOF
 
 ## Mods client a ajouter (recommandes)
 
+- Nouveaux mods ajoutes sur le serveur (a installer en priorite):
+  - \`Storage Drawers\` \`1.21.1-13.11.4\`
+  - \`Tom's Simple Storage Mod\` \`1.21-2.3.0-fabric\`
 - Gameplay (si installes sur le serveur):
   - \`Waystones\` \`21.1.27+fabric-1.21.1\`
   - \`Traveler's Backpack\` \`1.21.1-10.1.33\`
   - \`YIGD\` \`2.4.18\`
+  - \`Storage Drawers\` \`1.21.1-13.11.4\`
+  - \`Tom's Simple Storage Mod\` \`1.21-2.3.0-fabric\`
 - Tri auto coffres / inventaire (client-only):
   - \`Inventory Profiles Next (IPN)\` \`fabric-1.21.1-2.2.3\`
   - \`libIPN\` \`fabric-1.21.1-6.6.2\`
@@ -124,7 +129,8 @@ EOF
     cat <<EOF
 
 Mods client recommandes a ajouter :
-- Gameplay (si installes sur le serveur) : Waystones 21.1.27, Traveler's Backpack 10.1.33, YIGD 2.4.18
+- Nouveaux mods ajoutes sur le serveur (a installer en priorite) : Storage Drawers 1.21.1-13.11.4, Tom's Simple Storage Mod 1.21-2.3.0-fabric
+- Gameplay (si installes sur le serveur) : Waystones 21.1.27, Traveler's Backpack 10.1.33, YIGD 2.4.18, Storage Drawers 1.21.1-13.11.4, Tom's Storage 1.21-2.3.0
 - Tri auto coffres/inventaire (client-only) : IPN 2.2.3 + libIPN 6.6.2 + Fabric Language Kotlin 1.13.9
 - Optionnel : FallingTree 1.21.1-1.21.1.11
 - Vocal : Discord (pas de mod voice chat integre)

@@ -130,6 +130,7 @@ Monde (open world):
 - `./infra/mods-install-openworld.sh`: installe les mods serveur utilitaires (Chunky + Flan) requis pour l'open world.
 - `./infra/mods-install-waystones.sh`: installe `Waystones` + dependance `Balm` (mods gameplay, clients requis aussi), versions pinnees pour Fabric 1.21.1.
 - `./infra/mods-install-better-qol.sh`: installe le pack QoL serveur "Better Minecraft-like" retenu (`spark`, `Traveler's Backpack`, `FallingTree`, `YIGD` + dependance `Cardinal Components API`), versions pinnees pour Fabric 1.21.1.
+- `./infra/mods-install-storage.sh`: installe les mods de stockage gameplay (`Storage Drawers`, `Tom's Simple Storage Mod`), versions pinnees pour Fabric 1.21.1.
 - `./infra/mods-check-recommended.sh`: verifie `./data/mods` contre le pack serveur recommande (fichiers manquants, hash mismatch, extras) et ecrit `audit/recommended-server-mods-check.json`.
 - `./infra/waystones-backfill-villages.py`: detecte les villages deja generes (scan `.mca`) et pose des `Waystones` par batch via `./infra/mc.sh` avec journal `--resume` (map existante).
 - `./infra/openworld-village-init.sh`: nouveau monde open world (spawn village naturel + border 4000 + protection spawn + pregen), **sans poser automatiquement healer/PC**.
