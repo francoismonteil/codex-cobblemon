@@ -136,12 +136,18 @@ Monde (open world):
 - `./infra/openworld-village-init.sh`: nouveau monde open world (spawn village naturel + border 4000 + protection spawn + pregen), **sans poser automatiquement healer/PC**.
 - `./infra/openworld-village-init-until-pokemart.sh`: relance l'init open world jusqu'a obtenir un nombre de clusters Pokemart acceptable pres du spawn (defaut: exactement 1, via `--min-components 1 --max-components 1`).
 - `./infra/openworld-border-extend.sh`: extension de border + reprise pregen.
+- `./infra/world-trim-around-spawn.sh`: conserve un carre autour du spawn et purge les regions/poi/entities hors zone (mode dry-run + backup securise).
 - `./infra/prefab-score.sh`: calcule un score de qualite d'une structure (jouabilite + esthetique) en lisant les blocs + lumiere depuis le monde sur disque (bbox ou 4 coins).
 - `./infra/spawn-poke-kit.sh`: pose un healer + PC Cobblemon a des coordonnees (sans construire un batiment), **en manuel post-demarrage**.
 - `./infra/spawn-village-pokecenter-auto.sh`: pose automatiquement un healer + PC pres du centre du village (meilleur effort, sans coords manuelles), **en manuel post-demarrage**.
 - `./infra/spawn-village-pokecenter-decorate.sh`: ajoute un habillage subtil autour du kit (carpets + utilitaires), sans overwrite, **en manuel post-demarrage**.
 - `./infra/spawn-village-welcome-cache.sh`: place/stocke un petit baril de bienvenue pres du kit (pain, torches, lits, pokeballs), **en manuel post-demarrage**.
 - `./infra/spawn-pokecenter-prefab.sh`: construit un petit prefab "Centre Pokemon" (basic ou decorated) dans un rectangle (4 coins).
+- `./infra/spawn-hostile-mob-tower.sh`: construit une tour hostile vanilla pour XP/items (etages sombres + canaux d'eau + chambre de kill).
+- `./infra/clear-hostile-mob-tower.sh`: supprime de facon ciblee la tour hostile prefabrication avec les memes offsets que le build.
+- `./infra/hostile-mob-tower-auto.sh`: pipeline complet ferme hostile auto (choix de site, backup, build, validation, rollback).
+- `./infra/find-hostile-mob-tower-site.py`: selection deterministe d'un site plat et distant pour la tour hostile.
+- `./infra/validate-hostile-mob-tower.py`: validation stricte de la tour hostile en relisant le monde sur disque.
 - `./infra/spawn-village-upgrade.sh`: upgrade leger d'une maison de village (healer+PC + accents + blocs utiles).
 - `./infra/install-pokemon-worldgen-datapack.sh`: installe/met a jour le datapack `acm_pokemon_worldgen` dans le monde actif.
 - `./infra/detect-pokemart-near-spawn.py`: detecte des marqueurs Pokemart dans les chunks proches du spawn et calcule le nombre de clusters connectes (lecture monde sur disque).

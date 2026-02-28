@@ -35,6 +35,7 @@ Convention:
 
 ## Open world (`utility`)
 - `./infra/openworld-village-configure.sh` (configure un monde deja genere)
+- `./infra/world-trim-around-spawn.sh` (conserve un carre autour du spawn, purge hors zone)
 - `./infra/mods-install-openworld.sh`
 - `./infra/mods-install-waystones.sh`
 - `./infra/mods-install-better-qol.sh`
@@ -48,6 +49,11 @@ Convention:
 - `./infra/spawn-village-upgrade.sh` (manuel, hors demarrage)
 - `./infra/spawn-poke-kit.sh` (manuel, hors demarrage)
 - `./infra/spawn-pokecenter-prefab.sh`
+- `./infra/hostile-mob-tower-auto.sh` (pipeline auto ferme XP hostile + rollback)
+- `./infra/spawn-hostile-mob-tower.sh` (build manuel/absolu)
+- `./infra/clear-hostile-mob-tower.sh` (cleanup cible)
+- `./infra/find-hostile-mob-tower-site.py` (choix de site)
+- `./infra/validate-hostile-mob-tower.py` (validation post-build)
 - `./infra/spawn-village-house-upgrade-auto.sh`
 
 Runbook associe (mods recommandes):
@@ -90,6 +96,8 @@ Runbook associe (Waystones sur map existante):
 - `./infra/build-modern-spawn.sh`
 - `./infra/build-windmill-structure.sh`
 - `./infra/world-height-at.py`
+- `./infra/world_tools.py`
+- `./infra/hostile_mob_tower_spec.py`
 
 ## Legacy
 - `./infra/install-village-pokecenter-datapack.sh`
