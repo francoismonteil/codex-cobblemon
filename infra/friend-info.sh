@@ -89,21 +89,31 @@ EOF
 
 ## Mods client a ajouter (recommandes)
 
-- Nouveaux mods ajoutes sur le serveur (a installer en priorite):
-  - \`Storage Drawers\` \`1.21.1-13.11.4\`
-  - \`Tom's Simple Storage Mod\` \`1.21-2.3.0-fabric\`
-- Gameplay (si installes sur le serveur):
+- Mods actuellement requis/recommandes pour rejoindre:
   - \`Waystones\` \`21.1.27+fabric-1.21.1\`
   - \`Traveler's Backpack\` \`1.21.1-10.1.33\`
   - \`YIGD\` \`2.4.18\`
   - \`Storage Drawers\` \`1.21.1-13.11.4\`
   - \`Tom's Simple Storage Mod\` \`1.21-2.3.0-fabric\`
+  - \`Macaw's Furniture\` \`3.4.1\`
+  - \`Resourceful Lib\` \`3.0.12\`
+  - \`Handcrafted\` \`4.0.3\`
+  - \`Moonlight Lib\` \`1.21-2.29.18-fabric\`
+  - \`Supplementaries\` \`1.21-3.5.25-fabric\`
+  - \`Cristel Lib\` \`3.0.3\`
+  - \`Towns and Towers\` \`1.13.7\`
 - Tri auto coffres / inventaire (client-only):
   - \`Inventory Profiles Next (IPN)\` \`fabric-1.21.1-2.2.3\`
   - \`libIPN\` \`fabric-1.21.1-6.6.2\`
   - \`Fabric Language Kotlin\` \`1.13.9+kotlin.2.3.10\`
 - Optionnel confort:
   - \`FallingTree\` \`1.21.1-1.21.1.11\`
+- Mods serveur-only a ne pas installer:
+  - \`spark\`
+  - \`Chunky\`
+  - \`Flan\`
+  - \`YUNG's API\`
+  - \`YUNG's Better Strongholds\`
 - Vocal: Discord (pas de mod voice chat integre)
 - Liste detaillee: \`runbooks/client-pack-recommended.md\`
 EOF
@@ -129,10 +139,10 @@ EOF
     cat <<EOF
 
 Mods client recommandes a ajouter :
-- Nouveaux mods ajoutes sur le serveur (a installer en priorite) : Storage Drawers 1.21.1-13.11.4, Tom's Simple Storage Mod 1.21-2.3.0-fabric
-- Gameplay (si installes sur le serveur) : Waystones 21.1.27, Traveler's Backpack 10.1.33, YIGD 2.4.18, Storage Drawers 1.21.1-13.11.4, Tom's Storage 1.21-2.3.0
+- Mods actuellement requis/recommandes : Waystones 21.1.27, Traveler's Backpack 10.1.33, YIGD 2.4.18, Storage Drawers 1.21.1-13.11.4, Tom's Storage 1.21-2.3.0, Macaw's Furniture 3.4.1, Resourceful Lib 3.0.12, Handcrafted 4.0.3, Moonlight Lib 1.21-2.29.18, Supplementaries 1.21-3.5.25, Cristel Lib 3.0.3, Towns and Towers 1.13.7
 - Tri auto coffres/inventaire (client-only) : IPN 2.2.3 + libIPN 6.6.2 + Fabric Language Kotlin 1.13.9
 - Optionnel : FallingTree 1.21.1-1.21.1.11
+- Serveur-only (ne pas installer cote client) : spark, Chunky, Flan, YUNG's API, YUNG's Better Strongholds
 - Vocal : Discord (pas de mod voice chat integre)
 - Liste detaillee : runbooks/client-pack-recommended.md
 EOF

@@ -2,6 +2,9 @@
 
 Objectif: installer le pack serveur recommande "Better Minecraft utilitaire" sans changer le modpack Cobblemon officiel.
 
+Pour les lots additionnels deployes progressivement sur le monde actuel, voir:
+- `runbooks/mods-progressive-rollout.md`
+
 Pack concerne (serveur):
 - `Chunky` + `Flan`
 - `Waystones` (+ `Balm`)

@@ -1,7 +1,9 @@
 #!/usr/bin/env python3
 """Verify local server mods directory against the recommended server mod pack.
 
-Recommended pack is defined by the selected installer scripts:
+Recommended pack is defined by the selected installer scripts.
+
+Defaults:
 - infra/mods-install-openworld.sh
 - infra/mods-install-waystones.sh
 - infra/mods-install-better-qol.sh
@@ -16,6 +18,7 @@ then checks `data/mods` for:
 Usage:
   py -3 tools/check_recommended_server_mods.py
   py -3 tools/check_recommended_server_mods.py --mods-dir .\\data\\mods --write
+  py -3 tools/check_recommended_server_mods.py --script infra/mods-install-openworld.sh --script infra/mods-install-progressive-lot1-macaws-furniture.sh
 """
 
 from __future__ import annotations
@@ -260,18 +263,30 @@ def main(argv: Optional[List[str]] = None) -> int:
         action="store_true",
         help="Write JSON report to audit/recommended-server-mods-check.json",
     )
+    parser.add_argument(
+        "--script",
+        action="append",
+        default=[],
+        help="Installer script to include in expected pack (repeatable). Defaults to the baseline recommended pack.",
+    )
+    parser.add_argument(
+        "--out",
+        default=None,
+        help="Optional JSON report path when used with --write (default: audit/recommended-server-mods-check.json)",
+    )
     args = parser.parse_args(argv)
 
     repo_root = Path(args.repo_root).resolve()
     mods_dir = Path(args.mods_dir).resolve() if args.mods_dir else (repo_root / "data" / "mods").resolve()
+    script_paths = args.script or DEFAULT_SCRIPT_PATHS
 
-    expected = build_expected(repo_root, DEFAULT_SCRIPT_PATHS)
+    expected = build_expected(repo_root, script_paths)
     result = check_mods_dir(mods_dir, expected)
-    result["recommended_scripts"] = DEFAULT_SCRIPT_PATHS
+    result["recommended_scripts"] = script_paths
     result["expected"] = [asdict(m) for m in expected]
 
     if args.write:
-        out = repo_root / "audit" / "recommended-server-mods-check.json"
+        out = Path(args.out).resolve() if args.out else (repo_root / "audit" / "recommended-server-mods-check.json")
         out.parent.mkdir(parents=True, exist_ok=True)
         out.write_text(json.dumps(result, ensure_ascii=False, indent=2), encoding="utf-8")
 

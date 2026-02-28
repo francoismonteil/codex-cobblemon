@@ -1,6 +1,6 @@
-# Client Pack Recommande (Cobblemon + QoL "Better Minecraft")
+# Client Pack Recommande (etat actuel du serveur)
 
-Objectif: donner aux joueurs une liste courte de mods client a ajouter au modpack officiel, sans doublons inutiles.
+Objectif: donner aux joueurs la liste exacte des mods client actuellement requis/recommandes pour rejoindre le serveur en production.
 
 ## Base (obligatoire)
 - Minecraft: `1.21.1`
@@ -17,6 +17,13 @@ Important:
 - `You're in Grave Danger (YIGD)` -> `2.4.18` (Fabric)
 - `Storage Drawers` -> `1.21.1-13.11.4` (Fabric)
 - `Tom's Simple Storage Mod` -> `1.21-2.3.0-fabric`
+- `Macaw's Furniture` -> `3.4.1`
+- `Resourceful Lib` -> `3.0.12`
+- `Handcrafted` -> `4.0.3`
+- `Moonlight Lib` -> `1.21-2.29.18-fabric`
+- `Supplementaries` -> `1.21-3.5.25-fabric`
+- `Cristel Lib` -> `3.0.3`
+- `Towns and Towers` -> `1.13.7`
 
 ### QoL "Better Minecraft" (tri auto coffres / inventaire)
 - `Inventory Profiles Next (IPN)` -> `fabric-1.21.1-2.2.3`
@@ -39,6 +46,12 @@ Important:
 - `spark`
 - `Chunky`
 - `Flan`
+- `YUNG's API`
+- `YUNG's Better Strongholds`
+
+## Notes worldgen
+- `YUNG's Better Strongholds` est actif cote serveur mais ne demande pas de mod client.
+- `Towns and Towers` est traite comme requis cote joueurs pour simplifier le support, meme si le projet est annonce comme client optionnel.
 
 ## Vocal retenu
 - Pas de mod voix integre

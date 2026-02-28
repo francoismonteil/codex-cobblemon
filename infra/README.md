@@ -132,6 +132,12 @@ Monde (open world):
 - `./infra/mods-install-better-qol.sh`: installe le pack QoL serveur "Better Minecraft-like" retenu (`spark`, `Traveler's Backpack`, `FallingTree`, `YIGD` + dependance `Cardinal Components API`), versions pinnees pour Fabric 1.21.1.
 - `./infra/mods-install-storage.sh`: installe les mods de stockage gameplay (`Storage Drawers`, `Tom's Simple Storage Mod`), versions pinnees pour Fabric 1.21.1.
 - `./infra/mods-check-recommended.sh`: verifie `./data/mods` contre le pack serveur recommande (fichiers manquants, hash mismatch, extras) et ecrit `audit/recommended-server-mods-check.json`.
+- `./infra/mods-install-progressive-lot1-macaws-furniture.sh`: lot 1 du rollout progressif (`Macaw's Furniture`).
+- `./infra/mods-install-progressive-lot2-handcrafted.sh`: lot 2 du rollout progressif (`Resourceful Lib` + `Handcrafted`).
+- `./infra/mods-install-progressive-lot3-supplementaries.sh`: lot 3 du rollout progressif (`Moonlight Lib` + `Supplementaries`).
+- `./infra/mods-install-progressive-lot4-yungs-strongholds.sh`: lot 4 du rollout progressif (`YUNG's API` + `YUNG's Better Strongholds`).
+- `./infra/mods-install-progressive-lot5-towns-and-towers.sh`: lot 5 du rollout progressif (`Cristel Lib` + `Towns and Towers`).
+- `./infra/mods-check-progressive.sh`: verifie cumulativement la baseline actuelle + les lots progressifs jusqu'au lot demande.
 - `./infra/waystones-backfill-villages.py`: detecte les villages deja generes (scan `.mca`) et pose des `Waystones` par batch via `./infra/mc.sh` avec journal `--resume` (map existante).
 - `./infra/openworld-village-init.sh`: nouveau monde open world (spawn village naturel + border 4000 + protection spawn + pregen), **sans poser automatiquement healer/PC**.
 - `./infra/openworld-village-init-until-pokemart.sh`: relance l'init open world jusqu'a obtenir un nombre de clusters Pokemart acceptable pres du spawn (defaut: exactement 1, via `--min-components 1 --max-components 1`).

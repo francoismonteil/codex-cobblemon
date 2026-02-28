@@ -1,6 +1,6 @@
 # Notes d'exploitation (persistantes)
 
-Derniere mise a jour: 2026-02-19
+Derniere mise a jour: 2026-02-28
 
 ## Capacite serveur (snapshot)
 - Snapshot materiel/OS/reseau: `runbooks/server-capacity.md`
@@ -30,10 +30,61 @@ Derniere mise a jour: 2026-02-19
 - Stack: Docker Compose
 - Service: `cobblemon`
 - Port jeu: `25565/tcp`
-- Verification faite le 2026-02-11:
+- Verification faite le 2026-02-28:
   - conteneur en execution
   - port `25565` en ecoute
   - log `Done (...)! For help, type "help"`
+
+## Mods actifs en production (2026-02-28)
+- Baseline utilitaire/gameplay:
+  - `Chunky`
+  - `Flan`
+  - `Waystones`
+  - `Balm`
+  - `spark`
+  - `Traveler's Backpack`
+  - `Cardinal Components API`
+  - `FallingTree`
+  - `YIGD`
+  - `Storage Drawers`
+  - `Tom's Simple Storage Mod`
+- Ajouts decoratifs / monde:
+  - `Macaw's Furniture`
+  - `Resourceful Lib`
+  - `Handcrafted`
+  - `Moonlight Lib`
+  - `Supplementaries`
+  - `YUNG's API`
+  - `YUNG's Better Strongholds`
+  - `Cristel Lib`
+  - `Towns and Towers`
+
+## Datapacks / packs serveur actifs (2026-02-28)
+- Monde:
+  - `file/acm_pokemon_worldgen`
+  - `file/additionalstructures_1211`
+- Mods exposes comme packs:
+  - `betterstrongholds`
+  - `handcrafted`
+  - `mcwfurnitures`
+  - `moonlight`
+  - `supplementaries`
+  - `supplementaries:generated_pack`
+  - `t_and_t`
+  - `t_and_t:resources/t_and_t_waystones_patch`
+
+## Validation recente des ajouts (2026-02-28)
+- Lots 1 a 5 deployes sur le monde actuel.
+- Verification jars:
+  - `./infra/mods-check-progressive.sh --through-lot 5`
+  - resultat attendu/observe: `expected=20 ok=20 missing=0 hash_mismatch=0`
+- Perf apres deploiement:
+  - TPS ~ `20.0`
+- Validation worldgen minimale:
+  - `betterstrongholds:stronghold` localisable
+  - `minecraft:village_plains` localisable
+- Risque residuel a surveiller:
+  - coherence de `Towns and Towers` sur de nouveaux chunks/villages en coexistence avec `acm_pokemon_worldgen`
 
 ## Profil performance applique (objectif 4 joueurs)
 - Date d'application: 2026-02-11
@@ -128,7 +179,7 @@ Depuis le serveur, dans `<MC_PROJECT_DIR>`:
 
 ## Backups
 - Dossier: `<MC_PROJECT_DIR>/backups`
-- Dernier backup valide observe: `backup-20260211-150041.tar.gz`
+- Dernier backup valide observe: `backup-20260228-072820.tar.gz`
 
 ## Actions recommandees (securite)
 1) Changer immediatement le mot de passe du compte `linux`.
