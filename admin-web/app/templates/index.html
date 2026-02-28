@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="csrf-token" content="{{ csrf_token }}">
+  <title>Admin Minecraft</title>
+  <link rel="stylesheet" href="/static/app.css">
+  <script defer src="/static/app.js"></script>
+</head>
+<body>
+  <main class="layout" data-page="dashboard">
+    <header class="hero">
+      <div>
+        <p class="eyebrow">Cobblemon control room</p>
+        <h1>Admin serveur Minecraft</h1>
+        <p class="lede">Actions limitees, sans RCON, avec journal des jobs.</p>
+      </div>
+      <div class="hero-actions">
+        <button data-action="start">Start</button>
+        <button data-action="restart">Restart</button>
+        <button class="danger" data-action="stop">Stop</button>
+        <button class="secondary" data-action="backup">Backup</button>
+        <button class="ghost" id="logout-button">Logout</button>
+      </div>
+    </header>
+
+    <section class="grid top-grid">
+      <article class="panel status-panel">
+        <div class="panel-head">
+          <h2>Statut</h2>
+          <button class="ghost small" id="refresh-status">Rafraichir</button>
+        </div>
+        <dl class="status-grid" id="status-grid">
+          <div>
+            <dt>Conteneur</dt>
+            <dd id="status-container">-</dd>
+          </div>
+          <div>
+            <dt>Health</dt>
+            <dd id="status-health">-</dd>
+          </div>
+          <div>
+            <dt>Joueurs</dt>
+            <dd id="status-players">-</dd>
+          </div>
+          <div>
+            <dt>Whitelist</dt>
+            <dd id="status-whitelist">-</dd>
+          </div>
+        </dl>
+        <p class="muted" id="status-updated">Mise a jour: -</p>
+        <pre class="inline-log" id="status-line">Aucune ligne de statut.</pre>
+      </article>
+
+      <article class="panel jobs-panel">
+        <div class="panel-head">
+          <h2>Jobs</h2>
+          <button class="ghost small" id="refresh-jobs">Rafraichir</button>
+        </div>
+        <div class="jobs-list" id="jobs-list"></div>
+      </article>
+    </section>
+
+    <section class="grid content-grid">
+      <article class="panel">
+        <div class="panel-head">
+          <h2>Whitelist et Ops</h2>
+          <button class="ghost small" id="refresh-whitelist">Rafraichir</button>
+        </div>
+        <form class="stack-form" id="player-form">
+          <label for="player-name">Pseudo Minecraft</label>
+          <input id="player-name" name="player-name" type="text" maxlength="16" pattern="[A-Za-z0-9_]{3,16}" required>
+          <label class="checkbox-row">
+            <input id="player-op" type="checkbox">
+            Donner OP a l'ajout/onboarding
+          </label>
+          <div class="button-row">
+            <button type="button" data-player-action="add">Ajouter</button>
+            <button type="button" data-player-action="remove" class="secondary">Retirer</button>
+            <button type="button" data-player-action="op" class="secondary">OP</button>
+            <button type="button" data-player-action="deop" class="secondary">Deop</button>
+            <button type="button" data-player-action="onboard">Onboard</button>
+          </div>
+        </form>
+        <div class="chip-list" id="whitelist-list"></div>
+      </article>
+
+      <article class="panel logs-panel">
+        <div class="panel-head">
+          <h2>Logs</h2>
+          <button class="ghost small" id="refresh-logs">Rafraichir</button>
+        </div>
+        <pre class="log-view" id="logs-output">Chargement...</pre>
+      </article>
+    </section>
+
+    <div class="toast" id="toast" hidden></div>
+  </main>
+</body>
+</html>

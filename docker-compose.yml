@@ -18,3 +18,24 @@ services:
       - ./data:/data
       - ./backups:/backups
     restart: unless-stopped
+
+  mc-admin-web:
+    build:
+      context: ./admin-web
+    container_name: mc-admin-web
+    depends_on:
+      - cobblemon
+    ports:
+      - "127.0.0.1:${MC_ADMIN_WEB_PORT:-8080}:8080"
+    environment:
+      MC_ADMIN_WEB_REPO_ROOT: /workspace
+      MC_ADMIN_WEB_PASSWORD: ${MC_ADMIN_WEB_PASSWORD:-}
+      MC_ADMIN_WEB_SESSION_SECRET: ${MC_ADMIN_WEB_SESSION_SECRET:-}
+      MC_ADMIN_WEB_COOKIE_SECURE: ${MC_ADMIN_WEB_COOKIE_SECURE:-false}
+      MC_ADMIN_WEB_JOB_HISTORY: ${MC_ADMIN_WEB_JOB_HISTORY:-100}
+    volumes:
+      - ./:/workspace
+      - /var/run/docker.sock:/var/run/docker.sock
+    working_dir: /workspace/admin-web
+    command: uvicorn app.main:app --host 0.0.0.0 --port 8080
+    restart: unless-stopped

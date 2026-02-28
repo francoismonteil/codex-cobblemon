@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Connexion admin Minecraft</title>
+  <link rel="stylesheet" href="/static/app.css">
+</head>
+<body class="login-shell">
+  <main class="login-card">
+    <p class="eyebrow">Administration privee</p>
+    <h1>Panneau Minecraft</h1>
+    <p class="lede">Acces reserve aux admins via tunnel SSH ou VPN.</p>
+    {% if error %}
+    <div class="notice notice-error">{{ error }}</div>
+    {% endif %}
+    <form method="post" action="/login" class="stack-form">
+      <label for="password">Mot de passe</label>
+      <input id="password" name="password" type="password" autocomplete="current-password" required>
+      <button type="submit">Se connecter</button>
+    </form>
+  </main>
+</body>
+</html>

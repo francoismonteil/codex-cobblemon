@@ -10,6 +10,7 @@
 - `runbooks/lag-tps.md`: procedure de diagnostic/performance.
 - `runbooks/ddns.md`: config d'un DNS dynamique (adresse stable) pour acces Internet.
 - `runbooks/mc-admin.md`: commandes admin Minecraft (sans RCON).
+- `runbooks/mc-admin-web.md`: panneau web prive d'administration Minecraft (sans RCON).
 - `runbooks/chatops.md`: admin depuis le chat Minecraft (ChatOps, sans plugin/mod).
 - `runbooks/client-setup.md`: installer le bon client/modpack (eviter les version mismatch).
 - `runbooks/storage-rollout.md`: templates de communication (maintenance/online/rollback) pour le rollout des mods de stockage.
