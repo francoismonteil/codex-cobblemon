@@ -117,3 +117,4 @@ Runbook associe (Waystones sur map existante):
 ## Windows wrappers
 - `./infra/start.ps1`, `./infra/stop.ps1`, `./infra/logs.ps1`
 - `./infra/backup.ps1`, `./infra/restore.ps1`
+- `./infra/deploy-server.ps1` (sync workspace -> serveur sans git sur la cible)

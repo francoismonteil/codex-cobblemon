@@ -19,6 +19,16 @@ cp .env.example .env
 ./infra/logs.ps1
 ```
 
+## Sync serveur (Windows / PowerShell)
+
+Pour aligner le serveur avec le workspace local sans git sur la cible:
+
+```powershell
+./infra/deploy-server.ps1
+```
+
+Details: `runbooks/server-sync.md`
+
 ## Administration via SSH (Linux)
 
 Depuis ta machine:
