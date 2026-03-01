@@ -6,6 +6,14 @@ Ce repo supporte:
 - une bibliotheque de mondes `./worlds/<name>` (pour en avoir plusieurs installes)
 - un switch "propre" (stop, backup, copy, start) pour changer de map quand tu veux
 
+Si tu viens de modifier localement les scripts de gestion de mondes, un runbook associe ou des datapacks a embarquer avec une map, synchronise d'abord le serveur:
+
+```powershell
+./infra/deploy-server.ps1 -CreateRemoteBackup -VerifyService
+```
+
+Reference: `runbooks/server-sync.md`
+
 ## Installer plusieurs maps
 Tu telecharges les zips (CurseForge/ailleurs), puis tu les importes dans la bibliotheque.
 

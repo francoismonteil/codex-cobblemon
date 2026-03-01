@@ -150,6 +150,14 @@ Depuis le serveur, dans `<MC_PROJECT_DIR>`:
 ./infra/restore.sh backups/backup-YYYYMMDD-HHMMSS.tar.gz
 ```
 
+Si tu viens de modifier localement un script `infra`, un runbook operationnel, un datapack versionne ou un compose, synchronise d'abord le serveur avant d'executer des commandes d'exploitation:
+
+```powershell
+./infra/deploy-server.ps1 -CreateRemoteBackup -VerifyService
+```
+
+Reference: `runbooks/server-sync.md`
+
 ## Redemarrage quotidien automatique
 - Methode active: `cron` utilisateur `linux`
 - Horaire: tous les jours a `05:00` (heure locale serveur)
