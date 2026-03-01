@@ -9,7 +9,7 @@ Last updated: 2026-02-12
 Defaults (placeholders):
 - "server" = remote Minecraft host `<MC_SERVER_HOST>`
 - SSH user: `<MC_SSH_USER>`
-- Project path on server: `<MC_PROJECT_DIR>` (example: `/home/linux/codex-cobblemon`)
+- Project path on server: `<MC_PROJECT_DIR>`
 - Minecraft service/container name: `<MC_SERVICE_NAME>` (example: `cobblemon`)
 - Game port: `<MC_PORT>/tcp` (example: `25565/tcp`)
 - Default player name (when you say "me"): `<DEFAULT_PLAYER_NAME>`

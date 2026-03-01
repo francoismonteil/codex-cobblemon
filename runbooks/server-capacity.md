@@ -6,7 +6,7 @@ Il ne doit pas contenir de secrets (ex: webhook, mots de passe, tokens).
 ## Cible
 - Host: `<MC_SERVER_HOST>` (voir `runbooks/site.local.md`)
 - Utilisateur SSH: `<MC_SSH_USER>`
-- Repo sur le serveur: `<MC_PROJECT_DIR>` (example: `/home/linux/codex-cobblemon`)
+- Repo sur le serveur: `<MC_PROJECT_DIR>`
 
 ## Snapshot 2026-02-13T06:24:50-06:00
 

@@ -9,7 +9,7 @@ Derniere mise a jour: 2026-02-28
 ## Cible serveur
 - Host/IP: `<MC_SERVER_HOST>` (voir `runbooks/site.local.md`)
 - OS: Linux (compte admin utilise: `<MC_SSH_USER>`)
-- Repertoire projet: `<MC_PROJECT_DIR>` (example: `/home/linux/codex-cobblemon`)
+- Repertoire projet: `<MC_PROJECT_DIR>`
 
 ## Acces SSH
 - Commande: `ssh <MC_SSH_USER>@<MC_SERVER_HOST>`
