@@ -17,6 +17,10 @@ set -euo pipefail
 #
 # Usage:
 #   ./infra/mods-install-better-qol.sh
+#
+# Optional environment:
+#   FALLINGTREE_MAX_SIZE=256
+#   FALLINGTREE_MAX_SCAN_SIZE=256
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 REPO_ROOT="$(cd "${SCRIPT_DIR}/.." && pwd)"
@@ -105,5 +109,9 @@ ensure_mod "Cardinal Components API" "${CCA_URL}" "${CCA_SHA256}" "${CCA_FILE}"
 ensure_mod "Traveler's Backpack" "${TB_URL}" "${TB_SHA256}" "${TB_FILE}"
 ensure_mod "FallingTree" "${FALLINGTREE_URL}" "${FALLINGTREE_SHA256}" "${FALLINGTREE_FILE}"
 ensure_mod "YIGD" "${YIGD_URL}" "${YIGD_SHA256}" "${YIGD_FILE}"
+
+FALLINGTREE_MAX_SIZE="${FALLINGTREE_MAX_SIZE:-256}"
+FALLINGTREE_MAX_SCAN_SIZE="${FALLINGTREE_MAX_SCAN_SIZE:-}"
+./infra/fallingtree-configure.sh "${FALLINGTREE_MAX_SIZE}" "${FALLINGTREE_MAX_SCAN_SIZE}"
 
 echo "Done. Restart the server after installation (prefer ./infra/safe-restart.sh or stop/start)."

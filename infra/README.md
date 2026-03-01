@@ -148,7 +148,8 @@ Monde (open world):
 - `./infra/mods-install-openworld.sh`: installe les mods serveur utilitaires (Chunky + Flan) requis pour l'open world et force l'outil Flan sur `minecraft:wooden_hoe` (claim + inspect).
 - `./infra/flan-configure-claim-tools.sh`: force l'outil Flan sur `minecraft:wooden_hoe` dans `./data/config/flan/flan_config.json`.
 - `./infra/mods-install-waystones.sh`: installe `Waystones` + dependance `Balm` (mods gameplay, clients requis aussi), versions pinnees pour Fabric 1.21.1.
-- `./infra/mods-install-better-qol.sh`: installe le pack QoL serveur "Better Minecraft-like" retenu (`spark`, `Traveler's Backpack`, `FallingTree`, `YIGD` + dependance `Cardinal Components API`), versions pinnees pour Fabric 1.21.1.
+- `./infra/mods-install-better-qol.sh`: installe le pack QoL serveur "Better Minecraft-like" retenu (`spark`, `Traveler's Backpack`, `FallingTree`, `YIGD` + dependance `Cardinal Components API`), versions pinnees pour Fabric 1.21.1, et regle `FallingTree` sur `trees.maxSize=256` par defaut.
+- `./infra/fallingtree-configure.sh`: ecrit `./data/config/fallingtree.json` pour regler `trees.maxSize` (et relever `trees.maxScanSize` si necessaire).
 - `./infra/mods-install-storage.sh`: installe les mods de stockage gameplay (`Storage Drawers`, `Tom's Simple Storage Mod`), versions pinnees pour Fabric 1.21.1.
 - `./infra/mods-check-recommended.sh`: verifie `./data/mods` contre le pack serveur recommande (fichiers manquants, hash mismatch, extras) et ecrit `audit/recommended-server-mods-check.json`.
 - `./infra/mods-install-progressive-lot1-macaws-furniture.sh`: lot 1 du rollout progressif (`Macaw's Furniture`).
