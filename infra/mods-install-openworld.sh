@@ -4,6 +4,7 @@ set -euo pipefail
 # Installs extra server-side mods required for the open-world setup:
 # - Chunky (pre-generation)
 # - Flan (spawn protection claim with allowed interactions)
+# - Flan claim tool config (wooden hoe for claim + inspect)
 #
 # These are intentionally pinned to known-good builds for MC 1.21.1.
 #
@@ -78,3 +79,6 @@ FLAN_FILE="flan-1.21.1-1.12.1-fabric.jar"
 ensure_mod "Chunky" "${CHUNKY_URL}" "${CHUNKY_SHA256}" "${CHUNKY_FILE}"
 ensure_mod "Flan" "${FLAN_URL}" "${FLAN_SHA256}" "${FLAN_FILE}"
 
+bash "${REPO_ROOT}/infra/flan-configure-claim-tools.sh"
+
+echo "Done. Restart the server after installation (prefer ./infra/safe-restart.sh or stop/start)."

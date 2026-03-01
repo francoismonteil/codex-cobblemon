@@ -38,6 +38,7 @@ Convention:
 - `./infra/openworld-village-configure.sh` (configure un monde deja genere)
 - `./infra/world-trim-around-spawn.sh` (conserve un carre autour du spawn, purge hors zone)
 - `./infra/mods-install-openworld.sh`
+- `./infra/flan-configure-claim-tools.sh`
 - `./infra/mods-install-waystones.sh`
 - `./infra/mods-install-better-qol.sh`
 - `./infra/mods-install-storage.sh`

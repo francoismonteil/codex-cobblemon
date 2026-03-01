@@ -56,6 +56,7 @@ Ordre recommande (dependencies/ops):
 Notes:
 - `Balm` est deja present dans le modpack officiel, mais le script `Waystones` repinne explicitement la version.
 - Aucun mod voice chat integre n'est installe (choix: Discord externe).
+- `mods-install-openworld.sh` ecrit aussi `./data/config/flan/flan_config.json` pour utiliser `minecraft:wooden_hoe` comme outil Flan (claim + inspection), afin de liberer les sticks pour le stockage.
 
 ## 4. Verification des jars installes (avant demarrage)
 ```bash
