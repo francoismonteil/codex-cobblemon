@@ -1,6 +1,8 @@
 param(
     [switch]$NoDeleteExtra,
-    [switch]$DryRun
+    [switch]$DryRun,
+    [switch]$CreateRemoteBackup,
+    [switch]$VerifyService
 )
 
 $ErrorActionPreference = 'Stop'
@@ -108,6 +110,11 @@ $sshKey = $ctx['SSH_KEY_MAIN']
 $serverHost = $ctx['MC_SERVER_HOST']
 $sshUser = $ctx['MC_SSH_USER']
 $projectDir = $ctx['MC_PROJECT_DIR']
+$serviceName = if ($ctx.ContainsKey('MC_SERVICE_NAME') -and -not [string]::IsNullOrWhiteSpace($ctx['MC_SERVICE_NAME'])) {
+    $ctx['MC_SERVICE_NAME']
+} else {
+    'cobblemon'
+}
 
 if (-not (Test-Path $sshKey)) {
     throw "SSH key not found: $sshKey"
@@ -171,6 +178,8 @@ $manifest = $manifest | Sort-Object -Unique
 if ($DryRun) {
     Write-Host "Deploy target: ${sshUser}@${serverHost}:$projectDir"
     Write-Host "Managed files: $($manifest.Count)"
+    Write-Host "Remote backup: $CreateRemoteBackup"
+    Write-Host "Service verification: $VerifyService ($serviceName)"
     $manifest | ForEach-Object { Write-Host $_ }
     exit 0
 }
@@ -202,10 +211,37 @@ set -euo pipefail
 proj=__PROJECT_DIR__
 tmp="$1"
 delete_extra="$2"
+create_backup="$3"
 manifest="$tmp/manifest.txt"
 archive="$tmp/deploy.tar"
 
 mkdir -p "$proj"
+
+if [[ "$create_backup" == "true" ]]; then
+  backup_dir="$proj/.deploy-backups"
+  backup_name="managed-$(date +%Y%m%d-%H%M%S).tar.gz"
+  mkdir -p "$backup_dir"
+
+  existing_paths=()
+  for d in infra runbooks datapacks tools admin-web modpack; do
+    if [[ -d "$proj/$d" ]]; then
+      existing_paths+=("$d")
+    fi
+  done
+  for f in README.md .env.example AGENTS.md docker-compose.yml docker-compose.pregen.yml manifest.Lydu1ZNo.json; do
+    if [[ -f "$proj/$f" ]]; then
+      existing_paths+=("$f")
+    fi
+  done
+
+  if [[ ${#existing_paths[@]} -gt 0 ]]; then
+    tar -czf "$backup_dir/$backup_name" -C "$proj" "${existing_paths[@]}"
+    echo "BACKUP_OK $backup_dir/$backup_name"
+  else
+    echo "BACKUP_SKIPPED empty-managed-scope"
+  fi
+fi
+
 tar -xf "$archive" -C "$proj"
 cp -f "$manifest" "$proj/.deploy-sync-last-manifest.txt"
 
@@ -250,19 +286,36 @@ Invoke-Native -FilePath tar -Arguments @('-cf', $archivePath, '-C', $stageRoot, 
 $remoteBase = "$sshUser@$serverHost"
 $remoteTmp = "$projectDir/.deploy-sync-" + (Get-Date -Format 'yyyyMMdd-HHmmss')
 
-Invoke-Native -FilePath ssh -Arguments @('-i', $sshKey, '-o', 'BatchMode=yes', '-o', 'StrictHostKeyChecking=accept-new', $remoteBase, "mkdir -p $(Get-BashSingleQuoted $remoteTmp)")
-Invoke-Native -FilePath scp -Arguments @('-i', $sshKey, $archivePath, "${remoteBase}:$remoteTmp/deploy.tar")
-Invoke-Native -FilePath scp -Arguments @('-i', $sshKey, $manifestPath, "${remoteBase}:$remoteTmp/manifest.txt")
-Invoke-Native -FilePath scp -Arguments @('-i', $sshKey, $remoteScriptPath, "${remoteBase}:$remoteTmp/apply.sh")
-
-$deleteFlag = if ($NoDeleteExtra) { 'false' } else { 'true' }
 Invoke-Native -FilePath ssh -Arguments @(
     '-i', $sshKey,
     '-o', 'BatchMode=yes',
     '-o', 'StrictHostKeyChecking=accept-new',
     $remoteBase,
-    "bash $(Get-BashSingleQuoted "$remoteTmp/apply.sh") $(Get-BashSingleQuoted $remoteTmp) $deleteFlag"
+    "set -e; mkdir -p $(Get-BashSingleQuoted $projectDir) $(Get-BashSingleQuoted $remoteTmp); test -w $(Get-BashSingleQuoted $projectDir); command -v tar >/dev/null"
 )
+Invoke-Native -FilePath scp -Arguments @('-i', $sshKey, $archivePath, "${remoteBase}:$remoteTmp/deploy.tar")
+Invoke-Native -FilePath scp -Arguments @('-i', $sshKey, $manifestPath, "${remoteBase}:$remoteTmp/manifest.txt")
+Invoke-Native -FilePath scp -Arguments @('-i', $sshKey, $remoteScriptPath, "${remoteBase}:$remoteTmp/apply.sh")
+
+$deleteFlag = if ($NoDeleteExtra) { 'false' } else { 'true' }
+$backupFlag = if ($CreateRemoteBackup) { 'true' } else { 'false' }
+Invoke-Native -FilePath ssh -Arguments @(
+    '-i', $sshKey,
+    '-o', 'BatchMode=yes',
+    '-o', 'StrictHostKeyChecking=accept-new',
+    $remoteBase,
+    "bash $(Get-BashSingleQuoted "$remoteTmp/apply.sh") $(Get-BashSingleQuoted $remoteTmp) $deleteFlag $backupFlag"
+)
+
+if ($VerifyService) {
+    Invoke-Native -FilePath ssh -Arguments @(
+        '-i', $sshKey,
+        '-o', 'BatchMode=yes',
+        '-o', 'StrictHostKeyChecking=accept-new',
+        $remoteBase,
+        "docker inspect -f 'status={{.State.Status}} health={{if .State.Health}}{{.State.Health.Status}}{{else}}none{{end}}' $(Get-BashSingleQuoted $serviceName)"
+    )
+}
 
 Remove-Item -Recurse -Force $tempRoot
 Write-Host "Deploy complete: ${remoteBase}:$projectDir"

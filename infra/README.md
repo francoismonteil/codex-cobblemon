@@ -29,6 +29,12 @@ Pour aligner le serveur avec le workspace local sans git sur la cible:
 
 Details: `runbooks/server-sync.md`
 
+Pour un sync avec backup distant et verification du service:
+
+```powershell
+./infra/deploy-server.ps1 -CreateRemoteBackup -VerifyService
+```
+
 ## Administration via SSH (Linux)
 
 Depuis ta machine:

@@ -13,6 +13,8 @@ Le script:
 - pousse le contenu sur le serveur via SSH/SCP
 - supprime les fichiers en trop uniquement dans le perimetre gere (sauf `-NoDeleteExtra`)
 - retire `runbooks/site.local.md` du serveur si present
+- peut creer un backup distant du perimetre gere avant sync (`-CreateRemoteBackup`)
+- peut verifier l'etat du service Minecraft apres sync (`-VerifyService`)
 
 Ce que le script **ne touche pas**:
 - `.env`
@@ -50,6 +52,17 @@ Usage recommande:
 - apres ajout/modification d'un script `infra`
 - apres modification d'un datapack versionne
 
+## Sync avec backup distant + verification service
+
+```powershell
+./infra/deploy-server.ps1 -CreateRemoteBackup -VerifyService
+```
+
+Usage recommande:
+- apres une serie de changements infra/runbooks/datapacks
+- avant une fenetre d'exploitation ou de test sur le serveur
+- quand tu veux un filet de securite avant nettoyage du perimetre gere
+
 ## Sync sans suppression des extras distants
 
 ```powershell
@@ -57,6 +70,16 @@ Usage recommande:
 ```
 
 Utile si tu veux pousser des mises a jour sans nettoyer des fichiers distants possiblement conserves a la main.
+
+## Verification service seule pendant un deploy
+
+Par defaut, le script ne controle pas l'etat du conteneur Minecraft apres sync. Pour rendre ce controle bloquant:
+
+```powershell
+./infra/deploy-server.ps1 -VerifyService
+```
+
+Le nom du conteneur verifie vient de `MC_SERVICE_NAME` dans `runbooks/site.local.md`, sinon `cobblemon`.
 
 ## Verification rapide post-sync
 
