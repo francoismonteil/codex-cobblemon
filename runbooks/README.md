@@ -17,6 +17,7 @@
 - `runbooks/friends-guide.md`: infos a partager aux amis (connexion, install, whitelist/op via scripts).
 - `runbooks/discord-bot.md`: bot Discord pour whitelist self-service (slash commands).
 - `runbooks/alerting.md`: alertes (webhook Discord) pour monitoring.
+- `runbooks/pokedex-report.md`: generer un rapport detaille Pokedex serveur (seen/caught/temps de jeu) et publication Discord.
 - `runbooks/restart-policy.md`: restart quotidien safe + alertes.
 - `runbooks/secondary-disk.md`: preparer un 2e disque pour stocker les backups.
 - `runbooks/openworld-village.md`: open world (spawn village naturel + border + pregen + protection spawn).

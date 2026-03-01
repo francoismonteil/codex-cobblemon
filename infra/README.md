@@ -38,6 +38,7 @@ Commandes utiles sur le serveur:
 ./infra/restore.sh backups/backup-YYYYMMDD-HHMMSS.tar.gz
 ./infra/stop.sh
 ./infra/monitor.sh
+python3 ./infra/pokedex-report.py
 ```
 
 ## Admin depuis le chat (ChatOps, sans plugin/mod)
@@ -109,6 +110,7 @@ Option: utiliser `docker-compose.pregen.yml` uniquement pendant la pre-generatio
 
 - Windows PowerShell: `./infra/start.ps1`, `./infra/stop.ps1`, `./infra/logs.ps1`, `./infra/backup.ps1`, `./infra/restore.ps1`
 - Linux Bash: `./infra/start.sh`, `./infra/stop.sh`, `./infra/logs.sh`, `./infra/backup.sh`, `./infra/restore.sh`
+- Reporting / audit: `python3 ./infra/pokedex-report.py` (rapport detaille Pokedex serveur, avec option de publication Discord)
 
 Progression:
 - `./infra/progression-init.sh`: initialise les scoreboards de badges

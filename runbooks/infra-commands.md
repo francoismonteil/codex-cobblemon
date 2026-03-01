@@ -12,6 +12,7 @@ Convention:
 - `./infra/start.sh`, `./infra/stop.sh`, `./infra/logs.sh`, `./infra/status.sh`
 - `./infra/backup.sh`, `./infra/restore.sh`, `./infra/safe-restart.sh`
 - `./infra/monitor.sh`, `./infra/webhook-test.sh`
+- `python3 ./infra/pokedex-report.py`
 - `./infra/mc.sh`, `./infra/player.sh`, `./infra/onboard.sh`, `./infra/kickoff.sh`, `./infra/item.sh`
 - `./infra/friend-info.sh`, `./infra/player-check.sh`, `./infra/ops-list.sh`
 - `./infra/friend-info-webhook.sh`
