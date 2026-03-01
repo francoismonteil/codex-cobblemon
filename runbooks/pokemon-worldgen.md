@@ -45,9 +45,11 @@ Option avec restart direct:
 ./infra/install-pokemon-worldgen-datapack.sh --restart
 ```
 
+Avec `--restart`, le script force un restart via `./infra/safe-restart.sh --force` pour appliquer les registries worldgen.
+
 ## Verification
 
-1. `reload` puis restart serveur (recommande pour worldgen registries).
+1. `reload` puis restart serveur force (recommande pour worldgen registries).
 2. Explorer des nouveaux chunks.
 3. Verifier dans les villages:
    - Pokemart present dans `houses`

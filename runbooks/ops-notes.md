@@ -162,7 +162,7 @@ Reference: `runbooks/server-sync.md`
 - Methode active: `cron` utilisateur `linux`
 - Horaire: tous les jours a `05:00` (heure locale serveur)
 - Entree crontab:
-  - `0 5 * * * cd <MC_PROJECT_DIR> && <MC_PROJECT_DIR>/infra/safe-restart.sh >> <MC_PROJECT_DIR>/logs/minecraft-daily-restart.log 2>&1 # minecraft-daily-restart`
+  - `0 5 * * * cd <MC_PROJECT_DIR> && <MC_PROJECT_DIR>/infra/safe-restart.sh --force >> <MC_PROJECT_DIR>/logs/minecraft-daily-restart.log 2>&1 # minecraft-daily-restart`
 - Log d'execution:
   - `<MC_PROJECT_DIR>/logs/minecraft-daily-restart.log`
 

@@ -68,6 +68,7 @@ Utiliser ce flux seulement si tu ne passes pas par `openworld-village-init.sh --
 ```
 
 Notes:
+- `install-pokemon-worldgen-datapack.sh --restart` force le restart requis pour les registries worldgen.
 - `install-additionalstructures-datapack.sh` bloque par defaut si des regions overworld existent.
 - `--allow-existing-world` est reserve a un bootstrap controle (ex: tout debut de vie du monde, avant exploration reelle).
 - n'utilise pas ce flux pour retrofiter un monde en production deja explore.
@@ -98,7 +99,7 @@ Puis verifier:
 1. backup avant installation (`./infra/backup.sh`)
 2. en echec:
    - restaurer backup monde + datapacks
-   - restart (`./infra/safe-restart.sh`)
+   - restart (`./infra/safe-restart.sh --force`)
    - revalider baseline
 
 ## Commandes utiles

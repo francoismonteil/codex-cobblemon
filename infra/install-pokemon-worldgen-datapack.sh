@@ -16,9 +16,23 @@ world="${REPO_ROOT}/data/world"
 dst="${world}/datapacks/acm_pokemon_worldgen"
 restart="false"
 
-if [[ "${1:-}" == "--restart" ]]; then
-  restart="true"
-fi
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    --restart)
+      restart="true"
+      shift
+      ;;
+    -h|--help)
+      echo "Usage: $0 [--restart]" >&2
+      exit 0
+      ;;
+    *)
+      echo "Unknown arg: $1" >&2
+      echo "Usage: $0 [--restart]" >&2
+      exit 2
+      ;;
+  esac
+done
 
 if [[ ! -d "${src}" ]]; then
   echo "Missing datapack source: ${src}" >&2
@@ -45,11 +59,12 @@ echo "Installed: ${dst}"
 ./infra/mc.sh "datapack list enabled" || true
 
 if [[ "${restart}" == "true" ]]; then
-  ./infra/safe-restart.sh || true
+  echo "Running forced safe restart to apply worldgen registries..."
+  ./infra/safe-restart.sh --force
 else
   echo "NOTE: worldgen registries are not always reloaded by /reload."
   echo "Apply reliably with a restart:"
-  echo "  ./infra/safe-restart.sh"
+  echo "  ./infra/safe-restart.sh --force"
   echo "NOTE: only NEW chunks/villages are affected."
 fi
 

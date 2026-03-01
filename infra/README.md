@@ -41,7 +41,7 @@ Depuis ta machine:
 
 ```bash
 ssh <user>@<server-ip>
-cd /opt/codex-cobblemon
+cd <MC_PROJECT_DIR>
 cp -n .env.example .env
 ./infra/start.sh
 ```
