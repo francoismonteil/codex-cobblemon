@@ -27,6 +27,14 @@ Linux:
 
 ## Installation sur serveur
 
+Si tu viens de regenerer les NBT ou de modifier `datapacks/acm_pokemon_worldgen/` localement, synchronise d'abord le serveur:
+
+```powershell
+./infra/deploy-server.ps1 -CreateRemoteBackup -VerifyService
+```
+
+Reference: `runbooks/server-sync.md`
+
 ```bash
 ./infra/install-pokemon-worldgen-datapack.sh
 ```

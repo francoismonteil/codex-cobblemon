@@ -16,6 +16,14 @@ Objectif:
   - `downloads/AdditionalStructures-1.21.x-(v.5.1.0-fabric).jar`
 - Monde cible neuf (nouvelle generation).
 
+Si tu viens de modifier localement `datapacks/additionalstructures_1211/`, `datapacks/acm_pokemon_worldgen/`, un script `infra` associe ou ce runbook, synchronise le serveur avant toute commande Linux:
+
+```powershell
+./infra/deploy-server.ps1 -CreateRemoteBackup -VerifyService
+```
+
+Reference: `runbooks/server-sync.md`
+
 ## 1) Normaliser et verifier AS (obligatoire)
 
 ```bash

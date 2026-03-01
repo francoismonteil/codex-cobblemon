@@ -24,6 +24,12 @@ Le template inclut un jigsaw `minecraft:building_entrance` pour etre compatible 
 
 ## Installation (serveur)
 
+Si tu modifies encore ce flux legacy localement, synchronise d'abord le serveur:
+
+```powershell
+./infra/deploy-server.ps1 -CreateRemoteBackup -VerifyService
+```
+
 Flux recommande (actuel):
 1. Suivre `runbooks/pokemon-worldgen.md`.
 2. Installer avec `./infra/install-pokemon-worldgen-datapack.sh` (ou `--restart`).

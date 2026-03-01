@@ -24,6 +24,14 @@ Objectif: un monde Cobblemon "Pokemon open world" simple, fluide et durable pour
 grep -E '^MODRINTH_(MODPACK|VERSION)=' .env
 ```
 
+Si tu viens de modifier localement un script `infra`, un runbook ou un datapack worldgen versionne, synchronise d'abord le serveur depuis le workspace Windows:
+
+```powershell
+./infra/deploy-server.ps1 -CreateRemoteBackup -VerifyService
+```
+
+Reference: `runbooks/server-sync.md`
+
 ## Procedure (nouveau monde)
 Toutes les commandes ci-dessous sont a lancer sur le serveur Linux dans `<MC_PROJECT_DIR>`.
 

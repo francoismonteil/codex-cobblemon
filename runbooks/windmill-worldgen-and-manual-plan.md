@@ -86,6 +86,12 @@ Interpretation:
 ## 3) Installer le datapack dans le monde
 
 Sur le serveur (monde courant):
+0. Si le datapack ou les scripts ont ete modifies localement, synchroniser d'abord le serveur:
+
+```powershell
+./infra/deploy-server.ps1 -CreateRemoteBackup -VerifyService
+```
+
 1. Copier le dossier:
    - vers `data/world/datapacks/acm_windmills/`
 2. Recharger:
