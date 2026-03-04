@@ -158,6 +158,15 @@ Monde (open world):
 - `./infra/mods-install-progressive-lot4-yungs-strongholds.sh`: lot 4 du rollout progressif (`YUNG's API` + `YUNG's Better Strongholds`).
 - `./infra/mods-install-progressive-lot5-towns-and-towers.sh`: lot 5 du rollout progressif (`Cristel Lib` + `Towns and Towers`).
 - `./infra/mods-check-progressive.sh`: verifie cumulativement la baseline actuelle + les lots progressifs jusqu'au lot demande.
+- `./infra/mods-install-addon-lot1-pokenav.sh`: lot addon 1 (`Cobblemon Pokenav`).
+- `./infra/mods-install-addon-lot2-aps-trophies.sh`: lot addon 2 (`APS Trophies`).
+- `./infra/mods-install-addon-lot3-quick-battle.sh`: lot addon 3 (`Cobblemon Quick Battle`).
+- `./infra/mods-install-addon-lot4-cobbleloots.sh`: lot addon 4 (`Cobbleloots`).
+- `./infra/mods-install-addon-lot5-raiddens.sh`: lot addon 5 (`GeckoLib` + `Cobblemon Raid Dens`).
+- `./infra/mods-install-addon-lot6-blues-utilities.sh`: lot addon 6 (`Blue's Cobblemon Utilities`, datapack zip dans le monde actif).
+- `./infra/mods-install-addon-lot7-gacha-machine.sh`: lot addon 7 (`CobbledGacha`).
+- `./infra/mods-install-addon-lot8-shiny-cookie.sh`: lot addon 8 (`Cobblemon: Shiny Cookie`).
+- `./infra/mods-check-addons-rollout.sh`: verifie cumulativement la baseline actuelle + les lots addons jusqu'au lot demande.
 - `./infra/waystones-backfill-villages.py`: detecte les villages deja generes (scan `.mca`) et pose des `Waystones` par batch via `./infra/mc.sh` avec journal `--resume` (map existante).
 - `./infra/openworld-village-init.sh`: nouveau monde open world (spawn village naturel + border 4000 + protection spawn + pregen), **sans poser automatiquement healer/PC**.
 - `./infra/openworld-village-init-until-pokemart.sh`: relance l'init open world jusqu'a obtenir un nombre de clusters Pokemart acceptable pres du spawn (defaut: exactement 1, via `--min-components 1 --max-components 1`).

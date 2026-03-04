@@ -25,6 +25,14 @@
 - `runbooks/server-mods-recommended-install.md`: installation du pack de mods serveur recommande (QoL + verification + rollback court).
 - `runbooks/mods-progressive-rollout.md`: rollout progressif des mods additionnels sur le monde actuel, lot par lot.
 - `runbooks/client-pack-progressive-rollout.md`: liste exacte des mods client a ajouter pour chaque lot progressif.
+- `runbooks/addons-rollout-current-world.md`: rollout par lots des addons Cobblemon sur le monde actuel.
+- `runbooks/addons-rollout-lot2-aps-trophies.md`: preparation operationnelle et templates de communication pour le lot 2 `APS Trophies`.
+- `runbooks/addons-rollout-lot3-quick-battle.md`: preparation operationnelle et templates de communication pour le lot 3 `Cobblemon Quick Battle`.
+- `runbooks/addons-rollout-lot4-cobbleloots.md`: preparation operationnelle et templates de communication pour le lot 4 `Cobbleloots`.
+- `runbooks/addons-rollout-lot5-raiddens.md`: preparation operationnelle et templates de communication pour le lot 5 `Raid Dens`.
+- `runbooks/addons-rollout-lot6-blues-utilities.md`: preparation operationnelle et templates de communication pour le lot 6 `Blue's Cobblemon Utilities`.
+- `runbooks/client-pack-addons-rollout.md`: liste exacte des ajouts client pour chaque lot d'addons Cobblemon.
+- `runbooks/addons-rollout-next-season.md`: lots reserves a une future saison / nouveau monde.
 - `runbooks/waystones-backfill-existing-villages.md`: poser des Waystones dans les villages deja generes d'une map existante (batch + resume).
 - `runbooks/pokemon-worldgen.md`: datapack unique Pokemon worldgen (pokemart + pipeline structgen).
 - `runbooks/additionalstructures-integration.md`: integration AS + ACM avec gate compatibilite stricte 1.21.1.

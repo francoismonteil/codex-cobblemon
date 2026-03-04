@@ -43,6 +43,15 @@ Convention:
 - `./infra/mods-install-better-qol.sh`
 - `./infra/mods-install-storage.sh`
 - `./infra/mods-check-recommended.sh`
+- `./infra/mods-install-addon-lot1-pokenav.sh`
+- `./infra/mods-install-addon-lot2-aps-trophies.sh`
+- `./infra/mods-install-addon-lot3-quick-battle.sh`
+- `./infra/mods-install-addon-lot4-cobbleloots.sh`
+- `./infra/mods-install-addon-lot5-raiddens.sh`
+- `./infra/mods-install-addon-lot6-blues-utilities.sh`
+- `./infra/mods-install-addon-lot7-gacha-machine.sh`
+- `./infra/mods-install-addon-lot8-shiny-cookie.sh`
+- `./infra/mods-check-addons-rollout.sh`
 - `./infra/waystones-backfill-villages.py` (scan villages generes + placement Waystones par batch avec journal `--resume`)
 - `./infra/chunky-monitor.sh` (supervision ponctuelle Chunky en direct)
 - `./infra/spawn-village-pokecenter-auto.sh` (manuel, hors demarrage)
