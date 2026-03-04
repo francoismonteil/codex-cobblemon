@@ -18,6 +18,9 @@ Pack concerne (serveur):
 Client (a communiquer aux joueurs, separement):
 - voir `runbooks/client-pack-recommended.md`
 
+Addon gameplay optionnel, serveur-only:
+- `Cobblemon Capture XP` (+ `Cobblemon Tim Core`) -> voir `runbooks/capture-xp.md`
+
 ## Pre-conditions
 - Fenetre de maintenance annoncee (downtime)
 - Acces au repo sur le serveur (`<MC_PROJECT_DIR>`)

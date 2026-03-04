@@ -1,6 +1,6 @@
 # Notes d'exploitation (persistantes)
 
-Derniere mise a jour: 2026-02-28
+Derniere mise a jour: 2026-03-04
 
 ## Capacite serveur (snapshot)
 - Snapshot materiel/OS/reseau: `runbooks/server-capacity.md`
@@ -48,6 +48,8 @@ Derniere mise a jour: 2026-02-28
   - `YIGD`
   - `Storage Drawers`
   - `Tom's Simple Storage Mod`
+  - `Cobblemon Tim Core`
+  - `Cobblemon Capture XP`
 - Ajouts decoratifs / monde:
   - `Macaw's Furniture`
   - `Resourceful Lib`
@@ -85,6 +87,19 @@ Derniere mise a jour: 2026-02-28
   - `minecraft:village_plains` localisable
 - Risque residuel a surveiller:
   - coherence de `Towns and Towers` sur de nouveaux chunks/villages en coexistence avec `acm_pokemon_worldgen`
+
+## Capture XP (production)
+- Date d'activation: 2026-03-04
+- Mods:
+  - `Cobblemon Tim Core` -> `1.7.3-fabric-1.31.0`
+  - `Cobblemon Capture XP` -> `1.7.3-fabric-1.3.0`
+- Config active:
+  - fichier: `./data/config/capture_xp.json5`
+  - `multiplier=2.0`
+- Effet attendu:
+  - le Pokemon en tete d'equipe gagne l'equivalent d'une XP de capture multipliee par `2.0`
+- Runbook associe:
+  - `runbooks/capture-xp.md`
 
 ## Profil performance applique (objectif 4 joueurs)
 - Date d'application: 2026-02-11

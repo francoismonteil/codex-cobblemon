@@ -245,6 +245,16 @@ fi
 tar -xf "$archive" -C "$proj"
 cp -f "$manifest" "$proj/.deploy-sync-last-manifest.txt"
 
+while IFS= read -r rel; do
+  case "$rel" in
+    *.sh|*.py)
+      if [[ -f "$proj/$rel" ]]; then
+        chmod 755 "$proj/$rel"
+      fi
+      ;;
+  esac
+done < "$manifest"
+
 if [[ "$delete_extra" == "true" ]]; then
   {
     for d in infra runbooks datapacks tools admin-web modpack; do

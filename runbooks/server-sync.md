@@ -11,6 +11,7 @@ Le script `./infra/deploy-server.ps1` pousse un ensemble controle de fichiers de
 Le script:
 - lit `runbooks/site.local.md`
 - pousse le contenu sur le serveur via SSH/SCP
+- restaure le bit executable sur les fichiers geres `*.sh` et `*.py`
 - supprime les fichiers en trop uniquement dans le perimetre gere (sauf `-NoDeleteExtra`)
 - retire `runbooks/site.local.md` du serveur si present
 - peut creer un backup distant du perimetre gere avant sync (`-CreateRemoteBackup`)

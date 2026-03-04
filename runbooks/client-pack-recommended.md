@@ -46,6 +46,8 @@ Important:
 - `spark`
 - `Chunky`
 - `Flan`
+- `Cobblemon Tim Core`
+- `Cobblemon Capture XP`
 - `YUNG's API`
 - `YUNG's Better Strongholds`
 
