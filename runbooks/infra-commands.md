@@ -49,8 +49,8 @@ Convention:
 - `./infra/mods-install-addon-lot4-cobbleloots.sh`
 - `./infra/mods-install-addon-lot5-raiddens.sh`
 - `./infra/mods-install-addon-lot6-blues-utilities.sh`
-- `./infra/mods-install-addon-lot7-gacha-machine.sh`
-- `./infra/mods-install-addon-lot8-shiny-cookie.sh`
+- `./infra/mods-install-addon-lot7-farmers-delight.sh`
+- `./infra/mods-install-addon-lot8-botany-pots.sh`
 - `./infra/mods-check-addons-rollout.sh`
 - `./infra/waystones-backfill-villages.py` (scan villages generes + placement Waystones par batch avec journal `--resume`)
 - `./infra/chunky-monitor.sh` (supervision ponctuelle Chunky en direct)

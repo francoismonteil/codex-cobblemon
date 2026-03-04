@@ -1,16 +1,15 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# Installs addon rollout lot 8 for the Fabric Cobblemon server:
-# - Cobblemon: Shiny Cookie
+# Installs addon rollout lot 7 for the Fabric Cobblemon server:
+# - Farmer's Delight Refabricated
 #
 # Notes:
-# - This mod is required on clients and server.
-# - Treat this lot as strictly experimental and keep distribution admin-only
-#   until a go/no-go decision is made.
+# - This is the Fabric-compatible Farmer's Delight line for MC 1.21.1.
+# - The main CurseForge "Farmer's Delight" page targets Forge/NeoForge.
 #
 # Usage:
-#   ./infra/mods-install-addon-lot8-shiny-cookie.sh
+#   ./infra/mods-install-addon-lot7-farmers-delight.sh
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 REPO_ROOT="$(cd "${SCRIPT_DIR}/.." && pwd)"
@@ -67,11 +66,11 @@ ensure_mod() {
   echo "OK installed ${name}: ${dst}"
 }
 
-# Cobblemon: Shiny Cookie 0.0.1 for MC 1.21.1 Fabric (Modrinth version YIna1pKh)
-SHINY_COOKIE_URL="https://cdn.modrinth.com/data/Nf67XeTi/versions/YIna1pKh/shinycookie-fabric-0.0.1.jar"
-SHINY_COOKIE_SHA256="7bb5957c4a48a6a5a6130c8c17e0056bce1a7e31c6c94df96f755b1b57992e24"
-SHINY_COOKIE_FILE="shinycookie-fabric-0.0.1.jar"
+# Farmer's Delight Refabricated 3.2.5 for MC 1.21.1 Fabric (Modrinth version Sddkv0PO)
+FARMERS_DELIGHT_URL="https://cdn.modrinth.com/data/7vxePowz/versions/Sddkv0PO/FarmersDelight-1.21.1-3.2.5+refabricated.jar"
+FARMERS_DELIGHT_SHA256="023bb687d0453dec1ad5de17c4d55a750bb0144046d6ad37022f99ef0a39fa4d"
+FARMERS_DELIGHT_FILE="FarmersDelight-1.21.1-3.2.5+refabricated.jar"
 
-ensure_mod "Cobblemon: Shiny Cookie" "${SHINY_COOKIE_URL}" "${SHINY_COOKIE_SHA256}" "${SHINY_COOKIE_FILE}"
+ensure_mod "Farmer's Delight Refabricated" "${FARMERS_DELIGHT_URL}" "${FARMERS_DELIGHT_SHA256}" "${FARMERS_DELIGHT_FILE}"
 
 echo "Done. Restart the server after installation (prefer ./infra/safe-restart.sh or stop/start)."

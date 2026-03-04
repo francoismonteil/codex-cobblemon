@@ -305,3 +305,161 @@ Validation fonctionnelle attendue:
 - fonctions autorisees testees sur perimetre restreint
 - desactivation possible si besoin
 - pas d'erreur datapack apres `reload` / reboot
+
+## Realignement de roadmap - 2026-03-04
+
+Decision:
+- les lots `7` et `8` du plan actif sont reassignes vers une piste cuisine/agriculture
+- nouveaux lots actifs:
+  - lot `7`: `Farmer's Delight Refabricated 3.2.5`
+  - lot `8`: `Bookshelf 21.1.81`, `Prickle 21.1.11`, `Botany Pots 21.1.41`, `Cobblemon Botany Pots 1.0.1`
+
+Sortis du plan actif:
+- `CobbledGacha`
+- `Cobblemon: Shiny Cookie`
+
+Bloques / exclus du plan actif:
+- `Tomtaru's Cobblemon & Farmer's Delight Tweaks`: NeoForge uniquement en `1.21.1`
+- `CobbleCuisine`: ligne Cobblemon `1.7.x` publiee en alpha/rc
+- `CobbleFoods`: pas de build `1.21.1`
+
+Trace:
+- lockfile mis a jour: `audit/addons-compat-lock-20260304.md`
+- rollout monde actuel mis a jour: `runbooks/addons-rollout-current-world.md`
+- pack client mis a jour: `runbooks/client-pack-addons-rollout.md`
+
+## Lot 7 - Farmer's Delight Refabricated
+
+Statut:
+- `deployed`
+- `validated`
+
+Perimetre retenu:
+- serveur:
+  - `Farmer's Delight Refabricated 3.2.5`
+- client:
+  - `Farmer's Delight Refabricated 3.2.5`
+
+Preflight:
+- script verifie:
+  - `bash -n ./infra/mods-install-addon-lot7-farmers-delight.sh`
+- artefact verifie:
+  - URL accessible
+  - SHA256 conforme au verrou `3.2.5`
+
+Execution:
+- maintenance effectuee le `2026-03-04`
+- script applique: `./infra/mods-install-addon-lot7-farmers-delight.sh`
+- checker cumulatif: `./infra/mods-check-addons-rollout.sh --through-lot 7`
+- resultat checker: `expected=28 ok=28 missing=0 hash_mismatch=0`
+
+Preuves operationnelles:
+- backup pre-maintenance pris sur l'hote distant:
+  - `backups/backup-20260304-085727.tar.gz`
+- le serveur a redemarre correctement
+- etat final apres redemarrage:
+  - `status=running`
+  - `health=healthy`
+- annonce Discord de maintenance postee
+- annonce Discord de reouverture postee
+- message de reouverture envoye en jeu
+- logs serveur coherents:
+  - `farmersdelight 1.21.1-3.2.5+refabricated`
+  - `Loaded config farmersdelight-common.json`
+  - `Found new data pack farmersdelight, loading it automatically`
+  - `Done (5.374s)!`
+
+Validation immediate:
+- le lot est techniquement actif
+- la fenetre d'observation `48h` est ouverte
+
+Validation fonctionnelle attendue:
+- connexion client avec `Farmer's Delight Refabricated 3.2.5`
+- blocs de cuisine placables et utilisables
+- recettes visibles et craftables
+- pas de crash, desync d'inventaire ou souci de recette
+
+Decision:
+- tests utilisateur valides
+- lot `7` accepte comme baseline active
+- pas de rollback necessaire
+- lot `8` peut maintenant etre prepare pour maintenance
+
+## Lot 8 - Botany Pots
+
+Statut:
+- `deployed`
+- `in_observation`
+
+Perimetre retenu:
+- serveur:
+  - `Architectury API 13.0.8+fabric`
+  - `Bookshelf 21.1.81`
+  - `Prickle 21.1.11`
+  - `Botany Pots 21.1.41`
+  - `Cobblemon Botany Pots 1.0.1`
+- client:
+  - `Architectury API 13.0.8+fabric`
+  - `Bookshelf 21.1.81`
+  - `Prickle 21.1.11`
+  - `Botany Pots 21.1.41`
+  - `Cobblemon Botany Pots 1.0.1`
+
+Preflight:
+- script verifie:
+  - `bash -n ./infra/mods-install-addon-lot8-botany-pots.sh`
+- artefacts verifies:
+  - `Architectury API 13.0.8+fabric` URL accessible et SHA256 conforme
+  - `Bookshelf 21.1.81` URL accessible et SHA256 conforme
+  - `Prickle 21.1.11` URL accessible et SHA256 conforme
+  - `Botany Pots 21.1.41` URL accessible et SHA256 conforme
+  - `Cobblemon Botany Pots 1.0.1` URL accessible et SHA256 conforme
+
+Execution:
+- maintenance effectuee le `2026-03-04`
+- script applique: `./infra/mods-install-addon-lot8-botany-pots.sh`
+- checker cumulatif: `./infra/mods-check-addons-rollout.sh --through-lot 8`
+- resultat checker final: `expected=33 ok=33 missing=0 hash_mismatch=0`
+
+Incident corrige pendant maintenance:
+- premier boot refuse:
+  - `Cobblemon Botany Pots 1.0.1` demandait `Architectury >= 13.0.8`
+- correctif applique:
+  - ajout de `Architectury API 13.0.8+fabric` au lot `8`
+  - redeploiement du repo vers l'hote
+  - reexecution du script lot `8`
+
+Preuves operationnelles:
+- backup pre-maintenance pris sur l'hote distant:
+  - `backups/backup-20260304-091958.tar.gz`
+- le serveur a redemarre correctement apres correction
+- etat final apres redemarrage:
+  - `status=running`
+  - `health=healthy`
+- annonce Discord de maintenance postee
+- annonce Discord de reouverture postee avec pile client corrigee
+- message de reouverture envoye en jeu
+- logs serveur coherents:
+  - `architectury 13.0.8`
+  - `botanypots 21.1.41`
+  - `cobblemon_pots 1.0.1`
+  - `Loaded 1 botany pots plugins!`
+  - `Found new data pack botanypots`
+  - `Found new data pack cobblemon_pots`
+  - `Done (5.273s)!`
+
+Validation immediate:
+- le lot est techniquement actif
+- la fenetre d'observation `72h` est ouverte
+
+Validation fonctionnelle attendue:
+- client avec la pile complete:
+  - `Architectury API 13.0.8+fabric`
+  - `Bookshelf 21.1.81`
+  - `Prickle 21.1.11`
+  - `Botany Pots 21.1.41`
+  - `Cobblemon Botany Pots 1.0.1`
+- pot placable et fonctionnel
+- culture Cobblemon dans les pots OK
+- automation simple OK
+- pas de crash, duplication ou comportement anormal

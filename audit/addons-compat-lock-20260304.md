@@ -116,31 +116,83 @@ Objectif:
 - Rollback note: `the datapack zip can be removed cleanly, but gameplay changes already applied to Pokemon are not expected to auto-revert`
 - Implementation note: `Modrinth project metadata says mod, but the selected 1.21.1 artifact is published with loader=datapack`
 
-### Lot 7 - CobbledGacha
-- Addon: `CobbledGacha`
+### Lot 7 - Farmer's Delight Refabricated
+- Addon: `Farmer's Delight Refabricated`
 - Track: `current_world`
 - Artifact kind: `mod`
-- Version: `3.0.2`
-- Source primaire: `https://modrinth.com/mod/cobbledgacha/version/Ifh7vKgZ`
-- Download URL: `https://cdn.modrinth.com/data/c1OpnQs3/versions/Ifh7vKgZ/cobbledgacha-fabric-1.21.1-3.0.2.jar`
-- SHA256: `67b16b87015b34fcad46a23c2a323287c95cce63b2fac537b0b480df751e9b46`
+- Version: `3.2.5`
+- Source primaire: `https://modrinth.com/mod/farmers-delight-refabricated/version/Sddkv0PO`
+- Download URL: `https://cdn.modrinth.com/data/7vxePowz/versions/Sddkv0PO/FarmersDelight-1.21.1-3.2.5+refabricated.jar`
+- SHA256: `023bb687d0453dec1ad5de17c4d55a750bb0144046d6ad37022f99ef0a39fa4d`
+- Dependencies: `Fabric API`
+- Side requirement: `both`
+- Removal difficulty: `easy_to_medium`
+- Rollback note: `jar removal is enough for a fast rollback, but already-placed blocks and crafted items remain in the world`
+
+### Lot 8 - Architectury API
+- Addon: `Architectury API`
+- Track: `current_world_dependency`
+- Artifact kind: `mod`
+- Version: `13.0.8+fabric`
+- Source primaire: `https://modrinth.com/mod/architectury-api/version/Wto0RchG`
+- Download URL: `https://cdn.modrinth.com/data/lhGA9TYQ/versions/Wto0RchG/architectury-13.0.8-fabric.jar`
+- SHA256: `10cbbb6f5f96a2f1853b0cc68428424cec8903409517b299ff02350756b6399d`
 - Dependencies: `none`
+- Side requirement: `required_by_cobblemon_botany_pots`
+- Removal difficulty: `tied_to_parent_lot`
+- Rollback note: `remove together with the full Botany Pots stack if lot 8 is rejected`
+
+### Lot 8 - Bookshelf
+- Addon: `Bookshelf`
+- Track: `current_world`
+- Artifact kind: `mod`
+- Version: `21.1.81`
+- Source primaire: `https://modrinth.com/mod/bookshelf-lib/version/kpkjWpa5`
+- Download URL: `https://cdn.modrinth.com/data/uy4Cnpcm/versions/kpkjWpa5/bookshelf-fabric-1.21.1-21.1.81.jar`
+- SHA256: `df2dd3a3e75f2dbf56baf9bdb6cc0007f9c0efb0f2b2067f047ddf98ea1b49d8`
+- Dependencies: `none`
+- Side requirement: `both`
+- Removal difficulty: `tied_to_parent_lot`
+- Rollback note: `remove together with the full Botany Pots stack if lot 8 is rejected`
+
+### Lot 8 - Prickle
+- Addon: `Prickle`
+- Track: `current_world`
+- Artifact kind: `mod`
+- Version: `21.1.11`
+- Source primaire: `https://modrinth.com/mod/prickle/version/Ef7P6Rb7`
+- Download URL: `https://cdn.modrinth.com/data/aaRl8GiW/versions/Ef7P6Rb7/prickle-fabric-1.21.1-21.1.11.jar`
+- SHA256: `d6d639078aecb72770f287d8253e4634114e2536ac9a2ad6ec5f442eb27dd07f`
+- Dependencies: `none`
+- Side requirement: `both`
+- Removal difficulty: `tied_to_parent_lot`
+- Rollback note: `remove together with the full Botany Pots stack if lot 8 is rejected`
+
+### Lot 8 - Botany Pots
+- Addon: `Botany Pots`
+- Track: `current_world`
+- Artifact kind: `mod`
+- Version: `21.1.41`
+- Source primaire: `https://modrinth.com/mod/botany-pots/version/Bz6dkTjV`
+- Download URL: `https://cdn.modrinth.com/data/U6BUTZ7K/versions/Bz6dkTjV/botanypots-fabric-1.21.1-21.1.41.jar`
+- SHA256: `14dd5d079030e2b6dfda629a8c48255c82c55ba01e15e15810b1aaaf30110bc4`
+- Dependencies: `Bookshelf`, `Prickle`
 - Side requirement: `both`
 - Removal difficulty: `medium`
-- Rollback note: `jar removal is easy, but rewards already distributed remain unless a world backup is restored`
+- Rollback note: `jar removal is possible, but already-placed pots, soils and automation layouts remain in the world`
 
-### Lot 8 - Cobblemon: Shiny Cookie
-- Addon: `Cobblemon: Shiny Cookie`
+### Lot 8 - Cobblemon Botany Pots
+- Addon: `Cobblemon Botany Pots`
 - Track: `current_world`
 - Artifact kind: `mod`
-- Version: `0.0.1`
-- Source primaire: `https://modrinth.com/mod/cobblemon-shiny-cookie/version/YIna1pKh`
-- Download URL: `https://cdn.modrinth.com/data/Nf67XeTi/versions/YIna1pKh/shinycookie-fabric-0.0.1.jar`
-- SHA256: `7bb5957c4a48a6a5a6130c8c17e0056bce1a7e31c6c94df96f755b1b57992e24`
-- Dependencies: `none`
+- Version: `1.0.1`
+- Source primaire: `https://www.curseforge.com/minecraft/mc-mods/cobblemon-botany-pots`
+- Download URL: `https://mediafilez.forgecdn.net/files/7074/619/cobblemon_pots-fabric-1.0.1.jar`
+- SHA256: `38884fdf8d968b54c258f15a37316e3d04a35f83a267d4bde3b964d8f1ba076b`
+- Dependencies: `Cobblemon`, `Botany Pots`, `Architectury API`
 - Side requirement: `both`
-- Removal difficulty: `easy_infra`
-- Rollback note: `the jar can be removed quickly, but Pokemon already modified are not expected to revert automatically`
+- Removal difficulty: `medium`
+- Rollback note: `remove with the full Botany Pots stack; harvested items already produced stay in circulation unless a backup is restored`
 
 ## Future season / new world
 
@@ -197,6 +249,84 @@ Objectif:
 - Rollback note: `treat as a paired mod+datapack season experiment, not as a mid-season live patch`
 
 ## Blocked / unresolved
+
+### Farmer's Delight (mainline CurseForge project)
+- Addon: `Farmer's Delight`
+- Track: `blocked`
+- Artifact kind: `mod`
+- Version: `not_selected`
+- Source primaire: `https://www.curseforge.com/minecraft/mc-mods/farmers-delight`
+- Download URL: `not_selected`
+- SHA256: `not_selected`
+- Dependencies: `n/a`
+- Side requirement: `forge_or_neoforge_only`
+- Removal difficulty: `n/a`
+- Rollback note: `do not use on this Fabric server; use Farmer's Delight Refabricated instead`
+
+### Tomtaru's Cobblemon & Farmer's Delight Tweaks
+- Addon: `Tomtaru's Cobblemon & Farmer's Delight Tweaks`
+- Track: `blocked`
+- Artifact kind: `mod`
+- Version: `2.0.3`
+- Source primaire: `https://www.curseforge.com/minecraft/mc-mods/tomtarus-cobblemon-farmers-delight-tweaks`
+- Download URL: `not_selected`
+- SHA256: `not_selected`
+- Dependencies: `Farmer's Delight`, `Cobblemon`
+- Side requirement: `neoforge_only_on_1.21.1`
+- Removal difficulty: `n/a`
+- Rollback note: `exclude from the active Fabric plan until an official Fabric 1.21.1 build exists`
+
+### CobbleCuisine
+- Addon: `CobbleCuisine`
+- Track: `blocked`
+- Artifact kind: `mod`
+- Version: `2.0.1-1.7-rc1`
+- Source primaire: `https://www.curseforge.com/minecraft/mc-mods/cobblecuisine`
+- Download URL: `not_selected`
+- SHA256: `not_selected`
+- Dependencies: `Cobblemon`, `MidnightLib`
+- Side requirement: `both`
+- Removal difficulty: `n/a`
+- Rollback note: `excluded from the active plan because the current Cobblemon 1.7.x line is published as alpha/rc`
+
+### CobbleFoods
+- Addon: `CobbleFoods`
+- Track: `blocked`
+- Artifact kind: `mod`
+- Version: `1.3.3-1.20.1`
+- Source primaire: `https://www.curseforge.com/minecraft/mc-mods/cobblefoods`
+- Download URL: `not_selected`
+- SHA256: `not_selected`
+- Dependencies: `Cobblemon`
+- Side requirement: `both`
+- Removal difficulty: `n/a`
+- Rollback note: `exclude from the active plan until a Fabric 1.21.1 build exists`
+
+### CobbledGacha
+- Addon: `CobbledGacha`
+- Track: `deferred`
+- Artifact kind: `mod`
+- Version: `3.0.2`
+- Source primaire: `https://modrinth.com/mod/cobbledgacha/version/Ifh7vKgZ`
+- Download URL: `not_selected`
+- SHA256: `not_selected`
+- Dependencies: `none`
+- Side requirement: `both`
+- Removal difficulty: `medium`
+- Rollback note: `removed from the active 8-lot plan when lots 7 and 8 were realigned toward safer farming content`
+
+### Cobblemon: Shiny Cookie
+- Addon: `Cobblemon: Shiny Cookie`
+- Track: `deferred`
+- Artifact kind: `mod`
+- Version: `0.0.1`
+- Source primaire: `https://modrinth.com/mod/cobblemon-shiny-cookie/version/YIna1pKh`
+- Download URL: `not_selected`
+- SHA256: `not_selected`
+- Dependencies: `none`
+- Side requirement: `both`
+- Removal difficulty: `easy_infra`
+- Rollback note: `removed from the active 8-lot plan when lots 7 and 8 were realigned toward safer farming content`
 
 ### Raid Dens Design
 - Addon: `Raid Dens Design`

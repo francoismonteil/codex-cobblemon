@@ -71,8 +71,8 @@ lot_scripts=(
   "infra/mods-install-addon-lot4-cobbleloots.sh"
   "infra/mods-install-addon-lot5-raiddens.sh"
   "infra/mods-install-addon-lot6-blues-utilities.sh"
-  "infra/mods-install-addon-lot7-gacha-machine.sh"
-  "infra/mods-install-addon-lot8-shiny-cookie.sh"
+  "infra/mods-install-addon-lot7-farmers-delight.sh"
+  "infra/mods-install-addon-lot8-botany-pots.sh"
 )
 
 for ((i = 0; i < through_lot; i++)); do

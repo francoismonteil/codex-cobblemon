@@ -31,6 +31,8 @@
 - `runbooks/addons-rollout-lot4-cobbleloots.md`: preparation operationnelle et templates de communication pour le lot 4 `Cobbleloots`.
 - `runbooks/addons-rollout-lot5-raiddens.md`: preparation operationnelle et templates de communication pour le lot 5 `Raid Dens`.
 - `runbooks/addons-rollout-lot6-blues-utilities.md`: preparation operationnelle et templates de communication pour le lot 6 `Blue's Cobblemon Utilities`.
+- `runbooks/addons-rollout-lot7-farmers-delight.md`: preparation operationnelle et templates de communication pour le lot 7 `Farmer's Delight Refabricated`.
+- `runbooks/addons-rollout-lot8-botany-pots.md`: preparation operationnelle et templates de communication pour le lot 8 `Botany Pots + Cobblemon Botany Pots`.
 - `runbooks/client-pack-addons-rollout.md`: liste exacte des ajouts client pour chaque lot d'addons Cobblemon.
 - `runbooks/addons-rollout-next-season.md`: lots reserves a une future saison / nouveau monde.
 - `runbooks/waystones-backfill-existing-villages.md`: poser des Waystones dans les villages deja generes d'une map existante (batch + resume).

@@ -9,6 +9,8 @@ Statut courant:
 - lot `4` (`Cobbleloots`) deploye et valide le `2026-03-04`
 - lot `5` (`Raid Dens`) deploye le `2026-03-04`, actuellement en observation longue
 - lot `6` (`Blue's Cobblemon Utilities`) deploye le `2026-03-04`, actuellement en observation restreinte
+- lot `7` (`Farmer's Delight Refabricated`) deploye et valide le `2026-03-04`
+- lot `8` (`Botany Pots + Cobblemon Botany Pots`) deploye le `2026-03-04`, actuellement en observation
 - journal d'execution: `audit/addons-rollout-journal.md`
 
 Base actuelle incluse dans le checker:
@@ -37,8 +39,8 @@ Contrainte:
 4. `./infra/mods-install-addon-lot4-cobbleloots.sh`
 5. `./infra/mods-install-addon-lot5-raiddens.sh`
 6. `./infra/mods-install-addon-lot6-blues-utilities.sh`
-7. `./infra/mods-install-addon-lot7-gacha-machine.sh`
-8. `./infra/mods-install-addon-lot8-shiny-cookie.sh`
+7. `./infra/mods-install-addon-lot7-farmers-delight.sh`
+8. `./infra/mods-install-addon-lot8-botany-pots.sh`
 
 Verification cumulative:
 
@@ -285,52 +287,71 @@ Rollback:
 - retirer le zip du datapack
 - pour revenir a l'etat gameplay exact d'avant: `./infra/restore.sh backups/<backup>.tar.gz`
 
-## Lot 7 - CobbledGacha
+## Lot 7 - Farmer's Delight Refabricated
 
 Commande:
 
 ```bash
-./infra/mods-install-addon-lot7-gacha-machine.sh
+./infra/mods-install-addon-lot7-farmers-delight.sh
 ./infra/mods-check-addons-rollout.sh --through-lot 7
 ```
 
 Validation:
-- machine placable / utilisable
-- recompenses delivrees sans erreur
-- pas de crafting public avant validation du lot
-- test de retrait propre apres usage minimal
+- connexion client avec `Farmer's Delight Refabricated 3.2.5`
+- blocs de cuisine placables et utilisables
+- recettes Farmer's Delight visibles et craftables
+- pas de spam logs ni de desync d'inventaire/recette
+- pas de regression du gameplay Cobblemon deja deploye
 
-Regle d'exposition:
-- distribution initiale admin-only
-- `48h` max avant decision
+Observation:
+- `2` vraies sessions minimum
+- `48h`
 
 Rollback:
-- retrait du jar si rejet immediat
-- si des recompenses ont deja circule: restaurer le backup si retour arriere integral requis
+- retirer `FarmersDelight-1.21.1-3.2.5+refabricated.jar`
 
-## Lot 8 - Cobblemon: Shiny Cookie
+Note:
+- utiliser la variante `Refabricated` sur Fabric; ne pas deployer la branche principale Forge/NeoForge
+
+## Lot 8 - Botany Pots + Cobblemon Botany Pots
 
 Commande:
 
 ```bash
-./infra/mods-install-addon-lot8-shiny-cookie.sh
+./infra/mods-install-addon-lot8-botany-pots.sh
 ./infra/mods-check-addons-rollout.sh --through-lot 8
 ```
 
 Validation:
-- obtention admin-only
-- utilisation controlee sur un Pokemon de test
-- verification du chemin de retrait
-- decision binaire a la fin du lot:
-  - conserver
-  - retirer
+- clients avec la pile complete:
+  - `Architectury API 13.0.8+fabric`
+  - `Bookshelf 21.1.81`
+  - `Prickle 21.1.11`
+  - `Botany Pots 21.1.41`
+  - `Cobblemon Botany Pots 1.0.1`
+- pot placable et fonctionnel
+- plantation / recolte de contenus Cobblemon dans les pots
+- test d'automatisation de base via hopper ou stockage adjacent
+- pas de duplication
+- pas de crash ni spam logs sur la croissance / recolte
 
-Regle d'exposition:
-- pas d'ouverture publique si la decision n'est pas immediate
+Observation:
+- `2` vraies sessions minimum
+- `72h`
 
 Rollback:
-- retirer `shinycookie-fabric-0.0.1.jar`
-- effet deja applique a un Pokemon non reversible automatiquement
+- retirer:
+  - `architectury-13.0.8-fabric.jar`
+  - `bookshelf-fabric-1.21.1-21.1.81.jar`
+  - `prickle-fabric-1.21.1-21.1.11.jar`
+  - `botanypots-fabric-1.21.1-21.1.41.jar`
+  - `cobblemon_pots-fabric-1.0.1.jar`
+
+Sortis du plan actif:
+- `Tomtaru's Cobblemon & Farmer's Delight Tweaks`: pas de build Fabric `1.21.1`, NeoForge uniquement
+- `CobbleCuisine`: ligne Cobblemon `1.7.x` publiee en alpha/rc, exclue du plan actif
+- `CobbleFoods`: pas de build `1.21.1`
+- `CobbledGacha` et `Cobblemon: Shiny Cookie`: retires du plan actif au profit des lots cuisine/agriculture
 
 ## Rollback standard
 

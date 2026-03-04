@@ -52,12 +52,16 @@ Note:
 ## Lot 7
 
 Ajouter:
-- `CobbledGacha` -> `3.0.2`
+- `Farmer's Delight Refabricated` -> `3.2.5`
 
 ## Lot 8
 
 Ajouter:
-- `Cobblemon: Shiny Cookie` -> `0.0.1`
+- `Architectury API` -> `13.0.8+fabric`
+- `Bookshelf` -> `21.1.81`
+- `Prickle` -> `21.1.11`
+- `Botany Pots` -> `21.1.41`
+- `Cobblemon Botany Pots` -> `1.0.1`
 
 ## Checklist joueur
 
