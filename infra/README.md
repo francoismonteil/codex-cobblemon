@@ -142,6 +142,7 @@ Monde (import map):
 - `./infra/world-switch.sh`: active un monde depuis `./worlds/<name>` (stop/start et backup du monde actif)
 - `./infra/worlds-list.sh`: liste les mondes disponibles dans `./worlds`
 - `./infra/world-spawn.sh`: lit le spawn du monde (level.dat) pour l'onboarding
+- `python3 ./infra/map-wall-global.py`: planifie et pose un mur de cartes globales en jeu a partir des `map_*.dat` existantes (filled maps vanilla)
 
 Monde (open world):
 - `./infra/server-profile-openworld-4p.sh`: applique un profil serveur (PvP off, whitelist on, 4 joueurs, distances).
@@ -166,6 +167,8 @@ Monde (open world):
 - `./infra/mods-install-addon-lot6-blues-utilities.sh`: lot addon 6 (`Blue's Cobblemon Utilities`, datapack zip dans le monde actif).
 - `./infra/mods-install-addon-lot7-farmers-delight.sh`: lot addon 7 (`Farmer's Delight Refabricated`).
 - `./infra/mods-install-addon-lot8-botany-pots.sh`: lot addon 8 (`Bookshelf` + `Prickle` + `Botany Pots` + `Cobblemon Botany Pots`).
+- `./infra/mods-install-addon-lot9-gacha-machine.sh`: lot addon 9 (`CobbledGacha`).
+- `./infra/mods-install-addon-lot10-shiny-cookie.sh`: lot addon 10 (`Cobblemon: Shiny Cookie`).
 - `./infra/mods-check-addons-rollout.sh`: verifie cumulativement la baseline actuelle + les lots addons jusqu'au lot demande.
 - `./infra/waystones-backfill-villages.py`: detecte les villages deja generes (scan `.mca`) et pose des `Waystones` par batch via `./infra/mc.sh` avec journal `--resume` (map existante).
 - `./infra/openworld-village-init.sh`: nouveau monde open world (spawn village naturel + border 4000 + protection spawn + pregen), **sans poser automatiquement healer/PC**.

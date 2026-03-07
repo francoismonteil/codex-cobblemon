@@ -13,6 +13,7 @@
 - `runbooks/mc-admin-web.md`: panneau web prive d'administration Minecraft (sans RCON).
 - `runbooks/chatops.md`: admin depuis le chat Minecraft (ChatOps, sans plugin/mod).
 - `runbooks/client-setup.md`: installer le bon client/modpack (eviter les version mismatch).
+- `runbooks/client-pack-recommended.md`: pack client recommande correspondant a la production actuelle.
 - `runbooks/storage-rollout.md`: templates de communication (maintenance/online/rollback) pour le rollout des mods de stockage.
 - `runbooks/friends-guide.md`: infos a partager aux amis (connexion, install, whitelist/op via scripts).
 - `runbooks/discord-bot.md`: bot Discord pour whitelist self-service (slash commands).
@@ -33,13 +34,17 @@
 - `runbooks/addons-rollout-lot6-blues-utilities.md`: preparation operationnelle et templates de communication pour le lot 6 `Blue's Cobblemon Utilities`.
 - `runbooks/addons-rollout-lot7-farmers-delight.md`: preparation operationnelle et templates de communication pour le lot 7 `Farmer's Delight Refabricated`.
 - `runbooks/addons-rollout-lot8-botany-pots.md`: preparation operationnelle et templates de communication pour le lot 8 `Botany Pots + Cobblemon Botany Pots`.
+- `runbooks/addons-rollout-lot9-gacha-machine.md`: preparation operationnelle et templates de communication pour le lot 9 `CobbledGacha`.
+- `runbooks/addons-rollout-lot10-shiny-cookie.md`: preparation operationnelle et templates de communication pour le lot 10 `Cobblemon: Shiny Cookie`.
 - `runbooks/client-pack-addons-rollout.md`: liste exacte des ajouts client pour chaque lot d'addons Cobblemon.
 - `runbooks/addons-rollout-next-season.md`: lots reserves a une future saison / nouveau monde.
 - `runbooks/waystones-backfill-existing-villages.md`: poser des Waystones dans les villages deja generes d'une map existante (batch + resume).
 - `runbooks/pokemon-worldgen.md`: datapack unique Pokemon worldgen (pokemart + pipeline structgen).
 - `runbooks/additionalstructures-integration.md`: integration AS + ACM avec gate compatibilite stricte 1.21.1.
 - `runbooks/worlds.md`: gerer plusieurs maps (bibliotheque + switch).
+- `runbooks/map-wall-global.md`: construire une carte globale en jeu via un mur de `filled_map` vanilla.
 - `runbooks/johto-fr.md`: traduction FR (partielle) de la map Johto.
+- `runbooks/capture-xp.md`: installation et configuration de Cobblemon Capture XP (serveur-only).
 - `runbooks/progression.md`: progression badges (scoreboards) et commandes associees.
 - `runbooks/restore.md`: procedure de restauration.
 - `runbooks/restore-test.md`: checklist de validation post-restore.

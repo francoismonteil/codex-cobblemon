@@ -38,6 +38,7 @@ Convention:
 - `./infra/openworld-village-configure.sh` (configure un monde deja genere)
 - `./infra/world-trim-around-spawn.sh` (conserve un carre autour du spawn, purge hors zone)
 - `./infra/mods-install-openworld.sh`
+- `./infra/fallingtree-configure.sh`
 - `./infra/flan-configure-claim-tools.sh`
 - `./infra/mods-install-waystones.sh`
 - `./infra/mods-install-better-qol.sh`
@@ -51,6 +52,8 @@ Convention:
 - `./infra/mods-install-addon-lot6-blues-utilities.sh`
 - `./infra/mods-install-addon-lot7-farmers-delight.sh`
 - `./infra/mods-install-addon-lot8-botany-pots.sh`
+- `./infra/mods-install-addon-lot9-gacha-machine.sh`
+- `./infra/mods-install-addon-lot10-shiny-cookie.sh`
 - `./infra/mods-check-addons-rollout.sh`
 - `./infra/waystones-backfill-villages.py` (scan villages generes + placement Waystones par batch avec journal `--resume`)
 - `./infra/chunky-monitor.sh` (supervision ponctuelle Chunky en direct)
@@ -82,6 +85,7 @@ Runbook associe (Waystones sur map existante):
 - `./infra/world-install-from-zip.sh`
 - `./infra/world-install-cobblemon-johto.sh`
 - `./infra/world-spawn.sh`
+- `python3 ./infra/map-wall-global.py` (plan + pose d'un mur de cartes globales en jeu depuis les `map_*.dat`)
 
 ## Progression / gameplay (`entrypoint`)
 - `./infra/progression-init.sh`
@@ -94,6 +98,7 @@ Runbook associe (Waystones sur map existante):
 
 ## Johto FR (`utility`)
 - `./infra/johto-fr-generate.sh`
+- `python3 ./infra/johto-fr-generate.py`
 - `./infra/johto-fr-install.sh`
 - `./infra/johto-fixpack-generate.sh`
 
