@@ -220,6 +220,19 @@ Objectif:
 - Removal difficulty: `easy_infra`
 - Rollback note: `jar removal is enough on the infra side; shiny state already granted in gameplay is explicitly accepted as persistent`
 
+### Lot 11 - Carry On
+- Addon: `Carry On`
+- Track: `current_world`
+- Artifact kind: `mod`
+- Version: `2.2.4.4`
+- Source primaire: `https://www.curseforge.com/minecraft/mc-mods/carry-on/files/7393887`
+- Download URL: `https://mediafilez.forgecdn.net/files/7393/887/carryon-fabric-1.21.1-2.2.4.4.jar`
+- SHA256: `968ebd25576aaee7dcf1e839956e3749302a74516c55f9e3b8b5a3e4d1cf251b`
+- Dependencies: `Fabric API`, `Minecraft 1.21.1`, `Java 21`
+- Side requirement: `both`
+- Removal difficulty: `easy_to_medium`
+- Rollback note: `jar removal is enough for a fast rollback; carried/placed content already moved by players remains part of normal world state`
+
 ## Future season / new world
 
 ### Lot S1 - Cobblemon: Mega Showdown

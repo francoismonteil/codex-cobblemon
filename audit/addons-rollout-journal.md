@@ -593,3 +593,129 @@ Validation fonctionnelle attendue:
 - recompenses delivrees sans erreur
 - absence de duplication
 - absence de crash
+
+## Lot 10 - Cobblemon: Shiny Cookie
+
+Statut:
+- `deployed`
+- `in_observation`
+
+Perimetre retenu:
+- serveur:
+  - `Cobblemon: Shiny Cookie 0.0.1`
+- client:
+  - `Cobblemon: Shiny Cookie 0.0.1`
+
+Preflight:
+- script verifie:
+  - `bash -n ./infra/mods-install-addon-lot10-shiny-cookie.sh`
+- artefact verifie:
+  - URL accessible
+  - SHA256 conforme au verrou `0.0.1`
+
+Execution:
+- maintenance effectuee le `2026-03-07`
+- script applique: `./infra/mods-install-addon-lot10-shiny-cookie.sh`
+- checker cumulatif: `./infra/mods-check-addons-rollout.sh --through-lot 10`
+- resultat checker final: `expected=35 ok=35 missing=0 hash_mismatch=0`
+
+Incident corrige pendant maintenance:
+- un premier check a ete lance trop tot (avant fin d'installation) et a affiche un `missing` transitoire
+- le check a ete relance apres installation complete et est passe avec `missing=0`
+
+Preuves operationnelles:
+- backup pre-maintenance pris sur l'hote distant:
+  - `backups/backup-20260307-115921.tar.gz`
+- le serveur a redemarre correctement
+- etat final apres redemarrage:
+  - `status=running`
+  - `health=healthy`
+- annonce Discord de maintenance postee
+- annonce Discord de reouverture postee
+- message de reouverture envoye en jeu
+- logs serveur coherents:
+  - `shinycookie 0.0.1` present dans la liste des mods charges
+  - `Done (5.534s)!`
+
+Validation immediate:
+- le lot est techniquement actif
+- la fenetre d'observation `48h` est ouverte
+
+Validation fonctionnelle attendue:
+- client avec `Cobblemon: Shiny Cookie 0.0.1`: connexion OK
+- obtention / utilisation controlee
+- absence de crash
+- absence d'effet anormal hors perimetre attendu
+
+## Decision lot 11 - 2026-03-07
+
+Decision:
+- `Tomtaru's Cobblemon & Farmer's Delight Tweaks` reste bloque
+- `Carry On` est retenu pour le lot `11`
+
+Motif:
+- `Tomtaru` ne propose pas de build Fabric 1.21.1 pour la stack actuelle
+- `Carry On` propose une build Fabric 1.21.1 compatible
+
+Communication:
+- message Discord decisionnel publie:
+  - Tomtaru bloque pour incompatibilite loader
+  - lot 11 ouvert avec Carry On
+  - actions annoncees: preparation + preflight + maintenance a planifier
+
+## Lot 11 - Carry On
+
+Statut:
+- `deployed`
+- `in_observation`
+
+Perimetre retenu:
+- serveur:
+  - `Carry On 2.2.4.4`
+- client:
+  - `Carry On 2.2.4.4`
+
+Preflight:
+- script verifie:
+  - `bash -n ./infra/mods-install-addon-lot11-carry-on.sh`
+- artefact verifie:
+  - URL accessible
+  - SHA256 conforme au verrou `2.2.4.4`
+- metadonnees verifiees:
+  - `fabric.mod.json` declare `minecraft=1.21.1`
+  - `fabric.mod.json` declare dependance `fabric-api`
+
+Execution:
+- maintenance effectuee le `2026-03-07`
+- script applique: `./infra/mods-install-addon-lot11-carry-on.sh`
+- checker cumulatif: `./infra/mods-check-addons-rollout.sh --through-lot 11`
+- resultat checker final: `expected=36 ok=36 missing=0 hash_mismatch=0`
+
+Incident corrige pendant maintenance:
+- un premier check a ete lance en parallele de l'installation et a affiche un `missing` transitoire
+- le check a ete relance apres installation complete et est passe avec `missing=0`
+
+Preuves operationnelles:
+- backup pre-maintenance pris sur l'hote distant:
+  - `backups/backup-20260307-121636.tar.gz`
+- le serveur a redemarre correctement
+- etat final apres redemarrage:
+  - `status=running`
+  - `health=healthy`
+- annonce Discord de maintenance postee
+- annonce Discord de reouverture postee
+- message de reouverture envoye en jeu
+- logs serveur coherents:
+  - `carryon 2.2.4` present dans la liste des mods charges
+  - `Done (5.681s)!`
+
+Validation immediate:
+- le lot est techniquement actif
+- la fenetre d'observation `48h` est ouverte
+
+Validation fonctionnelle attendue:
+- client avec `Carry On 2.2.4.4`: connexion OK
+- prise/portage de blocs simple: OK
+- prise/portage d'entites simple: OK
+- pas de duplication
+- pas de crash

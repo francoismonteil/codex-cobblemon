@@ -169,6 +169,7 @@ Monde (open world):
 - `./infra/mods-install-addon-lot8-botany-pots.sh`: lot addon 8 (`Bookshelf` + `Prickle` + `Botany Pots` + `Cobblemon Botany Pots`).
 - `./infra/mods-install-addon-lot9-gacha-machine.sh`: lot addon 9 (`CobbledGacha`).
 - `./infra/mods-install-addon-lot10-shiny-cookie.sh`: lot addon 10 (`Cobblemon: Shiny Cookie`).
+- `./infra/mods-install-addon-lot11-carry-on.sh`: lot addon 11 (`Carry On`).
 - `./infra/mods-check-addons-rollout.sh`: verifie cumulativement la baseline actuelle + les lots addons jusqu'au lot demande.
 - `./infra/waystones-backfill-villages.py`: detecte les villages deja generes (scan `.mca`) et pose des `Waystones` par batch via `./infra/mc.sh` avec journal `--resume` (map existante).
 - `./infra/openworld-village-init.sh`: nouveau monde open world (spawn village naturel + border 4000 + protection spawn + pregen), **sans poser automatiquement healer/PC**.

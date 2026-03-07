@@ -12,7 +12,8 @@ Statut courant:
 - lot `7` (`Farmer's Delight Refabricated`) deploye et valide le `2026-03-04`
 - lot `8` (`Botany Pots + Cobblemon Botany Pots`) deploye le `2026-03-04`, actuellement en observation
 - lot `9` (`CobbledGacha`) deploye le `2026-03-04`, actuellement en observation
-- lot `10` (`Cobblemon: Shiny Cookie`) defini, non deploye
+- lot `10` (`Cobblemon: Shiny Cookie`) deploye le `2026-03-07`, actuellement en observation
+- lot `11` (`Carry On`) deploye le `2026-03-07`, actuellement en observation
 - journal d'execution: `audit/addons-rollout-journal.md`
 
 Base actuelle incluse dans le checker:
@@ -77,6 +78,7 @@ Contrainte:
 8. `./infra/mods-install-addon-lot8-botany-pots.sh`
 9. `./infra/mods-install-addon-lot9-gacha-machine.sh`
 10. `./infra/mods-install-addon-lot10-shiny-cookie.sh`
+11. `./infra/mods-install-addon-lot11-carry-on.sh`
 
 Verification cumulative:
 
@@ -84,12 +86,12 @@ Verification cumulative:
 ./infra/mods-check-addons-rollout.sh --through-lot 1
 ```
 
-Remplacer `1` par le lot courant (`2` a `10`).
+Remplacer `1` par le lot courant (`2` a `11`).
 
 Rapports JSON:
 - `audit/addons-server-mods-check-lot1.json`
 - ...
-- `audit/addons-server-mods-check-lot10.json`
+- `audit/addons-server-mods-check-lot11.json`
 
 Criteres OK:
 - `missing=0`
@@ -439,6 +441,28 @@ Rollback:
 
 Note:
 - la persistance des effets gameplay est explicitement acceptee sur ce lot
+
+## Lot 11 - Carry On
+
+Commande:
+
+```bash
+./infra/mods-install-addon-lot11-carry-on.sh
+./infra/mods-check-addons-rollout.sh --through-lot 11
+```
+
+Validation:
+- client avec `carryon-fabric-1.21.1-2.2.4.4.jar`
+- prise/portage de blocs simple: OK
+- prise/portage d'entites simple: OK
+- pas de duplication
+- pas de crash ni spam logs
+
+Observation:
+- `48h`
+
+Rollback:
+- retirer `carryon-fabric-1.21.1-2.2.4.4.jar`
 
 ## Rollback standard
 

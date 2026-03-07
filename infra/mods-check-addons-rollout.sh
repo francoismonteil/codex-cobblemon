@@ -5,7 +5,7 @@ set -euo pipefail
 #
 # Usage:
 #   ./infra/mods-check-addons-rollout.sh --through-lot 1
-#   ./infra/mods-check-addons-rollout.sh --through-lot 10 --mods-dir ./data/mods
+#   ./infra/mods-check-addons-rollout.sh --through-lot 11 --mods-dir ./data/mods
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 REPO_ROOT="$(cd "${SCRIPT_DIR}/.." && pwd)"
@@ -33,21 +33,21 @@ while [[ $# -gt 0 ]]; do
       ;;
     *)
       echo "Unknown argument: $1" >&2
-      echo "Usage: ./infra/mods-check-addons-rollout.sh --through-lot <1..10> [--mods-dir <path>]" >&2
+      echo "Usage: ./infra/mods-check-addons-rollout.sh --through-lot <1..11> [--mods-dir <path>]" >&2
       exit 1
       ;;
   esac
 done
 
 if [[ -z "${through_lot}" ]]; then
-  echo "Missing required argument: --through-lot <1..10>" >&2
+  echo "Missing required argument: --through-lot <1..11>" >&2
   exit 1
 fi
 
 case "${through_lot}" in
-  1|2|3|4|5|6|7|8|9|10) ;;
+  1|2|3|4|5|6|7|8|9|10|11) ;;
   *)
-    echo "Invalid lot number: ${through_lot} (expected 1..10)" >&2
+    echo "Invalid lot number: ${through_lot} (expected 1..11)" >&2
     exit 1
     ;;
 esac
@@ -75,6 +75,7 @@ lot_scripts=(
   "infra/mods-install-addon-lot8-botany-pots.sh"
   "infra/mods-install-addon-lot9-gacha-machine.sh"
   "infra/mods-install-addon-lot10-shiny-cookie.sh"
+  "infra/mods-install-addon-lot11-carry-on.sh"
 )
 
 for ((i = 0; i < through_lot; i++)); do

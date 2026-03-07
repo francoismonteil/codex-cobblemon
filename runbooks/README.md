@@ -36,6 +36,7 @@
 - `runbooks/addons-rollout-lot8-botany-pots.md`: preparation operationnelle et templates de communication pour le lot 8 `Botany Pots + Cobblemon Botany Pots`.
 - `runbooks/addons-rollout-lot9-gacha-machine.md`: preparation operationnelle et templates de communication pour le lot 9 `CobbledGacha`.
 - `runbooks/addons-rollout-lot10-shiny-cookie.md`: preparation operationnelle et templates de communication pour le lot 10 `Cobblemon: Shiny Cookie`.
+- `runbooks/addons-rollout-lot11-carry-on.md`: preparation operationnelle et templates de communication pour le lot 11 `Carry On`.
 - `runbooks/client-pack-addons-rollout.md`: liste exacte des ajouts client pour chaque lot d'addons Cobblemon.
 - `runbooks/addons-rollout-next-season.md`: lots reserves a une future saison / nouveau monde.
 - `runbooks/waystones-backfill-existing-villages.md`: poser des Waystones dans les villages deja generes d'une map existante (batch + resume).

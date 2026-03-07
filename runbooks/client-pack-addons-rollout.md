@@ -73,6 +73,11 @@ Ajouter:
 Ajouter:
 - `Cobblemon: Shiny Cookie` -> `0.0.1`
 
+## Lot 11
+
+Ajouter:
+- `Carry On` -> `2.2.4.4`
+
 ## Checklist joueur
 
 1. garder le modpack officiel en `Minecraft 1.21.1`
