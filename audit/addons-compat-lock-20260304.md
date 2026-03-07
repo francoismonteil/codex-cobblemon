@@ -194,6 +194,32 @@ Objectif:
 - Removal difficulty: `medium`
 - Rollback note: `remove with the full Botany Pots stack; harvested items already produced stay in circulation unless a backup is restored`
 
+### Lot 9 - CobbledGacha
+- Addon: `CobbledGacha`
+- Track: `current_world`
+- Artifact kind: `mod`
+- Version: `3.0.2`
+- Source primaire: `https://modrinth.com/mod/cobbledgacha/version/Ifh7vKgZ`
+- Download URL: `https://cdn.modrinth.com/data/c1OpnQs3/versions/Ifh7vKgZ/cobbledgacha-fabric-1.21.1-3.0.2.jar`
+- SHA256: `67b16b87015b34fcad46a23c2a323287c95cce63b2fac537b0b480df751e9b46`
+- Dependencies: `none`
+- Side requirement: `both`
+- Removal difficulty: `medium`
+- Rollback note: `jar removal is straightforward; rewards already distributed or gameplay effects already consumed are allowed to persist`
+
+### Lot 10 - Cobblemon: Shiny Cookie
+- Addon: `Cobblemon: Shiny Cookie`
+- Track: `current_world`
+- Artifact kind: `mod`
+- Version: `0.0.1`
+- Source primaire: `https://modrinth.com/mod/cobblemon-shiny-cookie/version/YIna1pKh`
+- Download URL: `https://cdn.modrinth.com/data/Nf67XeTi/versions/YIna1pKh/shinycookie-fabric-0.0.1.jar`
+- SHA256: `7bb5957c4a48a6a5a6130c8c17e0056bce1a7e31c6c94df96f755b1b57992e24`
+- Dependencies: `none`
+- Side requirement: `both`
+- Removal difficulty: `easy_infra`
+- Rollback note: `jar removal is enough on the infra side; shiny state already granted in gameplay is explicitly accepted as persistent`
+
 ## Future season / new world
 
 ### Lot S1 - Cobblemon: Mega Showdown
@@ -301,32 +327,6 @@ Objectif:
 - Side requirement: `both`
 - Removal difficulty: `n/a`
 - Rollback note: `exclude from the active plan until a Fabric 1.21.1 build exists`
-
-### CobbledGacha
-- Addon: `CobbledGacha`
-- Track: `deferred`
-- Artifact kind: `mod`
-- Version: `3.0.2`
-- Source primaire: `https://modrinth.com/mod/cobbledgacha/version/Ifh7vKgZ`
-- Download URL: `not_selected`
-- SHA256: `not_selected`
-- Dependencies: `none`
-- Side requirement: `both`
-- Removal difficulty: `medium`
-- Rollback note: `removed from the active 8-lot plan when lots 7 and 8 were realigned toward safer farming content`
-
-### Cobblemon: Shiny Cookie
-- Addon: `Cobblemon: Shiny Cookie`
-- Track: `deferred`
-- Artifact kind: `mod`
-- Version: `0.0.1`
-- Source primaire: `https://modrinth.com/mod/cobblemon-shiny-cookie/version/YIna1pKh`
-- Download URL: `not_selected`
-- SHA256: `not_selected`
-- Dependencies: `none`
-- Side requirement: `both`
-- Removal difficulty: `easy_infra`
-- Rollback note: `removed from the active 8-lot plan when lots 7 and 8 were realigned toward safer farming content`
 
 ### Raid Dens Design
 - Addon: `Raid Dens Design`

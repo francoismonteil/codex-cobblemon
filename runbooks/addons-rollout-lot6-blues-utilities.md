@@ -143,3 +143,17 @@ Si un vrai retour arriere gameplay est requis:
 ```bash
 ./infra/restore.sh backups/<backup-file>.tar.gz
 ```
+
+## Restriction fonctionnelle
+
+- tant que les fonctions `size_variation` ne sont pas revalidees en usage reel, elles sont considerees:
+  - `experimentales`
+  - `non supportees`
+- consigne staff:
+  - ne pas promouvoir ces usages
+  - ne pas les distribuer comme fonctionnalite stable
+- seuil d'escalade:
+  - echec joueur reproductible
+  - item consomme sans effet
+  - crash
+  - extension des erreurs a d'autres familles de fonctions

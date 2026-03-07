@@ -9,6 +9,62 @@ Base cible:
 - Loader `Fabric`
 - Cobblemon `1.7.3`
 
+## Known issues
+
+### Cobblemon Quick Battle
+- Mod: `Cobblemon Quick Battle`
+- Version: `1.2.5`
+- Symptome: `Multi Exp / Exp. Share` ne partage pas toujours l'XP en `Quick Battle`, alors que le partage fonctionne en combat normal
+- Impact: `visible gameplay`
+- Contournement: `utiliser les combats normaux pour tout ce qui depend du Multi Exp`
+- Statut: `known_issue_accepted`
+- Declencheur de retrait: `autres regressions XP/EV, duplication, perte d'XP, soft-lock, ou bug de combat non contournable`
+
+### Blue's Cobblemon Utilities
+- Mod: `Blue's Cobblemon Utilities`
+- Version: `4.0.0`
+- Symptome: erreurs de chargement sur les fonctions `bluecustomitems:addon_support/size_variation/convert/*`
+- Impact: `partiel et non encore reproduit en usage joueur`
+- Contournement: `considerer size_variation comme experimental / non supporte tant qu'il n'est pas revalide`
+- Statut: `restricted_functionality`
+- Declencheur de retrait: `echec joueur reproductible, perte d'objet, crash, ou extension des erreurs a d'autres familles de fonctions`
+
+### Cobblemon Raid Dens
+- Mod: `Cobblemon Raid Dens`
+- Version: `0.8.1+1.21.1`
+- Symptome: advancements de raid qui referencent des items `Mega Showdown` absents
+- Impact: `non bloquant`
+- Contournement: `ignorer ces advancements tant qu'aucun impact de raid ou de recompense n'est observe`
+- Statut: `accepted_log_noise`
+- Declencheur de retrait: `probleme concret de raid, de recompense ou de progression`
+
+### Supplementaries
+- Mod: `Supplementaries`
+- Version: `1.21-3.5.25-fabric`
+- Symptome: recettes `pancake` / `planter` retirees et erreurs de tags `dyed/brown`
+- Impact: `non bloqueur a ce stade`
+- Contournement: `surveiller et n'ouvrir un chantier que si un joueur signale une recette ou un item manquant`
+- Statut: `accepted_log_noise`
+- Declencheur de retrait: `recettes ou items de gameplay reellement casses pour les joueurs`
+
+### Flan
+- Mod: `Flan`
+- Version: `1.21.1-1.12.1-fabric`
+- Symptome: parse errors sur des permissions qui pointent vers des mods absents (`AE2`, `Mekanism`, `Taterzens`)
+- Impact: `bruit de configuration`
+- Contournement: `aucune action prod immediate`
+- Statut: `accepted_log_noise`
+- Declencheur de retrait: `echec reel des claims, des permissions ou d'un outil supporte`
+
+### Disconnect packet
+- Mod: `server networking`
+- Version: `n/a`
+- Symptome: `Sending unknown packet 'clientbound/minecraft:disconnect'`
+- Impact: `probables tentatives de connexion non conformes`
+- Contournement: `verifier d'abord la conformite du pack client avant d'escalader`
+- Statut: `accepted_log_noise`
+- Declencheur de retrait: `joueur avec le bon pack incapable de se connecter de facon reproductible`
+
 ## Lot 1 - Cobblemon Pokenav
 
 Statut:
@@ -328,6 +384,31 @@ Trace:
 - rollout monde actuel mis a jour: `runbooks/addons-rollout-current-world.md`
 - pack client mis a jour: `runbooks/client-pack-addons-rollout.md`
 
+## Reouverture des lots 9 et 10 - 2026-03-04
+
+Decision:
+- `CobbledGacha` et `Cobblemon: Shiny Cookie` sont reintegres au plan actif
+- nouveaux lots actifs:
+  - lot `9`: `CobbledGacha 3.0.2`
+  - lot `10`: `Cobblemon: Shiny Cookie 0.0.1`
+
+Motif:
+- le risque de persistance gameplay est explicitement accepte
+- les deux mods sont donc reevalues comme deployables en lots controles, sans exigence de reversibilite gameplay stricte
+
+Statut:
+- lot `9`: `defined`, `not_opened`
+- lot `10`: `defined`, `not_opened`
+
+Trace:
+- scripts ajoutes:
+  - `./infra/mods-install-addon-lot9-gacha-machine.sh`
+  - `./infra/mods-install-addon-lot10-shiny-cookie.sh`
+- runbooks ajoutes:
+  - `runbooks/addons-rollout-lot9-gacha-machine.md`
+  - `runbooks/addons-rollout-lot10-shiny-cookie.md`
+- checker et plan actif mis a jour pour accepter `--through-lot 10`
+
 ## Lot 7 - Farmer's Delight Refabricated
 
 Statut:
@@ -463,3 +544,52 @@ Validation fonctionnelle attendue:
 - culture Cobblemon dans les pots OK
 - automation simple OK
 - pas de crash, duplication ou comportement anormal
+
+## Lot 9 - CobbledGacha
+
+Statut:
+- `deployed`
+- `in_observation`
+
+Perimetre retenu:
+- serveur:
+  - `CobbledGacha 3.0.2`
+- client:
+  - `CobbledGacha 3.0.2`
+
+Preflight:
+- script verifie:
+  - `bash -n ./infra/mods-install-addon-lot9-gacha-machine.sh`
+- artefact verifie:
+  - URL accessible
+  - SHA256 conforme au verrou `3.0.2`
+
+Execution:
+- maintenance effectuee le `2026-03-04`
+- script applique: `./infra/mods-install-addon-lot9-gacha-machine.sh`
+- checker cumulatif: `./infra/mods-check-addons-rollout.sh --through-lot 9`
+- resultat checker: `expected=34 ok=34 missing=0 hash_mismatch=0`
+
+Preuves operationnelles:
+- backup pre-maintenance pris sur l'hote distant:
+  - `backups/backup-20260304-122525.tar.gz`
+- le serveur a redemarre correctement
+- etat final apres redemarrage:
+  - `status=running`
+  - `health=healthy`
+- annonce Discord de maintenance postee
+- annonce Discord de reouverture postee
+- logs serveur coherents:
+  - `Cobbled Gacha Machine Fabric initialized!`
+  - `Done (6.045s)!`
+
+Validation immediate:
+- le lot est techniquement actif
+- la fenetre d'observation `48h` est ouverte
+
+Validation fonctionnelle attendue:
+- client avec `CobbledGacha 3.0.2`: connexion OK
+- machine placable / utilisable
+- recompenses delivrees sans erreur
+- absence de duplication
+- absence de crash

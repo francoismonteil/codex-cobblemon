@@ -63,6 +63,16 @@ Ajouter:
 - `Botany Pots` -> `21.1.41`
 - `Cobblemon Botany Pots` -> `1.0.1`
 
+## Lot 9
+
+Ajouter:
+- `CobbledGacha` -> `3.0.2`
+
+## Lot 10
+
+Ajouter:
+- `Cobblemon: Shiny Cookie` -> `0.0.1`
+
 ## Checklist joueur
 
 1. garder le modpack officiel en `Minecraft 1.21.1`

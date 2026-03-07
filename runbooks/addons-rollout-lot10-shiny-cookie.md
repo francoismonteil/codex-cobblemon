@@ -1,21 +1,23 @@
-# Runbook: Lot 3 Quick Battle
+# Runbook: Lot 10 Shiny Cookie
 
 Objectif:
-- preparer la maintenance du lot `3`
+- preparer la maintenance du lot `10`
 - disposer des messages de communication et de la checklist de test
 
 Contexte cible:
 - Minecraft `1.21.1`
 - Cobblemon `1.7.3`
-- lots precedents valides:
-  - `Cobblemon Pokenav 2.2.5`
-  - `APS Trophies 1.1.1`
+- lots `1` a `9` actifs
 
 Ajouts du lot:
 - serveur:
-  - `Cobblemon Quick Battle 1.2.5`
+  - `Cobblemon: Shiny Cookie 0.0.1`
 - client obligatoire:
-  - `Cobblemon Quick Battle 1.2.5`
+  - `Cobblemon: Shiny Cookie 0.0.1`
+
+Position retenue:
+- la persistance gameplay est explicitement acceptee pour ce lot
+- un retrait du jar n'annule pas les effets deja appliques aux Pokemon
 
 References:
 - rollout principal: `runbooks/addons-rollout-current-world.md`
@@ -26,14 +28,14 @@ References:
 ## Etat de preparation
 
 Preflight deja valide:
-- script lot 3 syntaxiquement OK:
-  - `./infra/mods-install-addon-lot3-quick-battle.sh`
-- artefact `Cobblemon Quick Battle 1.2.5` telechargeable et hash conforme
+- script lot 10 syntaxiquement OK:
+  - `./infra/mods-install-addon-lot10-shiny-cookie.sh`
+- artefact `Cobblemon: Shiny Cookie 0.0.1` telechargeable et hash conforme
 
 Preflight restant avant maintenance:
 - verifier qu'aucun joueur n'est connecte
 - prendre un backup pre-maintenance
-- preparer au moins un joueur test avec `Cobblemon Quick Battle 1.2.5`
+- preparer au moins un joueur test avec `Cobblemon: Shiny Cookie 0.0.1`
 
 ## Template 1 - Annonce maintenance
 
@@ -41,17 +43,17 @@ Preflight restant avant maintenance:
 [MAINTENANCE SERVEUR COBBLEMON]
 
 Maintenance prevue aujourd'hui a <HH:MM> (duree estimee: 15 a 20 min).
-Objectif: deploiement du lot 3 addons:
-- Cobblemon Quick Battle 1.2.5
+Objectif: deploiement du lot 10 addons:
+- Cobblemon: Shiny Cookie 0.0.1
 
 Ajout cote client pour rejoindre apres maintenance:
-- Cobblemon Quick Battle 1.2.5
+- Cobblemon: Shiny Cookie 0.0.1
 
-Rappels:
+Important:
 1) Gardez Minecraft 1.21.1.
 2) Gardez Cobblemon 1.7.3 / le pack client habituel du serveur.
 3) Desactivez les auto-updates.
-4) N'ajoutez pas les lots suivants, ils ne sont pas deployes.
+4) La persistance gameplay de ce lot est assumee.
 
 Je reposte ici quand le serveur est de nouveau en ligne.
 ```
@@ -61,17 +63,15 @@ Je reposte ici quand le serveur est de nouveau en ligne.
 ```text
 [SERVEUR EN LIGNE]
 
-La maintenance du lot 3 est terminee, serveur de nouveau disponible.
+La maintenance du lot 10 est terminee, serveur de nouveau disponible.
 
 Mod a avoir cote client pour rejoindre:
-- Cobblemon Quick Battle 1.2.5
+- Cobblemon: Shiny Cookie 0.0.1
 
 Test attendu pendant les prochaines 48h:
 - connexion au serveur sans erreur de version
-- combat rapide fonctionnel
-- combat classique non regresse
-- capture apres combat OK
-- signaler tout soft-lock, duplication, desync ou comportement anormal
+- obtention / utilisation controlee OK
+- signaler tout comportement anormal, consommation sans effet ou crash
 ```
 
 ## Template 3 - Incident / rollback
@@ -79,14 +79,14 @@ Test attendu pendant les prochaines 48h:
 ```text
 [INCIDENT MAINTENANCE]
 
-Un probleme est apparu pendant/apres le deploiement du lot 3:
-- Cobblemon Quick Battle 1.2.5
+Un probleme est apparu pendant/apres le deploiement du lot 10:
+- Cobblemon: Shiny Cookie 0.0.1
 
 Le serveur passe en rollback vers l'etat precedent pour retablir le service rapidement.
 
 Impact:
 - indisponibilite temporaire pendant la restauration
-- le lot 3 est suspendu jusqu'a correction
+- le lot 10 est suspendu jusqu'a correction
 
 Je confirme ici des que le rollback est termine et que la connexion est stable.
 ```
@@ -97,8 +97,8 @@ Je confirme ici des que le rollback est termine et que la connexion est stable.
 2. verifier les joueurs connectes
 3. executer `./infra/backup.sh`
 4. executer `./infra/stop.sh`
-5. executer `./infra/mods-install-addon-lot3-quick-battle.sh`
-6. executer `./infra/mods-check-addons-rollout.sh --through-lot 3`
+5. executer `./infra/mods-install-addon-lot10-shiny-cookie.sh`
+6. executer `./infra/mods-check-addons-rollout.sh --through-lot 10`
 7. executer `./infra/start.sh`
 8. verifier l'absence d'erreurs de resolution de mods dans `./data/logs/latest.log`
 9. verifier `./infra/status.sh`
@@ -106,34 +106,19 @@ Je confirme ici des que le rollback est termine et que la connexion est stable.
 
 ## Checklist de test
 
-1. client avec `Cobblemon Quick Battle 1.2.5`: connexion OK
-2. combat rapide fonctionnel
-3. combat classique encore utilisable
-4. capture apres combat OK
-5. absence de duplication
-6. absence de soft-lock
-7. absence de desync visible client/serveur
-8. verifier explicitement le comportement `Multi Exp / Exp. Share` en `Quick Battle`
-
-## Known issue
-
-- `Multi Exp / Exp. Share` ne partage pas toujours l'XP en `Quick Battle`
-- contournement officiel:
-  - `Quick Battle` pour les combats rapides
-  - `combat normal` pour tout ce qui depend du partage d'XP
-- seuil d'escalade:
-  - autres regressions XP/EV
-  - duplication
-  - perte d'XP
-  - soft-lock de combat
+1. client avec `Cobblemon: Shiny Cookie 0.0.1`: connexion OK
+2. obtention controlee
+3. utilisation controlee
+4. absence de crash
+5. absence d'effet anormal hors perimetre attendu
 
 ## Rollback rapide
 
 1. `./infra/stop.sh`
-2. retirer `cobblemon_quick_battle-fabric-1.2.5.jar`
+2. retirer `shinycookie-fabric-0.0.1.jar`
 3. `./infra/start.sh`
 
-Si un vrai retour arriere est requis:
+Si un vrai retour arriere integral est requis:
 
 ```bash
 ./infra/restore.sh backups/<backup-file>.tar.gz

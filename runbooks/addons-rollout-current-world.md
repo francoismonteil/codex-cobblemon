@@ -11,6 +11,8 @@ Statut courant:
 - lot `6` (`Blue's Cobblemon Utilities`) deploye le `2026-03-04`, actuellement en observation restreinte
 - lot `7` (`Farmer's Delight Refabricated`) deploye et valide le `2026-03-04`
 - lot `8` (`Botany Pots + Cobblemon Botany Pots`) deploye le `2026-03-04`, actuellement en observation
+- lot `9` (`CobbledGacha`) deploye le `2026-03-04`, actuellement en observation
+- lot `10` (`Cobblemon: Shiny Cookie`) defini, non deploye
 - journal d'execution: `audit/addons-rollout-journal.md`
 
 Base actuelle incluse dans le checker:
@@ -31,6 +33,38 @@ Contrainte:
 - verification cumulative obligatoire avant redemarrage
 - observation reelle avant le lot suivant
 
+## Accepted live issues
+
+### Quick Battle + Multi Exp
+- mod: `Cobblemon Quick Battle 1.2.5`
+- symptome: `Multi Exp / Exp. Share` ne partage pas toujours l'XP en `Quick Battle`
+- impact: `gameplay visible`
+- contournement: `utiliser les combats normaux pour l'XP partagee`
+- statut: `bug connu, mod conserve`
+- declencheur de retrait: `autres regressions XP/EV, duplication, perte d'XP, soft-lock`
+
+### Blue's Cobblemon Utilities - size_variation
+- mod: `Blue's Cobblemon Utilities 4.0.0`
+- symptome: erreurs de chargement sur `size_variation`
+- impact: `partiel, non prouve en usage joueur`
+- contournement: `fonctionnalite non supportee tant qu'elle n'est pas revalidee`
+- statut: `restriction fonctionnelle`
+- consigne staff: `ne pas promouvoir ni distribuer les usages size_variation`
+- declencheur de retrait: `echec joueur reproductible, perte d'objet, crash`
+
+### Raid Dens advancements Mega Showdown
+- mod: `Cobblemon Raid Dens 0.8.1+1.21.1`
+- symptome: advancements qui referencent des items `Mega Showdown` absents
+- impact: `non bloquant`
+- contournement: `ignorer tant que raids et recompenses fonctionnent`
+- statut: `bruit accepte`
+
+### Supplementaries / Flan / disconnect packet
+- symptome: recettes retirees, erreurs de tags, parse errors Flan, erreurs `clientbound/minecraft:disconnect`
+- impact: `non bloquant a ce stade`
+- contournement: `surveillance seulement`
+- statut: `bruit accepte`
+
 ## Ordre retenu
 
 1. `./infra/mods-install-addon-lot1-pokenav.sh`
@@ -41,6 +75,8 @@ Contrainte:
 6. `./infra/mods-install-addon-lot6-blues-utilities.sh`
 7. `./infra/mods-install-addon-lot7-farmers-delight.sh`
 8. `./infra/mods-install-addon-lot8-botany-pots.sh`
+9. `./infra/mods-install-addon-lot9-gacha-machine.sh`
+10. `./infra/mods-install-addon-lot10-shiny-cookie.sh`
 
 Verification cumulative:
 
@@ -48,12 +84,12 @@ Verification cumulative:
 ./infra/mods-check-addons-rollout.sh --through-lot 1
 ```
 
-Remplacer `1` par le lot courant (`2` a `8`).
+Remplacer `1` par le lot courant (`2` a `10`).
 
 Rapports JSON:
 - `audit/addons-server-mods-check-lot1.json`
 - ...
-- `audit/addons-server-mods-check-lot8.json`
+- `audit/addons-server-mods-check-lot10.json`
 
 Criteres OK:
 - `missing=0`
@@ -351,7 +387,58 @@ Sortis du plan actif:
 - `Tomtaru's Cobblemon & Farmer's Delight Tweaks`: pas de build Fabric `1.21.1`, NeoForge uniquement
 - `CobbleCuisine`: ligne Cobblemon `1.7.x` publiee en alpha/rc, exclue du plan actif
 - `CobbleFoods`: pas de build `1.21.1`
-- `CobbledGacha` et `Cobblemon: Shiny Cookie`: retires du plan actif au profit des lots cuisine/agriculture
+
+## Lot 9 - CobbledGacha
+
+Commande:
+
+```bash
+./infra/mods-install-addon-lot9-gacha-machine.sh
+./infra/mods-check-addons-rollout.sh --through-lot 9
+```
+
+Validation:
+- client avec `CobbledGacha 3.0.2`
+- machine posable et utilisable
+- recompenses delivrees sans erreur
+- pas de crash ni spam logs
+- pas de duplication triviale constatee
+
+Observation:
+- `48h`
+- exposition controlee au demarrage
+
+Rollback:
+- retirer `cobbledgacha-fabric-1.21.1-3.0.2.jar`
+
+Note:
+- la persistance des effets gameplay est explicitement acceptee sur ce lot
+
+## Lot 10 - Cobblemon: Shiny Cookie
+
+Commande:
+
+```bash
+./infra/mods-install-addon-lot10-shiny-cookie.sh
+./infra/mods-check-addons-rollout.sh --through-lot 10
+```
+
+Validation:
+- client avec `shinycookie-fabric-0.0.1.jar`
+- item obtenable et utilisable
+- comportement shiny confirme sans erreur serveur
+- pas de crash ni spam logs
+- usage reserve a un test admin au demarrage
+
+Observation:
+- `48h`
+- exposition strictement controlee
+
+Rollback:
+- retirer `shinycookie-fabric-0.0.1.jar`
+
+Note:
+- la persistance des effets gameplay est explicitement acceptee sur ce lot
 
 ## Rollback standard
 
