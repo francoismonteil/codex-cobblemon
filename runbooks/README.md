@@ -14,6 +14,7 @@
 - `runbooks/chatops.md`: admin depuis le chat Minecraft (ChatOps, sans plugin/mod).
 - `runbooks/client-setup.md`: installer le bon client/modpack (eviter les version mismatch).
 - `runbooks/client-pack-recommended.md`: pack client recommande correspondant a la production actuelle.
+- `runbooks/modpack-public-release.md`: build et publication du modpack client public (CurseForge + Modrinth).
 - `runbooks/storage-rollout.md`: templates de communication (maintenance/online/rollback) pour le rollout des mods de stockage.
 - `runbooks/friends-guide.md`: infos a partager aux amis (connexion, install, whitelist/op via scripts).
 - `runbooks/discord-bot.md`: bot Discord pour whitelist self-service (slash commands).

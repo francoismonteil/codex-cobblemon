@@ -1,0 +1,16 @@
+name = "Storage Drawers"
+filename = "StorageDrawers-fabric-1.21.1-13.11.4.jar"
+side = "both"
+
+[download]
+url = "https://cdn.modrinth.com/data/guitPqEi/versions/78LmfH8Z/StorageDrawers-fabric-1.21.1-13.11.4.jar"
+hash-format = "sha512"
+hash = "1ec2f81b50708b610d0e7024d067ac630c0f9497307e68e1dc22ee41c6d196f2db3249cad6ab243f3192e73b6a569fb2936a96b9bf61a94ea67a643a5f5b6283"
+
+[update.modrinth]
+mod-id = "guitPqEi"
+version = "78LmfH8Z"
+
+[update.curseforge]
+project-id = 223852
+file-id = 6995424

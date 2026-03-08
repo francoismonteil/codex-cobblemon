@@ -1,0 +1,16 @@
+name = "Particle Rain"
+filename = "particlerain-4.0.0-beta.5+1.21.1-fabric.jar"
+side = "client"
+
+[download]
+url = "https://cdn.modrinth.com/data/nrikgvxm/versions/UrZSj6yQ/particlerain-4.0.0-beta.5%2B1.21.1-fabric.jar"
+hash-format = "sha512"
+hash = "2582e2678095a910c2591451537e29dff5d6e02bc36b607ceb495e94fe722528e17c9404b272c3192d5b975101951036792a624a5101f5794fc7712ce0a1fbf3"
+
+[update.modrinth]
+mod-id = "nrikgvxm"
+version = "UrZSj6yQ"
+
+[update.curseforge]
+project-id = 421897
+file-id = 7378831

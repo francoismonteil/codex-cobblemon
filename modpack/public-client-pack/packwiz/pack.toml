@@ -1,0 +1,13 @@
+name = "Cobblemon Community Client Pack"
+author = "Cobblemon Community"
+version = "1.0.0"
+pack-format = "packwiz:1.1.0"
+
+[index]
+file = "index.toml"
+hash-format = "sha256"
+hash = "458d35406002cb1ef427ac211a782084f834738232993d64201e35a044f2fe49"
+
+[versions]
+minecraft = "1.21.1"
+fabric = "0.18.4"

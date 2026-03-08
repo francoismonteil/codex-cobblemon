@@ -1,0 +1,16 @@
+name = "Supplementaries"
+filename = "supplementaries-1.21-3.5.25-fabric.jar"
+side = "both"
+
+[download]
+url = "https://cdn.modrinth.com/data/fFEIiSDQ/versions/lCX23NTg/supplementaries-1.21-3.5.25-fabric.jar"
+hash-format = "sha512"
+hash = "4afb698559edb535b0dabd362e390db6297a58c9d682365b2ac477dcd1228977eab8b40f5bdd80092714d9bc768eea8646481b8947085385c9bb53093512ab3d"
+
+[update.modrinth]
+mod-id = "fFEIiSDQ"
+version = "lCX23NTg"
+
+[update.curseforge]
+project-id = 412082
+file-id = 7682436

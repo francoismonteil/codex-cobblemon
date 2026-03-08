@@ -1,0 +1,16 @@
+name = "Traveler's Backpack"
+filename = "travelersbackpack-fabric-1.21.1-10.1.33.jar"
+side = "both"
+
+[download]
+url = "https://cdn.modrinth.com/data/rlloIFEV/versions/i6cd1S6S/travelersbackpack-fabric-1.21.1-10.1.33.jar"
+hash-format = "sha512"
+hash = "0c08b5e9e7dec2d4e5d05f3376ab837a3440fe0695fa2eef2907cf6f8685dcf1225dfba51de274876a4146cf9b9086920ac453221e9846f2902ea7a2d6ac56b2"
+
+[update.modrinth]
+mod-id = "rlloIFEV"
+version = "i6cd1S6S"
+
+[update.curseforge]
+project-id = 541171
+file-id = 7543667
