@@ -147,6 +147,7 @@ Monde (import map):
 Monde (open world):
 - `./infra/server-profile-openworld-4p.sh`: applique un profil serveur (PvP off, whitelist on, 4 joueurs, distances).
 - `./infra/mods-install-openworld.sh`: installe les mods serveur utilitaires (Chunky + Flan) requis pour l'open world et force l'outil Flan sur `minecraft:wooden_hoe` (claim + inspect).
+- `./infra/mods-install-distant-horizons.sh`: installe le support serveur `Distant Horizons` (LOD longue distance). Les clients sans DH peuvent rejoindre; DH client est requis pour voir les LOD.
 - `./infra/flan-configure-claim-tools.sh`: force l'outil Flan sur `minecraft:wooden_hoe` dans `./data/config/flan/flan_config.json`.
 - `./infra/mods-install-waystones.sh`: installe `Waystones` + dependance `Balm` (mods gameplay, clients requis aussi), versions pinnees pour Fabric 1.21.1.
 - `./infra/mods-install-better-qol.sh`: installe le pack QoL serveur "Better Minecraft-like" retenu (`spark`, `Traveler's Backpack`, `FallingTree`, `YIGD` + dependance `Cardinal Components API`), versions pinnees pour Fabric 1.21.1, et regle `FallingTree` sur `trees.maxSize=256` par defaut.

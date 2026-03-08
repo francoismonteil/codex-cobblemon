@@ -24,6 +24,7 @@
 - `runbooks/restart-policy.md`: restart quotidien safe + alertes.
 - `runbooks/secondary-disk.md`: preparer un 2e disque pour stocker les backups.
 - `runbooks/openworld-village.md`: open world (spawn village naturel + border + pregen + protection spawn).
+- `runbooks/distant-horizons-server.md`: installation et exploitation de Distant Horizons cote serveur (support LOD + pregen DH optionnelle).
 - `runbooks/server-mods-recommended-install.md`: installation du pack de mods serveur recommande (QoL + verification + rollback court).
 - `runbooks/mods-progressive-rollout.md`: rollout progressif des mods additionnels sur le monde actuel, lot par lot.
 - `runbooks/client-pack-progressive-rollout.md`: liste exacte des mods client a ajouter pour chaque lot progressif.

@@ -21,6 +21,9 @@ Client (a communiquer aux joueurs, separement):
 Addon gameplay optionnel, serveur-only:
 - `Cobblemon Capture XP` (+ `Cobblemon Tim Core`) -> voir `runbooks/capture-xp.md`
 
+Addon performance/visuel optionnel:
+- `Distant Horizons` (support LOD cote serveur) -> voir `runbooks/distant-horizons-server.md`
+
 ## Pre-conditions
 - Fenetre de maintenance annoncee (downtime)
 - Acces au repo sur le serveur (`<MC_PROJECT_DIR>`)
