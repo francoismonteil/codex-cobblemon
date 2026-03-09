@@ -1,6 +1,6 @@
 # Notes d'exploitation (persistantes)
 
-Derniere mise a jour: 2026-03-04
+Derniere mise a jour: 2026-03-09
 
 ## Capacite serveur (snapshot)
 - Snapshot materiel/OS/reseau: `runbooks/server-capacity.md`
@@ -103,7 +103,9 @@ Derniere mise a jour: 2026-03-04
 
 ## Profil performance applique (objectif 4 joueurs)
 - Date d'application: 2026-02-11
-- Memoire Java: `MEMORY=4608M`
+- Memoire Java:
+  - `2026-02-11` a `2026-03-09`: `MEMORY=4608M`
+  - depuis `2026-03-09`: `MEMORY=6G`
 - Flags JVM: `USE_AIKAR_FLAGS=true`
 - Parametres `data/server.properties`:
   - `max-players=4`
@@ -114,6 +116,22 @@ Derniere mise a jour: 2026-03-04
   - `entity-broadcast-range-percentage=90`
   - `spawn-protection=0`
   - `max-tick-time=120000`
+
+## Baseline operationnelle courante (a conserver pour observation)
+- Date de gel: `2026-03-09`
+- Host reseau principal:
+  - `Ethernet enp2s0`
+  - IP LAN principale: `192.168.1.19`
+  - IP LAN de secours (Wi-Fi): `192.168.1.23`
+- Memoire host:
+  - `16 Go` RAM physique
+  - kit observe: `2 x 8 Go Crucial CT102464BF160B`
+- Service Minecraft:
+  - heap `MEMORY=6G`
+  - `Distant Horizons` en `PRE_EXISTING_ONLY`
+  - `Lithium` au defaut
+- Consigne:
+  - conserver cet etat `3` a `5` jours avant tout autre ajustement de performance, sauf incident majeur
 
 ## Pare-feu
 - UFW actif

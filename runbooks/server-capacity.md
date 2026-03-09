@@ -70,3 +70,53 @@ $key="<SSH_KEY_MAIN>"
 ssh -i $key -o BatchMode=yes -o StrictHostKeyChecking=accept-new <MC_SSH_USER>@<MC_SERVER_HOST> `
   "hostnamectl; cat /etc/os-release; uname -a; uptime; systemd-detect-virt; lscpu; free -h; cat /proc/swaps; df -hT; lsblk -o NAME,SIZE,TYPE,FSTYPE,MOUNTPOINT,ROTA,MODEL; ip -br addr; ss -lnt; docker --version; docker compose version; cd <MC_PROJECT_DIR> && docker compose ps cobblemon && docker stats --no-stream cobblemon"
 ```
+
+## Snapshot 2026-03-09T09:20:00+01:00
+
+### Plateforme
+- Machine: ASUSTeK COMPUTER INC. `K75VJ`
+- Virtualisation: `none` (bare metal)
+- OS: Linux
+- Uptime au moment du releve: ~`2 min` apres redemarrage host
+
+### CPU (capacite totale)
+- Modele: Intel(R) Core(TM) i7-3630QM CPU @ 2.40GHz
+- Coeurs/threads: `4 c / 8 threads`
+
+### Memoire (capacite totale)
+- RAM: `15 GiB` visibles systeme (`MemTotal: 16257264 kB`)
+- Modules installes:
+  - `8 GB` Crucial `CT102464BF160B`
+  - `8 GB` Crucial `CT102464BF160B`
+- Frequence configuree: `1600 MT/s`
+- Swap: `7.9 GiB`, usage observe `0 B` juste apres redemarrage
+
+### Stockage (capacite totale)
+- `/`: `221G`
+- usage observe le `2026-03-09`: `152G` utilises, `59G` libres (`73%`)
+
+### Reseau
+- Interface principale: `enp2s0` (Ethernet)
+- IP LAN principale observee: `192.168.1.19/24`
+- Route par defaut: `via 192.168.1.1 dev enp2s0 proto dhcp`
+- Interface secondaire: `wlp3s0` (Wi-Fi)
+- IP LAN secondaire observee: `192.168.1.23/24`
+- MAC Ethernet `enp2s0`: `60:a4:4c:7b:91:fd`
+- Note:
+  - l'IP Ethernet est actuellement attribuee par DHCP, pas statique cote Linux
+
+### Docker / Minecraft
+- Service `cobblemon` relance apres upgrade RAM:
+  - etat: `healthy`
+  - port `25565/tcp` en ecoute
+- Profil memoire courant:
+  - `.env`: `MEMORY=6G`
+  - usage observe juste apres redemarrage service: `6.781 GiB / 15.5 GiB`
+
+### Baseline d'observation retenue
+- host: `16 Go` RAM
+- Minecraft: `MEMORY=6G`
+- `Distant Horizons`: `PRE_EXISTING_ONLY`
+- `Lithium`: defaut
+- regle operationnelle:
+  - conserver cette baseline plusieurs jours avant nouveau changement, sauf incident majeur
