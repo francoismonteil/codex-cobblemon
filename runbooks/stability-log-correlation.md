@@ -43,6 +43,16 @@ py -3 tools/stability_audit.py --start-date 2026-03-04 --end-date 2026-03-08 --w
 Sortie:
 - `audit/stability-audit-20260308.json`
 
+## Synthese journaliere serveur
+Pour le suivi quotidien hors corrélation client:
+```bash
+py -3 tools/server_log_digest.py --start-date 2026-03-10 --end-date 2026-03-10 --write
+```
+
+Sorties:
+- `audit/server-log-digest-YYYYMMDD.json`
+- `audit/server-log-digest-YYYYMMDD.md`
+
 Le JSON standardise:
 - `date_heure`
 - `source`

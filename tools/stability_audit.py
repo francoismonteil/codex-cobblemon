@@ -66,6 +66,15 @@ def parse_site_local(path: Path) -> Dict[str, str]:
     return data
 
 
+def ssh_hosts(site: Dict[str, str]) -> List[str]:
+    hosts: List[str] = []
+    for key in ("MC_SERVER_HOST", "MC_SERVER_HOST_FALLBACK", "MC_SERVER_HOST_SECONDARY"):
+        value = site.get(key, "").strip()
+        if value and value not in hosts:
+            hosts.append(value)
+    return hosts
+
+
 def iter_log_events(log_name: str, content: str) -> Iterable[Tuple[str, str, str, str]]:
     current_time = ""
     current_context = ""
@@ -411,7 +420,6 @@ def collect_local_logs(log_dir: Path, start: dt.date, end: dt.date) -> Dict[str,
 
 def collect_remote_logs(repo_root: Path, start: dt.date, end: dt.date) -> Dict[str, str]:
     site = parse_site_local(repo_root / "runbooks" / "site.local.md")
-    host = site["MC_SERVER_HOST"]
     user = site["MC_SSH_USER"]
     project_dir = site["MC_PROJECT_DIR"]
     key = site["SSH_KEY_MAIN"]
@@ -425,9 +433,26 @@ def collect_remote_logs(repo_root: Path, start: dt.date, end: dt.date) -> Dict[s
     remote_paths.append(f"{project_dir}/data/logs/latest.log")
 
     python_source = REMOTE_PYTHON_TEMPLATE.format(paths_literal=json.dumps(remote_paths))
-    command = ["ssh", "-i", key, f"{user}@{host}", "python3", "-"]
-    completed = subprocess.run(command, input=python_source, check=True, capture_output=True, text=True)
-    return json.loads(completed.stdout)
+    last_error: Optional[subprocess.CalledProcessError] = None
+    for host in ssh_hosts(site):
+        command = ["ssh", "-o", "ConnectTimeout=5", "-i", key, f"{user}@{host}", "python3", "-"]
+        try:
+            completed = subprocess.run(
+                command,
+                input=python_source,
+                check=True,
+                capture_output=True,
+                text=True,
+                timeout=60,
+            )
+            return json.loads(completed.stdout)
+        except subprocess.CalledProcessError as exc:
+            last_error = exc
+        except subprocess.TimeoutExpired:
+            continue
+    if last_error is not None:
+        raise last_error
+    raise RuntimeError("No SSH host configured")
 
 
 def correlate_events(events: List[Event]) -> None:

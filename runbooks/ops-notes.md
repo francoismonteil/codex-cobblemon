@@ -123,6 +123,7 @@ Derniere mise a jour: 2026-03-09
   - `Ethernet enp2s0`
   - IP LAN principale: `192.168.1.19`
   - IP LAN de secours (Wi-Fi): `192.168.1.23`
+  - reservation DHCP cible (routeur): `192.168.1.19 -> 60:a4:4c:7b:91:fd`
 - Memoire host:
   - `16 Go` RAM physique
   - kit observe: `2 x 8 Go Crucial CT102464BF160B`
@@ -132,6 +133,17 @@ Derniere mise a jour: 2026-03-09
   - `Lithium` au defaut
 - Consigne:
   - conserver cet etat `3` a `5` jours avant tout autre ajustement de performance, sauf incident majeur
+
+## Suivi quotidien recommande
+- Outil:
+  - `py -3 tools/server_log_digest.py --start-date YYYY-MM-DD --end-date YYYY-MM-DD --write`
+- Runbook:
+  - `runbooks/server-daily-digest.md`
+- Signaux a surveiller:
+  - `cant_keep_up`
+  - `discarded`
+  - `moved_too_quickly`
+  - `moved_wrongly`
 
 ## Pare-feu
 - UFW actif
