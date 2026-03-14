@@ -104,6 +104,7 @@ Variables `.env`:
 - `DUCKDNS_TOKEN` (optionnel, pour DDNS)
 - `SECONDARY_BACKUP_DIR` (optionnel, copie backup sur 2e disque)
 - `SECONDARY_BACKUP_KEEP` (defaut `30`, nombre d'archives a conserver sur le 2e disque)
+- `BACKUP_KEEP_LOCAL` (defaut recommande `7` dans `.env.example`; `0` desactive la purge locale)
 - `MONITOR_DISK_MAX_PCT` (defaut `85`)
 - `MONITOR_MEM_MAX_PCT` (defaut `92`)
 - `MONITOR_LOAD1_MAX` (defaut `6`)
@@ -116,6 +117,7 @@ Logs:
 
 - Donnees serveur: `./data` (monte sur `/data` dans le conteneur)
 - Backups: `./backups` (monte sur `/backups` dans le conteneur)
+- Retention locale: `./infra/backup.sh` peut purger les anciennes archives locales via `BACKUP_KEEP_LOCAL`; utilitaire manuel: `./infra/backup-prune-local.sh`
 - Modpack: telecharge automatiquement via Modrinth (TYPE=MODRINTH) avec la version pinnee `Lydu1ZNo`. Les fichiers finissent dans `./data` (ex: `./data/modpack`).
 - Monde: `./data/world`
 

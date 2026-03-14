@@ -96,6 +96,7 @@ Runbook associe (Waystones sur map existante):
 ## ChatOps / network / backups (`entrypoint`)
 - `./infra/chatops.sh`
 - `./infra/ddns-duckdns.sh`
+- `./infra/backup-prune-local.sh`
 - `./infra/backup-secondary.sh`
 
 ## Johto FR (`utility`)

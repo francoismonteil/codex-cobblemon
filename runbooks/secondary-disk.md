@@ -25,5 +25,6 @@ Attention: ca efface le contenu de `/dev/sdb1`.
    - `mount /mnt/backup2`
 4. Configurer la copie:
    - `SECONDARY_BACKUP_DIR=/mnt/backup2/codex-cobblemon/backups` dans `.env`
+   - `BACKUP_KEEP_LOCAL=7` dans `.env` pour eviter que `./backups` remplisse `/`
    - lancer `./infra/backup-secondary.sh`
    - ajouter le cron `minecraft-backup-secondary`

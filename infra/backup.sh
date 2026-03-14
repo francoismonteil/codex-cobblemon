@@ -11,6 +11,13 @@ ARCHIVE_NAME="backup-${TIMESTAMP}.tar.gz"
 ARCHIVE_PATH="${BACKUP_DIR}/${ARCHIVE_NAME}"
 STAGING_DIR="${STAGING_ROOT}/${TIMESTAMP}"
 
+if [[ -f "${REPO_ROOT}/.env" ]]; then
+  # shellcheck disable=SC1091
+  set -a; source "${REPO_ROOT}/.env"; set +a
+fi
+
+BACKUP_KEEP_LOCAL="${BACKUP_KEEP_LOCAL:-0}"
+
 maybe_flush_world() {
   # Best-effort: ask server to flush world state before copying.
   if ! docker inspect cobblemon >/dev/null 2>&1; then
@@ -22,6 +29,26 @@ maybe_flush_world() {
   # Requires CREATE_CONSOLE_IN_PIPE=true in the container env.
   docker exec -u 1000 cobblemon mc-send-to-console "save-all flush" >/dev/null 2>&1 || true
   sleep 2
+}
+
+prune_local_archives() {
+  if ! [[ "${BACKUP_KEEP_LOCAL}" =~ ^[0-9]+$ ]]; then
+    echo "Invalid BACKUP_KEEP_LOCAL: ${BACKUP_KEEP_LOCAL}" >&2
+    exit 2
+  fi
+
+  if [[ "${BACKUP_KEEP_LOCAL}" -le 0 ]]; then
+    return 0
+  fi
+
+  mapfile -t archives < <(ls -1t "${BACKUP_DIR}"/backup-*.tar.gz 2>/dev/null || true)
+  if (( ${#archives[@]} <= BACKUP_KEEP_LOCAL )); then
+    return 0
+  fi
+
+  for archive in "${archives[@]:BACKUP_KEEP_LOCAL}"; do
+    rm -f "${archive}"
+  done
 }
 
 TARGETS=(
@@ -65,5 +92,6 @@ fi
 
 tar -czf "${ARCHIVE_PATH}" -C "${STAGING_DIR}" .
 rm -rf "${STAGING_DIR}"
+prune_local_archives
 
 echo "Backup created: ${ARCHIVE_PATH}"
