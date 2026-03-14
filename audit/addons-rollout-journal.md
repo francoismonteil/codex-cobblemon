@@ -719,3 +719,60 @@ Validation fonctionnelle attendue:
 - prise/portage d'entites simple: OK
 - pas de duplication
 - pas de crash
+
+## Incident lot 11 - 2026-03-12
+
+Contexte:
+- lot `11` (`Carry On`) toujours en observation
+- traces brutes client et serveur recuperees apres repro directe
+
+Constat:
+- `carryon:sync_carry_data` provoque des deconnexions multijoueur reproductibles
+- plusieurs joueurs peuvent etre ejectes sur une seule occurrence
+- symptome client:
+  - `Internal Exception: io.netty.handler.codec.EncoderException: Failed to encode packet 'clientbound/minecraft:custom_payload' (carryon:sync_carry_data)`
+- symptome serveur:
+  - `Error sending packet clientbound/minecraft:custom_payload`
+  - `Caused by: java.lang.NullPointerException`
+
+Occurrences confirmees:
+- client:
+  - `21:07:22`
+  - `21:50:24`
+  - `22:03:13`
+  - `22:05:54`
+  - `22:07:38`
+- serveur:
+  - `21:07:21`
+  - `21:50:22`
+  - `22:03:11`
+  - `22:05:51`
+  - `22:07:36`
+
+Impact observe:
+- `21:50:22`: `Sondoku`, `TiidyMan` ejectes
+- `22:03:11`: `Sondoku`, `TiidyMan`, `Totamote` ejectes
+- `22:05:51`: `Sondoku`, `TiidyMan` ejectes
+- `22:07:36`: `Sondoku`, `TiidyMan` ejectes
+- effets secondaires vus dans les logs:
+  - `Negative index in crash report handler`
+  - `Failed to save player data`
+
+Interpretation:
+- ce cas ne doit plus etre classe comme simple bruit `clientbound/minecraft:disconnect`
+- la signature utile a suivre est `carryon:sync_carry_data`
+- le declencheur confirme est:
+  - un joueur porte un autre joueur
+  - le porteur s'accroupit
+- la propagation observee ne semble pas strictement globale:
+  - a `22:02`, `3` joueurs ejectes
+  - a `22:06`, `2` joueurs ejectes, tandis qu'un troisieme joueur dans l'End n'est pas touche
+
+Action:
+- dossier local cree:
+  - `audit/carryon-sync-carry-data-incident-20260312.md`
+- brouillon GitHub prepare:
+  - `audit/carryon-issue-926-comment-20260312.md`
+  - `audit/carryon-new-issue-draft-20260312.md`
+- cible upstream recommandee:
+  - `https://github.com/Tschipp/CarryOn/issues/926`
