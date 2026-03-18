@@ -12,7 +12,10 @@ Eviter un restart brutal quand des joueurs sont connectes, tout en gardant un re
 
 ## Cron (recommande)
 Exemple (restart quotidien, mais safe):
+- `CRON_TZ=Europe/Paris`
 - `0 5 * * * cd <MC_PROJECT_DIR> && <MC_PROJECT_DIR>/infra/safe-restart.sh --force >> <MC_PROJECT_DIR>/logs/minecraft-daily-restart.log 2>&1 # minecraft-daily-restart`
+
+Avec `CRON_TZ=Europe/Paris`, le restart reste a `05:00` heure de Paris meme si le fuseau du serveur Linux est different.
 
 Si tu preferes skip quand des joueurs sont connectes:
 - remplacer `--force` par rien.

@@ -27,4 +27,6 @@ Attention: ca efface le contenu de `/dev/sdb1`.
    - `SECONDARY_BACKUP_DIR=/mnt/backup2/codex-cobblemon/backups` dans `.env`
    - `BACKUP_KEEP_LOCAL=7` dans `.env` pour eviter que `./backups` remplisse `/`
    - lancer `./infra/backup-secondary.sh`
-   - ajouter le cron `minecraft-backup-secondary`
+   - ajouter a la crontab:
+     - `CRON_TZ=Europe/Paris`
+     - `35 4 * * * cd <MC_PROJECT_DIR> && <MC_PROJECT_DIR>/infra/backup-secondary.sh >> <MC_PROJECT_DIR>/logs/minecraft-backup-secondary.log 2>&1 # minecraft-backup-secondary`

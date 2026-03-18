@@ -1,6 +1,6 @@
 # Notes d'exploitation (persistantes)
 
-Derniere mise a jour: 2026-03-09
+Derniere mise a jour: 2026-03-18
 
 ## Capacite serveur (snapshot)
 - Snapshot materiel/OS/reseau: `runbooks/server-capacity.md`
@@ -9,6 +9,7 @@ Derniere mise a jour: 2026-03-09
 ## Cible serveur
 - Host/IP: `<MC_SERVER_HOST>` (voir `runbooks/site.local.md`)
 - OS: Linux (compte admin utilise: `<MC_SSH_USER>`)
+- Fuseau horaire Linux: `Europe/Paris` (applique le `2026-03-18`)
 - Repertoire projet: `<MC_PROJECT_DIR>`
 
 ## Acces SSH
@@ -205,8 +206,9 @@ Reference: `runbooks/server-sync.md`
 
 ## Redemarrage quotidien automatique
 - Methode active: `cron` utilisateur `linux`
-- Horaire: tous les jours a `05:00` (heure locale serveur)
+- Horaire: tous les jours a `05:00 Europe/Paris` (via `CRON_TZ`, independant du fuseau Linux du serveur)
 - Entree crontab:
+  - `CRON_TZ=Europe/Paris`
   - `0 5 * * * cd <MC_PROJECT_DIR> && <MC_PROJECT_DIR>/infra/safe-restart.sh --force >> <MC_PROJECT_DIR>/logs/minecraft-daily-restart.log 2>&1 # minecraft-daily-restart`
 - Log d'execution:
   - `<MC_PROJECT_DIR>/logs/minecraft-daily-restart.log`
@@ -232,6 +234,10 @@ Reference: `runbooks/server-sync.md`
 
 ## Backups
 - Dossier: `<MC_PROJECT_DIR>/backups`
+- Planification cron:
+  - `CRON_TZ=Europe/Paris`
+  - `30 4 * * * cd <MC_PROJECT_DIR> && <MC_PROJECT_DIR>/infra/backup.sh >> <MC_PROJECT_DIR>/logs/minecraft-backup.log 2>&1 # minecraft-backup`
+  - `35 4 * * * cd <MC_PROJECT_DIR> && <MC_PROJECT_DIR>/infra/backup-secondary.sh >> <MC_PROJECT_DIR>/logs/minecraft-backup-secondary.log 2>&1 # minecraft-backup-secondary`
 - Dernier backup valide observe: `backup-20260228-072820.tar.gz`
 
 ## Actions recommandees (securite)
