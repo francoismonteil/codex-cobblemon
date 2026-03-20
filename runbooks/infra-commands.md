@@ -110,6 +110,7 @@ Runbook associe (Waystones sur map existante):
 - `./infra/pokecenter-template-capture.sh`
 - `./infra/pokecenter-prefab-stash.sh`, `./infra/pokecenter-prefab-restore.sh`
 - `./infra/spawn-schematic-mcedit.sh`
+- `./infra/spawn-schematic.ps1` (wrapper Windows: deploy infra + upload asset + collage distant)
 - `./infra/schematic-mcedit-to-commands.py`
 - `./infra/schematic-mcedit-to-structure-nbt.py`
 - `./infra/build-modern-spawn.sh`

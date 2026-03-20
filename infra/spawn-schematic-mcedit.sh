@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# Paste a classic MCEdit/WorldEdit "Alpha" .schematic near a player by:
+# Paste a supported schematic (`.schematic` MCEdit Alpha or `.schem` Sponge v2/v3)
+# near a player by:
 # 1) querying the player's current Pos via a vanilla command (logged to console)
 # 2) generating a command stream (fill/setblock) with modern block names
 # 3) piping the commands directly into the server console named pipe
@@ -10,6 +11,7 @@ set -euo pipefail
 #
 # Usage:
 #   ./infra/spawn-schematic-mcedit.sh --schematic "downloads/Windmill - (mcbuild_org).schematic" --player <player>
+#   ./infra/spawn-schematic-mcedit.sh --schematic "downloads/planetxerox-endermen-farm.schem" --player <player>
 #   ./infra/spawn-schematic-mcedit.sh --schematic "downloads/Windmill - (mcbuild_org).schematic" --dx 20 --dz 0
 #   ./infra/spawn-schematic-mcedit.sh --schematic "downloads/Windmill - (mcbuild_org).schematic" --at 0 124 0 --dx 80 --dz 0
 #   ./infra/spawn-schematic-mcedit.sh --schematic ... --no-clear
@@ -21,16 +23,18 @@ cd "${REPO_ROOT}"
 player="${DEFAULT_PLAYER_NAME:-PlayerName}"
 schematic=""
 at=""
+dimension=""
 dx="20"
 dy="0"
 dz="0"
+rotate="none"
 do_clear="true"
 ignore_we_offset="false"
 
 usage() {
   cat <<EOF >&2
 Usage:
-  $0 --schematic <path> [--player <name> | --at <x> <y> <z>] [--dx <int>] [--dy <int>] [--dz <int>] [--no-clear] [--no-we-offset]
+  $0 --schematic <path> [--player <name> | --at <x> <y> <z>] [--dimension <minecraft:...>] [--dx <int>] [--dy <int>] [--dz <int>] [--rotate <none|y90|y180|y270>] [--no-clear] [--no-we-offset]
 EOF
 }
 
@@ -48,6 +52,10 @@ while [[ $# -gt 0 ]]; do
       at="${2:?} ${3:?} ${4:?}"
       shift 4
       ;;
+    --dimension)
+      dimension="${2:?}"
+      shift 2
+      ;;
     --dx)
       dx="${2:?}"
       shift 2
@@ -58,6 +66,10 @@ while [[ $# -gt 0 ]]; do
       ;;
     --dz)
       dz="${2:?}"
+      shift 2
+      ;;
+    --rotate)
+      rotate="${2:?}"
       shift 2
       ;;
     --no-clear)
@@ -108,22 +120,30 @@ if [[ -n "${at}" ]]; then
   done
   px=""; py=""; pz=""
 else
-  prev_line="$(docker logs cobblemon --tail 400 2>/dev/null | grep -F "${player} has the following entity data" | tail -n 1 || true)"
+  prev_pos_line="$(docker logs cobblemon --tail 400 2>/dev/null | grep -F "${player} has the following entity data: [" | tail -n 1 || true)"
+  prev_dim_line="$(docker logs cobblemon --tail 400 2>/dev/null | grep -F "${player} has the following entity data: \"minecraft:" | tail -n 1 || true)"
 
   # Ask the server to print the current player position to console.
   docker exec -u 1000 cobblemon mc-send-to-console data get entity "${player}" Pos >/dev/null 2>&1 || true
+  docker exec -u 1000 cobblemon mc-send-to-console data get entity "${player}" Dimension >/dev/null 2>&1 || true
 
   pos_line=""
+  dim_line=""
   for _ in $(seq 1 30); do
-    pos_line="$(docker logs cobblemon --tail 400 2>/dev/null | grep -F "${player} has the following entity data" | tail -n 1 || true)"
-    if [[ -n "${pos_line}" && "${pos_line}" != "${prev_line}" ]]; then
+    pos_line="$(docker logs cobblemon --tail 400 2>/dev/null | grep -F "${player} has the following entity data: [" | tail -n 1 || true)"
+    dim_line="$(docker logs cobblemon --tail 400 2>/dev/null | grep -F "${player} has the following entity data: \"minecraft:" | tail -n 1 || true)"
+    if [[ -n "${pos_line}" && "${pos_line}" != "${prev_pos_line}" && -n "${dim_line}" && "${dim_line}" != "${prev_dim_line}" ]]; then
       break
     fi
     sleep 0.2
   done
 
-  if [[ -z "${pos_line}" || "${pos_line}" == "${prev_line}" ]]; then
+  if [[ -z "${pos_line}" || "${pos_line}" == "${prev_pos_line}" ]]; then
     echo "Failed to read player position from logs. Is ${player} online? (or use --at x y z)" >&2
+    exit 1
+  fi
+  if [[ -z "${dim_line}" || "${dim_line}" == "${prev_dim_line}" ]]; then
+    echo "Failed to read player dimension from logs. Is ${player} online?" >&2
     exit 1
   fi
 
@@ -141,7 +161,27 @@ px=float("${px}"); py=float("${py}"); pz=float("${pz}")
 print(math.floor(px), math.floor(py)-1, math.floor(pz))
 PY
   )
+  if [[ -z "${dimension}" ]]; then
+    dimension="$(echo "${dim_line}" | sed -nE 's/.*"([^"]+)".*/\1/p')"
+    if [[ -z "${dimension}" ]]; then
+      echo "Failed to parse player dimension line: ${dim_line}" >&2
+      exit 1
+    fi
+  fi
 fi
+
+if [[ -z "${dimension}" ]]; then
+  dimension="minecraft:overworld"
+fi
+
+run_mc() {
+  local cmd="$*"
+  if [[ "${dimension}" == "minecraft:overworld" ]]; then
+    docker exec -u 1000 cobblemon mc-send-to-console "${cmd}" >/dev/null 2>&1 || true
+  else
+    docker exec -u 1000 cobblemon mc-send-to-console "execute in ${dimension} run ${cmd}" >/dev/null 2>&1 || true
+  fi
+}
 
 clear_args=()
 if [[ "${do_clear}" == "true" ]]; then
@@ -153,7 +193,7 @@ if [[ "${ignore_we_offset}" == "true" ]]; then
   we_args+=(--no-we-offset)
 fi
 
-echo "== spawn schematic (mcedit/alpha) =="
+echo "== spawn schematic =="
 echo "player: ${player}"
 if [[ -n "${at}" ]]; then
   echo "origin: ${ox} ${oy} ${oz} (--at)"
@@ -161,20 +201,25 @@ else
   echo "player_pos: ${px} ${py} ${pz} (snapped origin under feet: ${ox} ${oy} ${oz})"
 fi
 echo "schematic: ${schematic}"
+echo "dimension: ${dimension}"
 echo "offset: dx=${dx} dy=${dy} dz=${dz}"
+echo "rotate: ${rotate}"
 
 read -r x1 y1 z1 x2 y2 z2 < <(python3 ./infra/schematic-mcedit-to-commands.py \
   --schematic "${schematic}" \
   --origin "${ox}" "${oy}" "${oz}" \
   --dx "${dx}" --dy "${dy}" --dz "${dz}" \
+  --rotate "${rotate}" \
   "${we_args[@]}" \
   --print-bounds)
 
 tmp="$(mktemp)"
+tmp_wrapped="$(mktemp)"
 cleanup() {
   rm -f "${tmp}" >/dev/null 2>&1 || true
+  rm -f "${tmp_wrapped}" >/dev/null 2>&1 || true
   if [[ -n "${x1:-}" && -n "${z1:-}" && -n "${x2:-}" && -n "${z2:-}" ]]; then
-    docker exec -u 1000 cobblemon mc-send-to-console forceload remove "${x1}" "${z1}" "${x2}" "${z2}" >/dev/null 2>&1 || true
+    run_mc forceload remove "${x1}" "${z1}" "${x2}" "${z2}"
   fi
 }
 trap cleanup EXIT
@@ -182,23 +227,30 @@ trap cleanup EXIT
 echo "bounds: x=${x1}..${x2} y=${y1}..${y2} z=${z1}..${z2}"
 
 # Ensure all target chunks are loaded before we start streaming setblock commands.
-docker exec -u 1000 cobblemon mc-send-to-console forceload add "${x1}" "${z1}" "${x2}" "${z2}" >/dev/null 2>&1 || true
+run_mc forceload add "${x1}" "${z1}" "${x2}" "${z2}"
 sleep 5
 
 python3 ./infra/schematic-mcedit-to-commands.py \
   --schematic "${schematic}" \
   --origin "${ox}" "${oy}" "${oz}" \
   --dx "${dx}" --dy "${dy}" --dz "${dz}" \
+  --rotate "${rotate}" \
   "${clear_args[@]}" \
   "${we_args[@]}" \
   --output "${tmp}"
 
+if [[ "${dimension}" == "minecraft:overworld" ]]; then
+  cp "${tmp}" "${tmp_wrapped}"
+else
+  sed -e "s/^/execute in ${dimension} run /" "${tmp}" >"${tmp_wrapped}"
+fi
+
 # Stream the generated commands into the server console named pipe in a single docker exec.
-docker exec -u 1000 -i cobblemon sh -lc 'cat > /tmp/minecraft-console-in' <"${tmp}"
+docker exec -u 1000 -i cobblemon sh -lc 'cat > /tmp/minecraft-console-in' <"${tmp_wrapped}"
 
 docker exec -u 1000 cobblemon mc-send-to-console tell "${player}" "[SPAWN] Schematic pasted (${schematic##*/}) at origin=${ox},${oy},${oz} dx=${dx} dy=${dy} dz=${dz}" >/dev/null 2>&1 || true
 
 # Best-effort: clean up forceload once pasted.
-docker exec -u 1000 cobblemon mc-send-to-console forceload remove "${x1}" "${z1}" "${x2}" "${z2}" >/dev/null 2>&1 || true
+run_mc forceload remove "${x1}" "${z1}" "${x2}" "${z2}"
 
 echo "OK"

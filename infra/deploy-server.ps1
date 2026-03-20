@@ -83,6 +83,7 @@ function Test-ExcludedRelativePath {
     $segments = $normalized.Split('/')
 
     if ($normalized.EndsWith('.pyc')) { return $true }
+    if ($normalized -like 'modpack/public-client-pack/.cache/*') { return $true }
     if ($segments -contains '.venv') { return $true }
     if ($segments -contains '__pycache__') { return $true }
     if ($segments -contains '.pytest_cache') { return $true }

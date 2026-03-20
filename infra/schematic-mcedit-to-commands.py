@@ -1,12 +1,15 @@
 #!/usr/bin/env python3
 """
-Convert a classic MCEdit/WorldEdit "Alpha" .schematic (Blocks/Data, optional AddBlocks)
-into vanilla Minecraft commands (fill/setblock) using modern (flattened) block names.
+Convert supported schematic formats into vanilla Minecraft commands (fill/setblock)
+using modern block names.
 
 Scope:
 - Designed for this repo's infra workflows: generate a command stream that can be
   piped to the running server console (itzg/minecraft-server console pipe).
-- Not a general purpose converter: block mapping is best-effort and currently
+- Supports:
+  - classic MCEdit/WorldEdit "Alpha" `.schematic` files (`Blocks`/`Data`)
+  - Sponge `.schem` version 2 files (`Palette`/`BlockData`)
+- Not a general purpose converter: legacy block mapping is best-effort and currently
   focuses on the common blocks used by mcbuild_org-style schematics.
 
 Usage (example):
@@ -31,11 +34,12 @@ from __future__ import annotations
 import argparse
 import gzip
 import math
+import re
 import struct
 import sys
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Dict, Iterable, List, Optional, Tuple
+from typing import Any, Dict, Iterable, List, Optional, Tuple
 
 
 # --- Minimal NBT reader (copied/trimmed from infra/prefab-score.py; no external deps) ---
@@ -55,6 +59,30 @@ TAG_LONG_ARRAY = 12
 
 
 class NBTError(Exception):
+    pass
+
+
+class NbtByte(int):
+    pass
+
+
+class NbtShort(int):
+    pass
+
+
+class NbtInt(int):
+    pass
+
+
+class NbtLong(int):
+    pass
+
+
+class NbtFloat(float):
+    pass
+
+
+class NbtDouble(float):
     pass
 
 
@@ -117,20 +145,17 @@ class _Buf:
 
 def _read_tag_payload(tag: int, buf: _Buf):
     if tag == TAG_BYTE:
-        return buf.read_i8()
+        return NbtByte(buf.read_i8())
     if tag == TAG_SHORT:
-        return buf.read_i16()
+        return NbtShort(buf.read_i16())
     if tag == TAG_INT:
-        return buf.read_i32()
+        return NbtInt(buf.read_i32())
     if tag == TAG_LONG:
-        return buf.read_i64()
+        return NbtLong(buf.read_i64())
     if tag == TAG_FLOAT:
-        # Not needed here; keep parser simple and memory-light.
-        buf.read_bytes(4)
-        return None
+        return NbtFloat(struct.unpack(">f", buf.read_bytes(4))[0])
     if tag == TAG_DOUBLE:
-        buf.read_bytes(8)
-        return None
+        return NbtDouble(struct.unpack(">d", buf.read_bytes(8))[0])
     if tag == TAG_BYTE_ARRAY:
         ln = buf.read_i32()
         if ln < 0:
@@ -156,12 +181,12 @@ def _read_tag_payload(tag: int, buf: _Buf):
         ln = buf.read_i32()
         if ln < 0:
             raise NBTError("negative int array length")
-        return [struct.unpack(">i", buf.read_bytes(4))[0] for _ in range(ln)]
+        return [NbtInt(struct.unpack(">i", buf.read_bytes(4))[0]) for _ in range(ln)]
     if tag == TAG_LONG_ARRAY:
         ln = buf.read_i32()
         if ln < 0:
             raise NBTError("negative long array length")
-        return [struct.unpack(">q", buf.read_bytes(8))[0] for _ in range(ln)]
+        return [NbtLong(struct.unpack(">q", buf.read_bytes(8))[0]) for _ in range(ln)]
     raise NBTError(f"unknown tag {tag}")
 
 
@@ -503,6 +528,36 @@ ATTACH_AFTER_IDS = {
     171,  # carpet
 }
 
+ATTACH_AFTER_BLOCKS = {
+    "minecraft:comparator",
+    "minecraft:ladder",
+    "minecraft:lever",
+    "minecraft:redstone_torch",
+    "minecraft:redstone_wall_torch",
+    "minecraft:redstone_wire",
+    "minecraft:repeater",
+    "minecraft:tripwire",
+    "minecraft:tripwire_hook",
+    "minecraft:vine",
+}
+
+ATTACH_AFTER_SUFFIXES = (
+    "_banner",
+    "_button",
+    "_carpet",
+    "_coral_fan",
+    "_pressure_plate",
+    "_sign",
+    "_torch",
+    "_wall_banner",
+    "_wall_hanging_sign",
+    "_wall_sign",
+)
+
+_SNBT_SIMPLE_KEY_RE = re.compile(r"^[A-Za-z0-9._+-]+$")
+_CARDINAL_ORDER = ("north", "east", "south", "west")
+_ROTATE_STEPS = {"none": 0, "y90": 1, "y180": 2, "y270": 3}
+
 
 @dataclass(frozen=True)
 class Block:
@@ -516,6 +571,388 @@ class Block:
     def phase(self) -> int:
         # 0: main blocks, 1: attachables/plants (needs supports placed first)
         return 1 if self.block_id in ATTACH_AFTER_IDS else 0
+
+
+@dataclass(frozen=True)
+class ModernBlock:
+    x: int
+    y: int
+    z: int
+    block_state: str
+    block_entity_nbt: Optional[Dict[str, Any]] = None
+
+    @property
+    def phase(self) -> int:
+        return _phase_from_block_state(self.block_state)
+
+
+def _phase_from_block_state(block_state: str) -> int:
+    name = block_state.split("[", 1)[0]
+    if name in ATTACH_AFTER_BLOCKS:
+        return 1
+    if name.endswith(ATTACH_AFTER_SUFFIXES):
+        return 1
+    if name in {
+        "minecraft:beetroots",
+        "minecraft:carrots",
+        "minecraft:dandelion",
+        "minecraft:fern",
+        "minecraft:potatoes",
+        "minecraft:short_grass",
+        "minecraft:sunflower",
+        "minecraft:tall_grass",
+        "minecraft:wheat",
+    }:
+        return 1
+    return 0
+
+
+def _decode_varints(raw: bytes) -> List[int]:
+    out: List[int] = []
+    i = 0
+    while i < len(raw):
+        value = 0
+        shift = 0
+        for _ in range(5):
+            if i >= len(raw):
+                raise SystemExit("Invalid Sponge BlockData: truncated varint")
+            b = raw[i]
+            i += 1
+            value |= (b & 0x7F) << shift
+            if (b & 0x80) == 0:
+                out.append(value)
+                break
+            shift += 7
+        else:
+            raise SystemExit("Invalid Sponge BlockData: varint exceeds 5 bytes")
+    return out
+
+
+def _clean_block_entity_nbt(value: Dict[str, Any]) -> Optional[Dict[str, Any]]:
+    cleaned = {k: v for k, v in value.items() if k not in {"Id", "Pos", "id", "x", "y", "z"}}
+    return cleaned or None
+
+
+def _iter_blocks_sponge_v2(root: Dict) -> Tuple[int, int, int, List[ModernBlock], Tuple[int, int, int]]:
+    try:
+        w = int(root["Width"])
+        h = int(root["Height"])
+        l = int(root["Length"])
+        version = int(root["Version"])
+    except Exception as e:
+        raise SystemExit(f"Invalid/missing Sponge dimensions/version: {e}")
+
+    if version != 2:
+        raise SystemExit(f"Unsupported Sponge schematic version: {version} (expected 2)")
+
+    palette = root.get("Palette")
+    block_data = root.get("BlockData")
+    if not isinstance(palette, dict) or not isinstance(block_data, (bytes, bytearray)):
+        raise SystemExit("Not a Sponge .schem v2 file (expected Palette/BlockData).")
+
+    entities = root.get("Entities") or []
+    if entities:
+        raise SystemExit("Sponge .schem entities are not supported yet.")
+
+    inv_palette: Dict[int, str] = {}
+    for block_state, palette_idx in palette.items():
+        if not isinstance(block_state, str):
+            raise SystemExit("Invalid Sponge Palette entry: block state key must be string")
+        idx = int(palette_idx)
+        if idx in inv_palette:
+            raise SystemExit(f"Invalid Sponge Palette: duplicate index {idx}")
+        inv_palette[idx] = block_state
+
+    values = _decode_varints(bytes(block_data))
+    expected = w * h * l
+    if len(values) != expected:
+        raise SystemExit(f"Sponge BlockData length mismatch (got {len(values)}, expected {expected}).")
+
+    raw_offset = root.get("Offset")
+    if raw_offset is None:
+        meta = root.get("Metadata")
+        if isinstance(meta, dict):
+            raw_offset = [meta.get("WEOffsetX", 0), meta.get("WEOffsetY", 0), meta.get("WEOffsetZ", 0)]
+    if raw_offset is None:
+        raw_offset = [0, 0, 0]
+    if not isinstance(raw_offset, list) or len(raw_offset) != 3:
+        raise SystemExit("Invalid Sponge Offset (expected integer[3])")
+    offset = (int(raw_offset[0]), int(raw_offset[1]), int(raw_offset[2]))
+
+    block_entities: Dict[Tuple[int, int, int], Dict[str, Any]] = {}
+    for entry in root.get("BlockEntities") or []:
+        if not isinstance(entry, dict):
+            raise SystemExit("Invalid Sponge BlockEntities entry (expected compound)")
+        pos = entry.get("Pos")
+        if not isinstance(pos, list) or len(pos) != 3:
+            raise SystemExit("Invalid Sponge BlockEntities.Pos (expected integer[3])")
+        key = (int(pos[0]), int(pos[1]), int(pos[2]))
+        cleaned = _clean_block_entity_nbt(entry)
+        if cleaned:
+            block_entities[key] = cleaned
+
+    out: List[ModernBlock] = []
+    for idx, palette_idx in enumerate(values):
+        block_state = inv_palette.get(palette_idx)
+        if block_state is None:
+            raise SystemExit(f"Sponge BlockData references missing palette index: {palette_idx}")
+        if block_state == "minecraft:air":
+            continue
+        x = idx % w
+        z = (idx // w) % l
+        y = idx // (w * l)
+        out.append(
+            ModernBlock(
+                x=x,
+                y=y,
+                z=z,
+                block_state=block_state,
+                block_entity_nbt=block_entities.get((x, y, z)),
+            )
+        )
+
+    return w, h, l, out, offset
+
+
+def _iter_blocks_sponge_v3(root: Dict) -> Tuple[int, int, int, List[ModernBlock], Tuple[int, int, int]]:
+    schem = root.get("Schematic")
+    if not isinstance(schem, dict):
+        raise SystemExit("Not a Sponge .schem v3 file (expected nested Schematic compound).")
+
+    try:
+        w = int(schem["Width"])
+        h = int(schem["Height"])
+        l = int(schem["Length"])
+        version = int(schem["Version"])
+    except Exception as e:
+        raise SystemExit(f"Invalid/missing Sponge v3 dimensions/version: {e}")
+
+    if version != 3:
+        raise SystemExit(f"Unsupported Sponge schematic version: {version} (expected 3)")
+
+    blocks = schem.get("Blocks")
+    if not isinstance(blocks, dict):
+        raise SystemExit("Invalid Sponge .schem v3 file (expected Blocks container).")
+
+    palette = blocks.get("Palette")
+    block_data = blocks.get("Data")
+    if not isinstance(palette, dict) or not isinstance(block_data, (bytes, bytearray)):
+        raise SystemExit("Invalid Sponge .schem v3 Blocks container (expected Palette/Data).")
+
+    entities = schem.get("Entities") or []
+    if entities:
+        raise SystemExit("Sponge .schem entities are not supported yet.")
+
+    inv_palette: Dict[int, str] = {}
+    for block_state, palette_idx in palette.items():
+        if not isinstance(block_state, str):
+            raise SystemExit("Invalid Sponge v3 Palette entry: block state key must be string")
+        idx = int(palette_idx)
+        if idx in inv_palette:
+            raise SystemExit(f"Invalid Sponge v3 Palette: duplicate index {idx}")
+        inv_palette[idx] = block_state
+
+    values = _decode_varints(bytes(block_data))
+    expected = w * h * l
+    if len(values) != expected:
+        raise SystemExit(f"Sponge v3 Blocks.Data length mismatch (got {len(values)}, expected {expected}).")
+
+    raw_offset = schem.get("Offset") or [0, 0, 0]
+    if not isinstance(raw_offset, list) or len(raw_offset) != 3:
+        raise SystemExit("Invalid Sponge v3 Offset (expected integer[3])")
+    offset = (int(raw_offset[0]), int(raw_offset[1]), int(raw_offset[2]))
+
+    block_entities: Dict[Tuple[int, int, int], Dict[str, Any]] = {}
+    for entry in blocks.get("BlockEntities") or []:
+        if not isinstance(entry, dict):
+            raise SystemExit("Invalid Sponge v3 BlockEntities entry (expected compound)")
+        pos = entry.get("Pos")
+        if not isinstance(pos, list) or len(pos) != 3:
+            raise SystemExit("Invalid Sponge v3 BlockEntities.Pos (expected integer[3])")
+        key = (int(pos[0]), int(pos[1]), int(pos[2]))
+
+        data = entry.get("Data")
+        if isinstance(data, dict):
+            cleaned = {k: v for k, v in data.items() if k not in {"id", "x", "y", "z"}}
+        else:
+            cleaned = _clean_block_entity_nbt(entry)
+        if cleaned:
+            block_entities[key] = cleaned
+
+    out: List[ModernBlock] = []
+    for idx, palette_idx in enumerate(values):
+        block_state = inv_palette.get(palette_idx)
+        if block_state is None:
+            raise SystemExit(f"Sponge v3 Blocks.Data references missing palette index: {palette_idx}")
+        if block_state == "minecraft:air":
+            continue
+        x = idx % w
+        z = (idx // w) % l
+        y = idx // (w * l)
+        out.append(
+            ModernBlock(
+                x=x,
+                y=y,
+                z=z,
+                block_state=block_state,
+                block_entity_nbt=block_entities.get((x, y, z)),
+            )
+        )
+
+    return w, h, l, out, offset
+
+
+def _quote_snbt_string(value: str) -> str:
+    return '"' + value.replace("\\", "\\\\").replace('"', '\\"') + '"'
+
+
+def _format_snbt_float(value: float) -> str:
+    if not math.isfinite(value):
+        raise SystemExit(f"Unsupported non-finite float in NBT payload: {value!r}")
+    text = repr(float(value))
+    if "." not in text and "e" not in text and "E" not in text:
+        text += ".0"
+    return text
+
+
+def _to_snbt(value: Any) -> str:
+    if isinstance(value, str):
+        return _quote_snbt_string(value)
+    if isinstance(value, NbtByte):
+        return f"{int(value)}b"
+    if isinstance(value, NbtShort):
+        return f"{int(value)}s"
+    if isinstance(value, NbtLong):
+        return f"{int(value)}l"
+    if isinstance(value, NbtFloat):
+        return f"{_format_snbt_float(float(value))}f"
+    if isinstance(value, NbtDouble):
+        return f"{_format_snbt_float(float(value))}d"
+    if isinstance(value, bool):
+        return "1b" if value else "0b"
+    if isinstance(value, int):
+        return str(int(value))
+    if isinstance(value, float):
+        return f"{_format_snbt_float(value)}d"
+    if isinstance(value, dict):
+        parts = []
+        for k, v in value.items():
+            key = k if _SNBT_SIMPLE_KEY_RE.match(k) else _quote_snbt_string(k)
+            parts.append(f"{key}:{_to_snbt(v)}")
+        return "{" + ",".join(parts) + "}"
+    if isinstance(value, (list, tuple)):
+        return "[" + ",".join(_to_snbt(v) for v in value) + "]"
+    if isinstance(value, (bytes, bytearray)):
+        return "[B;" + ",".join(f"{NbtByte(struct.unpack('>b', bytes([b]))[0])}b" for b in value) + "]"
+    raise SystemExit(f"Unsupported NBT value for SNBT serialization: {type(value).__name__}")
+
+
+def _write_payload(output: str, payload: str) -> int:
+    if output == "-" or output == "":
+        sys.stdout.write(payload)
+        return 0
+
+    out_path = Path(output)
+    out_path.parent.mkdir(parents=True, exist_ok=True)
+    out_path.write_text(payload, encoding="utf-8", errors="strict")
+    return 0
+
+
+def _rotate_cardinal(value: str, steps: int) -> str:
+    if value not in _CARDINAL_ORDER:
+        return value
+    idx = _CARDINAL_ORDER.index(value)
+    return _CARDINAL_ORDER[(idx + steps) % 4]
+
+
+def _parse_block_state(block_state: str) -> Tuple[str, List[Tuple[str, str]]]:
+    if "[" not in block_state or not block_state.endswith("]"):
+        return block_state, []
+    name, rest = block_state.split("[", 1)
+    props_raw = rest[:-1]
+    props: List[Tuple[str, str]] = []
+    if props_raw:
+        for item in props_raw.split(","):
+            key, value = item.split("=", 1)
+            props.append((key, value))
+    return name, props
+
+
+def _join_block_state(name: str, props: List[Tuple[str, str]]) -> str:
+    if not props:
+        return name
+    return f"{name}[{','.join(f'{k}={v}' for k, v in props)}]"
+
+
+def _rotate_state_properties(name: str, props: List[Tuple[str, str]], steps: int) -> List[Tuple[str, str]]:
+    if steps == 0 or not props:
+        return props
+
+    prop_map = {k: v for k, v in props}
+    original_keys = [k for k, _ in props]
+
+    if "facing" in prop_map:
+        prop_map["facing"] = _rotate_cardinal(prop_map["facing"], steps)
+    if "axis" in prop_map:
+        axis = prop_map["axis"]
+        if axis == "x":
+            prop_map["axis"] = "z" if steps % 2 == 1 else "x"
+        elif axis == "z":
+            prop_map["axis"] = "x" if steps % 2 == 1 else "z"
+    if "shape" in prop_map:
+        shape = prop_map["shape"]
+        rail_shapes = {
+            "north_south": ("east_west", "north_south", "east_west"),
+            "east_west": ("north_south", "east_west", "north_south"),
+            "ascending_north": ("ascending_east", "ascending_south", "ascending_west"),
+            "ascending_east": ("ascending_south", "ascending_west", "ascending_north"),
+            "ascending_south": ("ascending_west", "ascending_north", "ascending_east"),
+            "ascending_west": ("ascending_north", "ascending_east", "ascending_south"),
+            "south_east": ("south_west", "north_west", "north_east"),
+            "south_west": ("north_west", "north_east", "south_east"),
+            "north_west": ("north_east", "south_east", "south_west"),
+            "north_east": ("south_east", "south_west", "north_west"),
+        }
+        if shape in rail_shapes:
+            prop_map["shape"] = rail_shapes[shape][steps - 1]
+    cardinal_snapshot = {key: prop_map[key] for key in ("north", "east", "south", "west") if key in prop_map}
+    for key in cardinal_snapshot:
+        prop_map.pop(key, None)
+    for key, value in cardinal_snapshot.items():
+        prop_map[_rotate_cardinal(key, steps)] = value
+
+    seen = set()
+    out: List[Tuple[str, str]] = []
+    for key in original_keys:
+        target = _rotate_cardinal(key, steps) if key in ("north", "east", "south", "west") else key
+        if target in prop_map and target not in seen:
+            out.append((target, prop_map[target]))
+            seen.add(target)
+    for key, value in prop_map.items():
+        if key not in seen:
+            out.append((key, value))
+            seen.add(key)
+    return out
+
+
+def _rotate_block_state(block_state: str, steps: int) -> str:
+    if steps == 0:
+        return block_state
+    name, props = _parse_block_state(block_state)
+    rotated = _rotate_state_properties(name, props, steps)
+    return _join_block_state(name, rotated)
+
+
+def _rotate_coords(x: int, z: int, width: int, length: int, steps: int) -> Tuple[int, int]:
+    if steps == 0:
+        return x, z
+    if steps == 1:
+        return length - 1 - z, x
+    if steps == 2:
+        return width - 1 - x, length - 1 - z
+    if steps == 3:
+        return z, width - 1 - x
+    raise AssertionError(f"invalid rotation steps: {steps}")
 
 
 def _iter_blocks_mcedit(root: Dict) -> Tuple[int, int, int, List[Block], Tuple[int, int, int]]:
@@ -557,14 +994,26 @@ def _iter_blocks_mcedit(root: Dict) -> Tuple[int, int, int, List[Block], Tuple[i
     return w, h, l, out, (we_off_x, we_off_y, we_off_z)
 
 
+def _detect_format(root: Dict) -> str:
+    if isinstance(root.get("Blocks"), (bytes, bytearray)) and isinstance(root.get("Data"), (bytes, bytearray)):
+        return "mcedit"
+    if isinstance(root.get("Palette"), dict) and isinstance(root.get("BlockData"), (bytes, bytearray)):
+        return "sponge_v2"
+    schem = root.get("Schematic")
+    if isinstance(schem, dict) and int(schem.get("Version") or 0) == 3:
+        return "sponge_v3"
+    raise SystemExit("Unsupported schematic format: expected MCEdit Alpha .schematic or Sponge .schem v2/v3.")
+
+
 def main(argv: List[str]) -> int:
-    ap = argparse.ArgumentParser(description="Convert MCEdit Alpha .schematic to Minecraft commands")
-    ap.add_argument("--schematic", required=True, help="Path to .schematic (MCEdit/Alpha format)")
+    ap = argparse.ArgumentParser(description="Convert supported schematic files to Minecraft commands")
+    ap.add_argument("--schematic", required=True, help="Path to .schematic/.schem")
     ap.add_argument("--origin", nargs=3, required=True, type=int, metavar=("X", "Y", "Z"), help="Paste origin in world coords (integers)")
     ap.add_argument("--dx", type=int, default=0, help="Extra offset on X (applied on top of origin)")
     ap.add_argument("--dy", type=int, default=0, help="Extra offset on Y (applied on top of origin)")
     ap.add_argument("--dz", type=int, default=0, help="Extra offset on Z (applied on top of origin)")
-    ap.add_argument("--no-we-offset", action="store_true", help="Ignore WEOffsetX/Y/Z tags if present")
+    ap.add_argument("--rotate", choices=("none", "y90", "y180", "y270"), default="none", help="Rotate around Y before placing (clockwise when viewed from above)")
+    ap.add_argument("--no-we-offset", action="store_true", help="Ignore stored paste offsets (WEOffsetX/Y/Z or Sponge Offset)")
     ap.add_argument("--print-bounds", action="store_true", help="Print computed bounds (x1 y1 z1 x2 y2 z2) and exit")
     ap.add_argument("--erase", action="store_true", help="Erase mode: emit setblock air for every non-air schematic block (no block mapping required)")
     ap.add_argument("--clear", action="store_true", help="Emit an initial /fill ... air to clear the target volume")
@@ -578,9 +1027,17 @@ def main(argv: List[str]) -> int:
         return 2
 
     root = _load_nbt(schematic_path)
-    w, h, l, blocks, we_off = _iter_blocks_mcedit(root)
+    fmt = _detect_format(root)
+    modern_blocks: List[ModernBlock] = []
+    legacy_blocks: List[Block] = []
+    if fmt == "mcedit":
+        w, h, l, legacy_blocks, stored_off = _iter_blocks_mcedit(root)
+    elif fmt == "sponge_v2":
+        w, h, l, modern_blocks, stored_off = _iter_blocks_sponge_v2(root)
+    else:
+        w, h, l, modern_blocks, stored_off = _iter_blocks_sponge_v3(root)
 
-    off_x, off_y, off_z = we_off
+    off_x, off_y, off_z = stored_off
     if args.no_we_offset:
         off_x = off_y = off_z = 0
 
@@ -588,14 +1045,17 @@ def main(argv: List[str]) -> int:
     base_x = origin_x + args.dx + off_x
     base_y = origin_y + args.dy + off_y
     base_z = origin_z + args.dz + off_z
+    rotate_steps = _ROTATE_STEPS[args.rotate]
+    rot_w = l if rotate_steps % 2 == 1 else w
+    rot_l = w if rotate_steps % 2 == 1 else l
 
     if args.print_bounds:
         x1 = base_x
         y1 = base_y
         z1 = base_z
-        x2 = base_x + (w - 1)
+        x2 = base_x + (rot_w - 1)
         y2 = base_y + (h - 1)
-        z2 = base_z + (l - 1)
+        z2 = base_z + (rot_l - 1)
         print(x1, y1, z1, x2, y2, z2)
         return 0
 
@@ -603,68 +1063,80 @@ def main(argv: List[str]) -> int:
         print("ERROR: --erase and --clear are mutually exclusive", file=sys.stderr)
         return 2
 
-    # Sort: main blocks first, then attachables. Within a phase, low->high Y reduces support breakage.
-    blocks_sorted = sorted(blocks, key=lambda b: (b.phase, b.y, b.z, b.x))
-
     out_lines: List[str] = []
 
     if args.erase:
-        for b in blocks_sorted:
-            wx = base_x + b.x
-            wy = base_y + b.y
-            wz = base_z + b.z
-            out_lines.append(f"setblock {wx} {wy} {wz} minecraft:air replace")
+        if fmt == "mcedit":
+            blocks_sorted = sorted(legacy_blocks, key=lambda b: (b.phase, b.y, b.z, b.x))
+            for b in blocks_sorted:
+                rx, rz = _rotate_coords(b.x, b.z, w, l, rotate_steps)
+                wx = base_x + rx
+                wy = base_y + b.y
+                wz = base_z + rz
+                out_lines.append(f"setblock {wx} {wy} {wz} minecraft:air replace")
+        else:
+            blocks_sorted = sorted(modern_blocks, key=lambda b: (b.phase, b.y, b.z, b.x))
+            for b in blocks_sorted:
+                rx, rz = _rotate_coords(b.x, b.z, w, l, rotate_steps)
+                wx = base_x + rx
+                wy = base_y + b.y
+                wz = base_z + rz
+                out_lines.append(f"setblock {wx} {wy} {wz} minecraft:air replace")
         payload = "\n".join(out_lines) + "\n"
-
-        if args.output == "-" or args.output == "":
-            sys.stdout.write(payload)
-            return 0
-
-        out_path = Path(args.output)
-        out_path.parent.mkdir(parents=True, exist_ok=True)
-        out_path.write_text(payload, encoding="utf-8", errors="strict")
-        return 0
+        return _write_payload(args.output, payload)
 
     if args.clear:
         pad = max(0, args.clear_pad)
         x1 = base_x - pad
         y1 = base_y - pad
         z1 = base_z - pad
-        x2 = base_x + (w - 1) + pad
+        x2 = base_x + (rot_w - 1) + pad
         y2 = base_y + (h - 1) + pad
-        z2 = base_z + (l - 1) + pad
+        z2 = base_z + (rot_l - 1) + pad
         out_lines.append(f"fill {x1} {y1} {z1} {x2} {y2} {z2} minecraft:air replace")
 
-    unmapped: Dict[Tuple[int, int], int] = {}
-    for b in blocks_sorted:
-        try:
-            block_str = map_block(b.block_id, b.data)
-        except Exception:
-            unmapped[(b.block_id, b.data)] = unmapped.get((b.block_id, b.data), 0) + 1
-            continue
+    if fmt == "mcedit":
+        # Sort: main blocks first, then attachables. Within a phase, low->high Y reduces support breakage.
+        blocks_sorted = sorted(legacy_blocks, key=lambda b: (b.phase, b.y, b.z, b.x))
+        unmapped: Dict[Tuple[int, int], int] = {}
+        for b in blocks_sorted:
+            try:
+                block_str = map_block(b.block_id, b.data)
+            except Exception:
+                unmapped[(b.block_id, b.data)] = unmapped.get((b.block_id, b.data), 0) + 1
+                continue
 
-        wx = base_x + b.x
-        wy = base_y + b.y
-        wz = base_z + b.z
-        out_lines.append(f"setblock {wx} {wy} {wz} {block_str} replace")
+            rx, rz = _rotate_coords(b.x, b.z, w, l, rotate_steps)
+            wx = base_x + rx
+            wy = base_y + b.y
+            wz = base_z + rz
+            out_lines.append(f"setblock {wx} {wy} {wz} {_rotate_block_state(block_str, rotate_steps)} replace")
 
-    if unmapped:
-        print("ERROR: unmapped blocks encountered:", file=sys.stderr)
-        for (bid, md), cnt in sorted(unmapped.items()):
-            print(f"  id={bid} data={md} count={cnt}", file=sys.stderr)
-        print("Refusing to output partial command stream.", file=sys.stderr)
-        return 1
+        if unmapped:
+            print("ERROR: unmapped blocks encountered:", file=sys.stderr)
+            for (bid, md), cnt in sorted(unmapped.items()):
+                print(f"  id={bid} data={md} count={cnt}", file=sys.stderr)
+            print("Refusing to output partial command stream.", file=sys.stderr)
+            return 1
+    else:
+        blocks_sorted = sorted(modern_blocks, key=lambda b: (b.phase, b.y, b.z, b.x))
+        for b in blocks_sorted:
+            rx, rz = _rotate_coords(b.x, b.z, w, l, rotate_steps)
+            wx = base_x + rx
+            wy = base_y + b.y
+            wz = base_z + rz
+            out_lines.append(f"setblock {wx} {wy} {wz} {_rotate_block_state(b.block_state, rotate_steps)} replace")
+        for b in blocks_sorted:
+            if not b.block_entity_nbt:
+                continue
+            rx, rz = _rotate_coords(b.x, b.z, w, l, rotate_steps)
+            wx = base_x + rx
+            wy = base_y + b.y
+            wz = base_z + rz
+            out_lines.append(f"data merge block {wx} {wy} {wz} {_to_snbt(b.block_entity_nbt)}")
 
     payload = "\n".join(out_lines) + "\n"
-
-    if args.output == "-" or args.output == "":
-        sys.stdout.write(payload)
-        return 0
-
-    out_path = Path(args.output)
-    out_path.parent.mkdir(parents=True, exist_ok=True)
-    out_path.write_text(payload, encoding="utf-8", errors="strict")
-    return 0
+    return _write_payload(args.output, payload)
 
 
 if __name__ == "__main__":

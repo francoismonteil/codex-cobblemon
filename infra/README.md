@@ -130,6 +130,11 @@ Option: utiliser `docker-compose.pregen.yml` uniquement pendant la pre-generatio
 - Linux Bash: `./infra/start.sh`, `./infra/stop.sh`, `./infra/logs.sh`, `./infra/backup.sh`, `./infra/restore.sh`
 - Reporting / audit: `python3 ./infra/pokedex-report.py` (rapport detaille Pokedex serveur, avec option de publication Discord)
 
+Build / templates:
+- `./infra/spawn-schematic-mcedit.sh`: colle un `.schematic` MCEdit Alpha ou un `.schem` Sponge v2/v3 pres d'un joueur ou a des coordonnees absolues.
+- `./infra/spawn-schematic.ps1`: wrapper Windows (sync infra + upload de l'asset + collage distant via SSH).
+- `python3 ./infra/schematic-mcedit-to-commands.py`: convertit un `.schematic`/`.schem` en flux de commandes vanilla (`fill`/`setblock` + block entities Sponge).
+
 Progression:
 - `./infra/progression-init.sh`: initialise les scoreboards de badges
 - `./infra/badge.sh`: attribue / consulte les badges d'un joueur

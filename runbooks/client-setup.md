@@ -18,6 +18,6 @@ Solution:
 
 ## Conseil
 Quand tu invites tes amis, donne leur:
-- l'adresse: `<DUCKDNS_DOMAIN>:25565` (voir `runbooks/site.local.md` ou `.env` sur le serveur)
+- l'adresse: `<DUCKDNS_DOMAIN>:25565` (voir `DUCKDNS_DOMAIN` dans `runbooks/site.local.md`, ou `DUCKDNS_DOMAINS` dans `.env` sur le serveur; ajouter `.duckdns.org` si `.env` ne stocke que le prefixe)
 - le modpack exact: **Cobblemon Official Modpack [Fabric] 1.7.3**
 - la liste des mods client actuellement attendus: `runbooks/client-pack-recommended.md`
