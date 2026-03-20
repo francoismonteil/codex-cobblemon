@@ -67,6 +67,8 @@ Convention:
 - `./infra/spawn-pokecenter-prefab.sh`
 - `./infra/hostile-mob-tower-auto.sh` (pipeline auto ferme XP hostile + rollback)
 - `./infra/spawn-hostile-mob-tower.sh` (build manuel/absolu)
+- `python3 ./infra/hostile-mob-tower-afk.py --at <x> <y> <z>` (spots AFK recommandes + diagnostic kill room/toit)
+- `python3 ./infra/spawner-cluster.py --center <x> <y> <z> ...` (scan/tuning/suppression ciblee des spawners par type de mob)
 - `./infra/clear-hostile-mob-tower.sh` (cleanup cible)
 - `./infra/find-hostile-mob-tower-site.py` (choix de site)
 - `./infra/validate-hostile-mob-tower.py` (validation post-build)

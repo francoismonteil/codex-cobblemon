@@ -3,6 +3,7 @@
 
 from __future__ import annotations
 
+import math
 from dataclasses import dataclass
 from typing import Dict, List, Set, Tuple
 
@@ -374,3 +375,75 @@ def planned_spawn_positions(origin: Tuple[int, int, int], floors: int) -> Set[Tu
                         continue
                     out.add((x, pad_y + 1, z))
     return out
+
+
+def spawn_distance_metrics(
+    origin: Tuple[int, int, int],
+    floors: int,
+    player_pos: Tuple[int, int, int],
+) -> Dict[str, float | int]:
+    spawns = planned_spawn_positions(origin, floors)
+    if not spawns:
+        return {
+            "min_distance": 0.0,
+            "max_distance": 0.0,
+            "active_positions": 0,
+            "total_positions": 0,
+        }
+
+    distances = [math.dist(player_pos, spawn_pos) for spawn_pos in spawns]
+    active = sum(1 for distance in distances if 24.0 <= distance <= 128.0)
+    return {
+        "min_distance": round(min(distances), 2),
+        "max_distance": round(max(distances), 2),
+        "active_positions": active,
+        "total_positions": len(distances),
+    }
+
+
+def reference_player_positions(origin: Tuple[int, int, int], floors: int) -> Dict[str, Tuple[int, int, int]]:
+    g = geometry(origin, floors)
+    x0, y0, z0 = origin
+    return {
+        "kill_room_center": (x0, y0 + 1, z0 + 5),
+        "kill_room_back": (x0, y0 + 1, z0 + 7),
+        "roof_center": (x0, g.roof_y + 1, z0),
+    }
+
+
+def recommended_afk_positions(origin: Tuple[int, int, int], floors: int) -> List[Dict[str, object]]:
+    g = geometry(origin, floors)
+    x0, y0, z0 = origin
+    seen: Set[Tuple[int, int, int]] = set()
+    recommendations: List[Dict[str, object]] = []
+    directions = (
+        ("south_ground", 0, 1),
+        ("north_ground", 0, -1),
+        ("east_ground", 1, 0),
+        ("west_ground", -1, 0),
+    )
+
+    for label, step_x, step_z in directions:
+        for radius in range(1, 65):
+            x = x0 + step_x * radius
+            z = z0 + step_z * radius
+            if g.build_bbox[0] <= x <= g.build_bbox[3] and g.build_bbox[2] <= z <= g.build_bbox[5]:
+                continue
+            if (x, y0, z) in seen:
+                continue
+            metrics = spawn_distance_metrics(origin, floors, (x, y0, z))
+            if metrics["active_positions"] != metrics["total_positions"]:
+                continue
+            if metrics["min_distance"] < 24.0 or metrics["max_distance"] > 128.0:
+                continue
+            seen.add((x, y0, z))
+            recommendations.append(
+                {
+                    "label": label,
+                    "pos": {"x": x, "y": y0, "z": z},
+                    "metrics": metrics,
+                }
+            )
+            break
+
+    return recommendations

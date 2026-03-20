@@ -102,6 +102,25 @@ Derniere mise a jour: 2026-03-18
 - Runbook associe:
   - `runbooks/capture-xp.md`
 
+## Cluster spawners wither skeleton (production)
+- Date d'ajustement: 2026-03-20
+- Zone de travail:
+  - centre ope: `-4226 234 -1226`
+  - dimension: `minecraft:overworld`
+- Nettoyage applique:
+  - `15` spawners `minecraft:skeleton` retires (remplaces par `minecraft:air`)
+- Profil aligne/pousse sur les spawners `minecraft:wither_skeleton` restants:
+  - `RequiredPlayerRange=40`
+  - `MaxNearbyEntities=20`
+  - `SpawnCount=8`
+  - `MinSpawnDelay=80`
+  - `MaxSpawnDelay=160`
+- Persistance:
+  - `save-all flush` execute apres ajustement
+- Outil repo associe:
+  - `python3 ./infra/spawner-cluster.py --center -4226 234 -1226 --dimension overworld --match-entity minecraft:wither_skeleton --required-player-range 40 --max-nearby-entities 20 --spawn-count 8 --min-spawn-delay 80 --max-spawn-delay 160 --apply --save`
+  - `python3 ./infra/spawner-cluster.py --center -4226 234 -1226 --dimension overworld --match-entity minecraft:skeleton --clear --apply --save`
+
 ## Profil performance applique (objectif 4 joueurs)
 - Date d'application: 2026-02-11
 - Memoire Java:

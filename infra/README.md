@@ -191,6 +191,8 @@ Monde (open world):
 - `./infra/spawn-village-welcome-cache.sh`: place/stocke un petit baril de bienvenue pres du kit (pain, torches, lits, pokeballs), **en manuel post-demarrage**.
 - `./infra/spawn-pokecenter-prefab.sh`: construit un petit prefab "Centre Pokemon" (basic ou decorated) dans un rectangle (4 coins).
 - `./infra/spawn-hostile-mob-tower.sh`: construit une tour hostile vanilla pour XP/items (etages sombres + canaux d'eau + chambre de kill).
+- `python3 ./infra/hostile-mob-tower-afk.py --at <x> <y> <z>`: calcule des positions AFK recommandées et compare le rendement attendu depuis la kill room / le toit.
+- `python3 ./infra/spawner-cluster.py --center <x> <y> <z> ...`: scanne une grappe de spawners sur disque, puis peut retuner ou supprimer les spawners filtrés par `SpawnData.entity.id` via `./infra/mc.sh`.
 - `./infra/clear-hostile-mob-tower.sh`: supprime de facon ciblee la tour hostile prefabrication avec les memes offsets que le build.
 - `./infra/hostile-mob-tower-auto.sh`: pipeline complet ferme hostile auto (choix de site, backup, build, validation, rollback).
 - `./infra/find-hostile-mob-tower-site.py`: selection deterministe d'un site plat et distant pour la tour hostile.

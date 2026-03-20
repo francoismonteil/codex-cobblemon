@@ -242,6 +242,10 @@ write_json() {
 import json
 import os
 from pathlib import Path
+import sys
+
+sys.path.insert(0, str(Path("./infra").resolve()))
+from hostile_mob_tower_spec import recommended_afk_positions
 
 payload = {
     "schema_version": 1,
@@ -260,6 +264,7 @@ payload = {
     },
     "bbox": {"x1": ${BUILD_X1}, "y1": ${BUILD_Y1}, "z1": ${BUILD_Z1}, "x2": ${BUILD_X2}, "y2": ${BUILD_Y2}, "z2": ${BUILD_Z2}},
     "chunk_box": {"x1": ${CHUNK_X1}, "z1": ${CHUNK_Z1}, "x2": ${CHUNK_X2}, "z2": ${CHUNK_Z2}},
+    "afk_positions": recommended_afk_positions((${X0}, ${Y0}, ${Z0}), ${floors}),
 }
 path = Path(os.environ["JSON_OUT"])
 path.parent.mkdir(parents=True, exist_ok=True)
