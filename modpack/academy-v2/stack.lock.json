@@ -1,0 +1,319 @@
+{
+  "schema_version": 1,
+  "generated_at": "2026-03-23",
+  "base_stack": {
+    "minecraft_version": "1.21.1",
+    "loader": "fabric",
+    "base_modpack": {
+      "name": "Cobblemon Official Modpack [Fabric]",
+      "version": "1.7.3",
+      "modrinth_project_id": "5FFgwNNP",
+      "modrinth_version_id": "Lydu1ZNo"
+    },
+    "cobblemon_mod": {
+      "version": "1.7.3+1.21.1",
+      "path_hint": "modpack/public-client-pack/packwiz/mods/cobblemon.pw.toml"
+    }
+  },
+  "academy_source": {
+    "name": "StarAcademyMod",
+    "repo_url": "https://github.com/Abes-Hutt/StarAcademyMod",
+    "local_path": "downloads/academy-src",
+    "branch_hint": "1.21.1",
+    "fabric_build_gradle": "downloads/academy-src/fabric/build.gradle",
+    "common_build_gradle": "downloads/academy-src/common/build.gradle"
+  },
+  "compatibility_gate": {
+    "mode": "fidelity_reduced",
+    "decision_reason": "Upstream StarAcademyMod currently pins Cobblemon 1.6.1+1.21.1, so the real Academy Integration path is blocked on the current Cobblemon 1.7.3 base unless upstream compatibility changes."
+  },
+  "install_groups": {
+    "core": [
+      "ftb-library",
+      "ftb-teams",
+      "ftb-essentials",
+      "ftb-quests",
+      "numismatic-overhaul",
+      "extraquests"
+    ],
+    "gyms": [
+      "rct-api",
+      "admiral",
+      "rad-gyms"
+    ],
+    "dimension": [
+      "eternal-starlight"
+    ]
+  },
+  "components": [
+    {
+      "id": "academy-integration",
+      "name": "StarAcademyMod / Academy Integration",
+      "status": "blocked_without_fork",
+      "phase": 0,
+      "client_required": true,
+      "server_required": true,
+      "notes": [
+        "The upstream Fabric build pins com.cobblemon:fabric:1.6.1+1.21.1.",
+        "Safari, houses, partner NPCs, card systems and acceptance-letter hooks live inside this integration path."
+      ],
+      "blocked_by": {
+        "base_cobblemon": "1.7.3+1.21.1",
+        "upstream_cobblemon": "1.6.1+1.21.1",
+        "reason": "Do not introduce a durable private fork just to bridge the Cobblemon API gap."
+      }
+    },
+    {
+      "id": "ftb-library",
+      "name": "FTB Library",
+      "status": "viable_as_is",
+      "phase": 1,
+      "install_group": "core",
+      "client_required": true,
+      "server_required": true,
+      "artifact": {
+        "filename": "ftb-library-fabric-2101.1.31.jar",
+        "download_url": "https://edge.forgecdn.net/files/7746/958/ftb-library-fabric-2101.1.31.jar",
+        "hashes": {
+          "sha1": "18538c0a068a254a5dbf953d39d5017393b041d6"
+        },
+        "project": {
+          "provider": "curseforge",
+          "project_id": 438495,
+          "file_id": 7746958
+        }
+      }
+    },
+    {
+      "id": "ftb-teams",
+      "name": "FTB Teams",
+      "status": "viable_as_is",
+      "phase": 1,
+      "install_group": "core",
+      "client_required": true,
+      "server_required": true,
+      "artifact": {
+        "filename": "ftb-teams-fabric-2101.1.9.jar",
+        "download_url": "https://edge.forgecdn.net/files/7369/20/ftb-teams-fabric-2101.1.9.jar",
+        "hashes": {
+          "sha1": "a96e1169958eb92939ae67a1beb0aada373cbbbe"
+        },
+        "project": {
+          "provider": "curseforge",
+          "project_id": 438497,
+          "file_id": 7369020
+        }
+      }
+    },
+    {
+      "id": "ftb-essentials",
+      "name": "FTB Essentials",
+      "status": "viable_as_is",
+      "phase": 1,
+      "install_group": "core",
+      "client_required": true,
+      "server_required": true,
+      "artifact": {
+        "filename": "ftb-essentials-fabric-2101.1.9.jar",
+        "download_url": "https://edge.forgecdn.net/files/7608/732/ftb-essentials-fabric-2101.1.9.jar",
+        "hashes": {
+          "sha1": "7d2f1c84ab9d9d629d529f6ec655328d69129e85"
+        },
+        "project": {
+          "provider": "curseforge",
+          "project_id": 410811,
+          "file_id": 7608732
+        }
+      }
+    },
+    {
+      "id": "ftb-quests",
+      "name": "FTB Quests",
+      "status": "viable_as_is",
+      "phase": 2,
+      "install_group": "core",
+      "client_required": true,
+      "server_required": true,
+      "artifact": {
+        "filename": "ftb-quests-fabric-2101.1.23.jar",
+        "download_url": "https://edge.forgecdn.net/files/7775/451/ftb-quests-fabric-2101.1.23.jar",
+        "hashes": {
+          "sha1": "77a354bf1c416a1dc5691257b24d14b22174dbb0"
+        },
+        "project": {
+          "provider": "curseforge",
+          "project_id": 438496,
+          "file_id": 7775451
+        }
+      }
+    },
+    {
+      "id": "numismatic-overhaul",
+      "name": "Numismatic Overhaul",
+      "status": "viable_as_is",
+      "phase": 2,
+      "install_group": "core",
+      "client_required": true,
+      "server_required": true,
+      "artifact": {
+        "filename": "numismatic-overhaul-0.3.5+1.21.jar",
+        "download_url": "https://cdn.modrinth.com/data/ZXm8hVxN/versions/Ls16xJ6W/numismatic-overhaul-0.3.5%2B1.21.jar",
+        "hashes": {
+          "sha1": "58b63790cf9c256128b8ebceec5b01f454e64450",
+          "sha512": "af67e51f2c3d891bcd9d209411a434c6190c5c63c29af1e73af26286cdf3791b774a4ed9484b42657d7134640cca6afe55b82245b2472f16d9585b1b1fb4fdf8"
+        },
+        "project": {
+          "provider": "modrinth",
+          "project_id": "ZXm8hVxN",
+          "version_id": "Ls16xJ6W"
+        }
+      }
+    },
+    {
+      "id": "extraquests",
+      "name": "ExtraQuests",
+      "status": "viable_as_is",
+      "phase": 2,
+      "install_group": "core",
+      "client_required": true,
+      "server_required": true,
+      "artifact": {
+        "filename": "ExtraQuests-1.6.2-1.21.1-Fabric.jar",
+        "download_url": "https://cdn.modrinth.com/data/rMvP0ujv/versions/B5mqlgJe/ExtraQuests-1.6.2-1.21.1-Fabric.jar",
+        "hashes": {
+          "sha1": "8c39a21afffcfe3a97a5081302a45adb810d1e6c",
+          "sha512": "19e52c64b8e926fa4a499a6b9aebf01a0d9a6f91a725c80753ca0e7bf762da00cb064607a20e7057d19375d6c5547969c317c114b0ab5c176659b578d00c9e2d"
+        },
+        "project": {
+          "provider": "modrinth",
+          "project_id": "rMvP0ujv",
+          "version_id": "B5mqlgJe"
+        }
+      }
+    },
+    {
+      "id": "rct-api",
+      "name": "RCT API",
+      "status": "viable_with_simple_config",
+      "phase": 2,
+      "install_group": "gyms",
+      "client_required": true,
+      "server_required": true,
+      "notes": [
+        "Install alongside RAD Gyms and Admiral.",
+        "Keep the initial rollout on staging until gym persistence has been validated."
+      ],
+      "artifact": {
+        "filename": "rctapi-fabric-1.21.1-0.15.0-beta.jar",
+        "download_url": "https://cdn.modrinth.com/data/CBfM2yw7/versions/kwYWScnz/rctapi-fabric-1.21.1-0.15.0-beta.jar",
+        "hashes": {
+          "sha1": "d9999f2f7e6ceb1a47ebebad0cf023e042cb7299",
+          "sha512": "dc7fb3db0ec3f655d02fd13a905943e4b14ee46963d6d7df381658277c28706889f8ae515f291c9f1627acb8f84457661e2bcaf1a0e6d932aaa7222df9164d07"
+        },
+        "project": {
+          "provider": "modrinth",
+          "project_id": "CBfM2yw7",
+          "version_id": "kwYWScnz"
+        }
+      }
+    },
+    {
+      "id": "admiral",
+      "name": "Admiral",
+      "status": "viable_with_simple_config",
+      "phase": 2,
+      "install_group": "gyms",
+      "client_required": true,
+      "server_required": true,
+      "artifact": {
+        "filename": "admiral-fabric-0.4.10+1.21.1.jar",
+        "download_url": "https://cdn.modrinth.com/data/ugdtgQ7E/versions/LCHBvgxs/admiral-fabric-0.4.10%2B1.21.1.jar",
+        "hashes": {
+          "sha1": "2993cf7a7ba50b0307d704a34912ec5fc40eb7b5",
+          "sha512": "32ba39b0fb236f96f67db56711af6f2582be9af45fcd89b58e2ab1d6b93001844ded1a1d33b869f0a33bde2c4959d5b8b9795effc94186918c3bb9b8c9fd4f83"
+        },
+        "project": {
+          "provider": "modrinth",
+          "project_id": "ugdtgQ7E",
+          "version_id": "LCHBvgxs"
+        }
+      }
+    },
+    {
+      "id": "rad-gyms",
+      "name": "RAD Gyms",
+      "status": "viable_with_simple_config",
+      "phase": 2,
+      "install_group": "gyms",
+      "client_required": true,
+      "server_required": true,
+      "notes": [
+        "Requires gym path design and staged save/persist validation.",
+        "Treat this as the supported gym progression path once validated."
+      ],
+      "artifact": {
+        "filename": "rad-gyms-fabric-0.4.4.jar",
+        "download_url": "https://cdn.modrinth.com/data/eF8kqlHd/versions/2AR7EuiZ/rad-gyms-fabric-0.4.4.jar",
+        "hashes": {
+          "sha1": "9bdb1d497a94cc47902a75e56c752b0f613ff6c4",
+          "sha512": "c553da197fffec2c29220d785796bfc2537b92d874bcc6ae93ba7fbd0517224b78cca1c203fb9414a43ff468ea2963642b6420a46542ab81ca67853004f9b976"
+        },
+        "project": {
+          "provider": "modrinth",
+          "project_id": "eF8kqlHd",
+          "version_id": "2AR7EuiZ"
+        }
+      }
+    },
+    {
+      "id": "eternal-starlight",
+      "name": "Eternal Starlight",
+      "status": "viable_with_simple_config",
+      "phase": 3,
+      "install_group": "dimension",
+      "client_required": true,
+      "server_required": true,
+      "notes": [
+        "Use this only once the Academy dimension rollout is staged and pregenerated.",
+        "Real Academy Safari remains blocked until Academy Integration is upstream-compatible with Cobblemon 1.7.3."
+      ],
+      "artifact": {
+        "filename": "eternalstarlight-0.7.0-hotfix+1.21.1+fabric.jar",
+        "download_url": "https://cdn.modrinth.com/data/XvcfUGfB/versions/qohxfmj9/eternalstarlight-0.7.0-hotfix%2B1.21.1%2Bfabric.jar",
+        "hashes": {
+          "sha1": "b6a0b1f3cd94d30aa1b99ec31f9366b62c330b13",
+          "sha512": "9e69ac792d2aef99df6c90b3f540d90969bddf466c5d2958fb62daab29b8aa2401110dbc1731bc218a8c874b5817c800b9dfc94fc24e49ba83b6f1f5e5c2d54c"
+        },
+        "project": {
+          "provider": "modrinth",
+          "project_id": "XvcfUGfB",
+          "version_id": "qohxfmj9"
+        }
+      }
+    },
+    {
+      "id": "academy-safari",
+      "name": "Academy Safari",
+      "status": "blocked_without_fork",
+      "phase": 3,
+      "client_required": true,
+      "server_required": true,
+      "blocked_by": {
+        "component": "academy-integration",
+        "reason": "The real Safari portal, timer and ticket systems are implemented inside StarAcademyMod."
+      }
+    },
+    {
+      "id": "academy-houses",
+      "name": "Academy Houses",
+      "status": "blocked_without_fork",
+      "phase": 2,
+      "client_required": true,
+      "server_required": true,
+      "blocked_by": {
+        "component": "academy-integration",
+        "reason": "Acceptance letters, membership, house Pokedex and related GUI blocks are part of StarAcademyMod."
+      }
+    }
+  ]
+}

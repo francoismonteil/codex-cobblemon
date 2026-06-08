@@ -130,6 +130,18 @@ Option: utiliser `docker-compose.pregen.yml` uniquement pendant la pre-generatio
 - Linux Bash: `./infra/start.sh`, `./infra/stop.sh`, `./infra/logs.sh`, `./infra/backup.sh`, `./infra/restore.sh`
 - Reporting / audit: `python3 ./infra/pokedex-report.py` (rapport detaille Pokedex serveur, avec option de publication Discord)
 
+## Mise en veille / reprise
+
+Runbook: `runbooks/project-hibernation.md`
+
+Avant reprise apres une pause longue:
+
+```bash
+./infra/status.sh
+./infra/logs.sh
+./infra/backup.sh
+```
+
 Build / templates:
 - `./infra/spawn-schematic-mcedit.sh`: colle un `.schematic` MCEdit Alpha ou un `.schem` Sponge v2/v3 pres d'un joueur ou a des coordonnees absolues.
 - `./infra/spawn-schematic.ps1`: wrapper Windows (sync infra + upload de l'asset + collage distant via SSH).
@@ -206,6 +218,10 @@ Monde (open world):
 - `./infra/chunky-monitor.sh`: supervision Chunky (log + webhook Discord si configure).
 - `./infra/chunky-monitor-enable-cron.sh`: active la supervision en arriere-plan via cron.
 - `./infra/chunky-monitor-disable-cron.sh`: desactive la supervision en arriere-plan via cron.
+- `./infra/academy-compat-audit.py`: verifie le gate Academy V2 contre la base Cobblemon courante.
+- `./infra/academy-stack-install.sh`: installe les groupes compatibles du lock Academy V2.
+- `./infra/install-academy-dimension-datapack.sh`: installe/met a jour le datapack `acm_academy_dimension` dans le monde actif.
+- `./infra/spawn-academy-portals.sh`: pose les portails et marqueurs de teleportation Academy.
 
 ## Prefab Score
 

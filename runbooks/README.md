@@ -52,6 +52,9 @@
 - `runbooks/restore.md`: procedure de restauration.
 - `runbooks/restore-test.md`: checklist de validation post-restore.
 - `runbooks/infra-commands.md`: index operationnel des scripts `infra/` (entrypoints + utilitaires).
+- `runbooks/project-hibernation.md`: etat de mise en veille et ordre de reprise apres pause longue.
+- `runbooks/academy-dimension.md`: chantier futur Academy V2 (dimension, portail, staging, rollback).
+- `runbooks/client-pack-academy-v2.md`: pack client cible pour le chantier Academy V2.
 
 ## Legacy
 - `runbooks/village-pokecenter-worldgen.md`: ancien flux Pokecenter par datapack dedie.

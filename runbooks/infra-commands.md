@@ -95,6 +95,16 @@ Runbook associe (Waystones sur map existante):
 - `./infra/progression-init.sh`
 - `./infra/badge.sh`
 
+## Academy V2 (`utility`)
+- `./infra/academy-compat-audit.py` (gate compatibilite Academy vs base Cobblemon courante)
+- `./infra/academy-stack-install.sh` (installe les mods Academy-adjacent pinnes par groupe)
+- `./infra/install-academy-dimension-datapack.sh` (installe le datapack `acm_academy_dimension`)
+- `./infra/spawn-academy-portals.sh` (pose les portails et marqueurs Academy)
+
+Runbooks associes:
+- `runbooks/academy-dimension.md`
+- `runbooks/client-pack-academy-v2.md`
+
 ## ChatOps / network / backups (`entrypoint`)
 - `./infra/chatops.sh`
 - `./infra/ddns-duckdns.sh`
